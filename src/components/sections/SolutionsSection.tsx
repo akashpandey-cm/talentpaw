@@ -1,7 +1,8 @@
-import { useRef, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import AntiGravityMesh from '../AntiGravityMesh';
+import { BRAND_GRADIENT, EASE_PREMIUM, GPU_ACCELERATION } from '../../lib/brand';
 
 /* ─── Types ──────────────────────────────────────────────────────────── */
 type Stat = { val: string; label: string };
@@ -45,9 +46,6 @@ const PANELS: Panel[] = [
   },
 ];
 
-/* ─── Helpers ────────────────────────────────────────────────────────── */
-const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-
 /* ─── Button ─────────────────────────────────────────────────────────── */
 function Btn({
   children,
@@ -76,14 +74,15 @@ function Btn({
       onHoverEnd={() => setHov(false)}
       whileHover={{ y: -2 }}
       whileTap={{ scale: 0.97 }}
-      transition={{ duration: 0.25, ease: EASE }}
-      className={`relative h-11 px-6 rounded-full font-semibold text-sm flex items-center gap-2 overflow-hidden transition-colors duration-300 ${outline ? baseOutline : baseSolid}`}
+      transition={{ duration: 0.25, ease: EASE_PREMIUM }}
+      className={`relative h-11 px-6 rounded-full font-semibold text-sm flex items-center gap-2 overflow-hidden transition-[background-color,border-color] duration-300 ${outline ? baseOutline : baseSolid}`}
       style={
         !outline && !dark
           ? {
-              background: 'linear-gradient(135deg, #7B61FF, #FF4D8D, #FF8A3D)',
+              backgroundImage: BRAND_GRADIENT,
               boxShadow: hov ? '0 12px 32px -4px rgba(123,97,255,0.45)' : '0 4px 16px -4px rgba(123,97,255,0.3)',
               transition: 'box-shadow 0.3s ease',
+              ...GPU_ACCELERATION
             }
           : undefined
       }
@@ -113,18 +112,17 @@ function StatItem({ stat }: { stat: Stat }) {
 
 /* ─── Card ───────────────────────────────────────────────────────────── */
 function Card({ panel, slideFrom }: { panel: Panel; slideFrom: 'left' | 'right' }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-80px' });
   const [hov, setHov] = useState(false);
   const { eyebrow, title, sub, cta, stats, img, dark } = panel;
 
   return (
     <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: slideFrom === 'left' ? 0.3 : 0.4, ease: EASE }}
+      initial={{ opacity: 0, x: slideFrom === 'left' ? -30 : 30 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.8, ease: EASE_PREMIUM }}
       className="flex-1 min-w-0"
+      style={GPU_ACCELERATION}
     >
       <motion.div
         onHoverStart={() => setHov(true)}
@@ -132,8 +130,9 @@ function Card({ panel, slideFrom }: { panel: Panel; slideFrom: 'left' | 'right' 
         animate={{
           y: hov ? -8 : 0,
         }}
-        transition={{ duration: 0.6, ease: EASE }}
-        className={`relative h-auto min-h-[480px] md:h-[480px] rounded-[32px] overflow-hidden flex flex-col justify-end group transition-shadow duration-700 bg-black ${hov ? 'lg:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.4)]' : 'shadow-[0_20px_40px_-20px_rgba(0,0,0,0.15)]'}`}
+        transition={{ duration: 0.6, ease: EASE_PREMIUM }}
+        className={`relative h-auto min-h-[480px] md:h-[480px] rounded-[32px] overflow-hidden flex flex-col justify-end group transition-[box-shadow] duration-700 bg-black ${hov ? 'lg:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.4)]' : 'shadow-[0_20px_40px_-20px_rgba(0,0,0,0.15)]'}`}
+        style={GPU_ACCELERATION}
       >
         {/* Full-bleed Background Image */}
         <motion.img
@@ -145,24 +144,24 @@ function Card({ panel, slideFrom }: { panel: Panel; slideFrom: 'left' | 'right' 
             scale: hov ? 1.05 : 1.1,
             filter: hov ? 'brightness(1)' : 'brightness(0.7)'
           }}
-          transition={{ duration: 0.8, ease: EASE }}
-          className="absolute inset-0 w-full h-full object-cover z-0 will-change-transform"
+          transition={{ duration: 0.8, ease: EASE_PREMIUM }}
+          className="absolute inset-0 w-full h-full object-cover z-0 will-change-transform translate-z-0"
         />
 
-        {/* Dynamic Overlay - Reveals full image on hover */}
+        {/* Dynamic Overlay */}
         <motion.div 
           className="absolute inset-0 bg-black/40 z-10 pointer-events-none"
           animate={{ opacity: hov ? 0 : 1 }}
-          transition={{ duration: 0.6, ease: EASE }}
+          transition={{ duration: 0.6, ease: EASE_PREMIUM }}
         />
 
-        {/* Gradient for content legibility - always visible but subtler on hover */}
+        {/* Gradient for content legibility */}
         <motion.div 
           className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent z-20 pointer-events-none"
           animate={{ opacity: hov ? 0.7 : 1 }}
         />
 
-        {/* Content Container - Tightened Margins/Gaps */}
+        {/* Content Container */}
         <div className="relative z-30 p-8 flex flex-col mt-auto w-full">
           
           {/* Eyebrow Badge */}
@@ -219,14 +218,10 @@ function Card({ panel, slideFrom }: { panel: Panel; slideFrom: 'left' | 'right' 
 
 /* ─── Section ────────────────────────────────────────────────────────── */
 export default function SolutionsSection() {
-  const headerRef = useRef<HTMLDivElement>(null);
-  const headerInView = useInView(headerRef, { once: true, margin: '-60px' });
-
   return (
     <section
       id="solutions"
-      className="pt-20 pb-[120px] px-6 relative overflow-hidden"
-      style={{ background: '#FAFAFB' }}
+      className="pt-20 pb-[120px] px-6 relative overflow-hidden bg-[#FAFAFB]"
     >
       <AntiGravityMesh />
       {/* Noise texture overlay */}
@@ -237,11 +232,12 @@ export default function SolutionsSection() {
 
       <div className="relative max-w-[1280px] mx-auto">
         {/* Header */}
-        <div ref={headerRef} className="mb-12 max-w-4xl">
+        <div className="mb-12 max-w-4xl" style={GPU_ACCELERATION}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={headerInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, ease: EASE }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.6, ease: EASE_PREMIUM }}
             className="inline-flex items-center gap-2.5 mb-6"
           >
             <div className="h-px w-8 bg-gradient-to-r from-[#7B61FF] to-[#FF4D8D] rounded-full" />
@@ -252,14 +248,15 @@ export default function SolutionsSection() {
 
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
-            animate={headerInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.1, ease: EASE }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: EASE_PREMIUM }}
             className="text-[40px] md:text-[60px] font-bold text-[#0D0A1A] tracking-tight leading-[1.1] md:leading-[76px]"
           >
             Top companies hire faster<br className="hidden md:block" />{' '}
             <span
               className="text-transparent bg-clip-text"
-              style={{ backgroundImage: 'linear-gradient(135deg, #7B61FF, #FF4D8D, #FF8A3D)' }}
+              style={{ backgroundImage: BRAND_GRADIENT }}
             >
               with TalentPAW.
             </span>
@@ -267,8 +264,9 @@ export default function SolutionsSection() {
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
-            animate={headerInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: EASE_PREMIUM }}
             className="mt-6 text-xl text-[#6B7280] leading-relaxed max-w-xl"
           >
             Whether you need to hire or want to be hired — we built the perfect pathway for both sides.

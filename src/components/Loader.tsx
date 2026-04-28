@@ -96,6 +96,7 @@ function ImageStrip({
             <img
               src={img}
               alt=""
+              loading="lazy"
               draggable={false}
               style={{
                 width: '100%',
@@ -171,7 +172,6 @@ export default function Loader({ onComplete, onStartTransition }: LoaderProps) {
       
       <div style={{
           position: 'absolute', inset: 0,
-          backdropFilter: 'blur(2px)',
           background: 'rgba(4,3,8,0.2)',
           zIndex: 5,
           pointerEvents: 'none',

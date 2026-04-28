@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
@@ -43,11 +43,29 @@ function ParticleCloud() {
 }
 
 export default function FooterParticles() {
+  const [isInView, setIsInView] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0.1 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
-      <Canvas camera={{ position: [0, 0, 15] }} dpr={[1, 2]} gl={{ antialias: false }}>
-        <ParticleCloud />
-      </Canvas>
+    <div ref={containerRef} className="absolute inset-0 z-0 pointer-events-none opacity-40">
+      {isInView && (
+        <Canvas camera={{ position: [0, 0, 15] }} dpr={[1, 2]} gl={{ antialias: false, powerPreference: "high-performance" }}>
+          <ParticleCloud />
+        </Canvas>
+      )}
     </div>
   );
 }

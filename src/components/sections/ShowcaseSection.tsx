@@ -2,20 +2,19 @@ import { motion, useScroll, useTransform, useMotionValue, useSpring, useMotionTe
 import { useState, useRef, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 import AntiGravityMesh from '../AntiGravityMesh';
+import { BRAND_GRADIENT, EASE_PREMIUM, GPU_ACCELERATION } from '../../lib/brand';
 
 // Import Assets
-import imgGuitar from '../../assets/medium-shot-man-playing-guitar.jpg';
-import imgSingerRed from '../../assets/young-female-singer-red-dress.jpg';
-import imgFlute from '../../assets/man-playing-flute-concert.jpg';
-import imgMic from '../../assets/medium-shot-woman-holding-microphone.jpg';
-import imgComedian from '../../assets/medium-shot-stand-up-comedian.jpg';
-import imgSingerGold from '../../assets/cheerful-beautiful-young-woman-singer-holding-golden-vintage-microphone-lit-by-projector.jpg';
+import imgGuitar from '../../assets/medium-shot-man-playing-guitar.webp';
+import imgSingerRed from '../../assets/young-female-singer-red-dress.webp';
+import imgFlute from '../../assets/man-playing-flute-concert.webp';
+import imgMic from '../../assets/medium-shot-woman-holding-microphone.webp';
+import imgComedian from '../../assets/medium-shot-stand-up-comedian.webp';
+import imgSingerGold from '../../assets/cheerful-beautiful-young-woman-singer-holding-golden-vintage-microphone-lit-by-projector.webp';
 
 const CATEGORIES = [
   'All', 'Singer', 'Musician', 'Comedian', 'Magician', 'Dancer', 'Actor', 'Model', 'Host'
 ];
-
-// Simplified stagger animation variants are directly applied below
 
 const TALENT_CARDS = [
   { img: imgGuitar, alt: 'Guitarist' },
@@ -54,30 +53,27 @@ export default function ShowcaseSection() {
     offset: ["start end", "end start"]
   });
 
-
   const gridY = useTransform(scrollYProgress, [0, 1], [-50, 50]);
 
   return (
     <section 
       ref={sectionRef}
       id="showcase"
-      className="relative min-h-[100vh] w-full flex flex-col justify-center py-20 px-6 overflow-hidden"
-      style={{ background: '#FAFAFB' }}
+      className="relative min-h-[100vh] w-full flex flex-col justify-center py-20 px-6 overflow-hidden bg-[#FAFAFB]"
     >
-      {/* ── Background Layer (Performance Optimized) ── */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0" style={{ willChange: "transform" }}>
-        
+      {/* ── Background Layer ── */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0" style={GPU_ACCELERATION}>
         <AntiGravityMesh />
 
-        {/* Interactive Mouse Spotlight - GPU Accelerated */}
+        {/* Interactive Mouse Spotlight */}
         <motion.div
-          style={{ transform: spotlightTransform, willChange: 'transform' }}
-          className="absolute top-0 left-0 w-[600px] h-[600px] bg-indigo-500/[0.04] blur-[100px] rounded-full pointer-events-none translate-z-0"
+          style={{ ...GPU_ACCELERATION, transform: spotlightTransform }}
+          className="absolute left-0 top-0 w-[800px] h-[800px] bg-brand/[0.04] blur-[120px] rounded-full pointer-events-none translate-z-0"
         />
 
         {/* Parallax Grid */}
         <motion.div
-          style={{ y: gridY, willChange: 'transform' }}
+          style={{ y: gridY, ...GPU_ACCELERATION }}
           className="absolute inset-0 grid-bg-light opacity-[0.25]"
         />
 
@@ -87,27 +83,27 @@ export default function ShowcaseSection() {
           style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")" }}
         />
 
-        {/* Floating Particles */}
-        <div className="absolute inset-0" style={{ willChange: "transform" }}>
-          {[...Array(5)].map((_, i) => (
+        {/* Floating Particles - CSS animation for better frame budget */}
+        <div className="absolute inset-0" style={GPU_ACCELERATION}>
+          {[...Array(3)].map((_, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: "100%" }}
-              animate={{ opacity: [0, 0.4, 0], y: "-100%", x: Math.sin(i) * 100 }}
-              transition={{ duration: 10 + i * 2, repeat: Infinity, delay: i * 3, ease: "linear" }}
+              animate={{ opacity: [0, 0.4, 0], y: "-100%" }}
+              transition={{ duration: 15 + i * 5, repeat: Infinity, delay: i * 3, ease: "linear" }}
               className="absolute w-1 h-1 bg-purple-400 rounded-full blur-[1px] translate-z-0"
-              style={{ left: `${20 + i * 15}%` }}
+              style={{ left: `${20 + i * 30}%` }}
             />
           ))}
         </div>
       </div>
 
-      <div className="max-w-[1440px] w-full mx-auto text-center relative z-10 flex flex-col items-center justify-center h-full" style={{ willChange: "transform" }}>
+      <div className="max-w-[1440px] w-full mx-auto text-center relative z-10 flex flex-col items-center justify-center h-full" style={GPU_ACCELERATION}>
         <motion.span
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.6, ease: EASE_PREMIUM }}
           className="block text-[#676767] text-[13px] font-bold uppercase tracking-[4px] mb-4"
         >
           TALENTPAW TALENT
@@ -116,14 +112,14 @@ export default function ShowcaseSection() {
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.6, delay: 0.1, ease: EASE_PREMIUM }}
           className="text-[40px] md:text-[60px] font-bold tracking-tight text-black mb-8 leading-[1.1] md:leading-[76px] font-['Outfit']"
         >
           The Global <br className="md:hidden" />
           <span 
             className="text-transparent bg-clip-text"
-            style={{ backgroundImage: 'linear-gradient(135deg, #7B61FF, #FF4D8D, #FF8A3D)' }}
+            style={{ backgroundImage: BRAND_GRADIENT }}
           >
             Talent Showcase.
           </span>
@@ -134,8 +130,9 @@ export default function ShowcaseSection() {
           {CATEGORIES.map((cat) => (
             <motion.button
               key={cat}
+              whileTap={{ scale: 0.95 }}
               onClick={() => setActiveCat(cat)}
-              className={`px-4 py-2 md:px-6 md:py-3 rounded-[8px] text-sm md:text-[16px] font-medium transition-all duration-500 lg:hover:-translate-y-1 lg:hover:shadow-[0_10px_20px_rgba(0,0,0,0.08)] active:scale-95 ${activeCat === cat
+              className={`px-4 py-2 md:px-6 md:py-3 rounded-[8px] text-sm md:text-[16px] font-medium transition-[background-color,color,border-color,box-shadow,transform] duration-500 lg:hover:-translate-y-1 lg:hover:shadow-[0_10px_20px_rgba(0,0,0,0.08)] active:scale-95 ${activeCat === cat
                   ? 'bg-brand text-white shadow-lg shadow-brand/20'
                   : 'bg-white border border-black/5 text-[#676767] hover:border-black/20 hover:bg-gray-50'
                 }`}
@@ -145,32 +142,29 @@ export default function ShowcaseSection() {
           ))}
         </div>
 
-        {/* Staggered Grid with Zigzag Pulse Entry Animations */}
+        {/* Staggered Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-[30px] mb-20 w-full items-start">
           {TALENT_CARDS.map((card, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{
-                duration: 0.6,
-                delay: i * 0.1,
-                ease: [0.22, 1, 0.36, 1],
-              }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.6, delay: i * 0.1, ease: EASE_PREMIUM }}
               whileHover={{ 
                 scale: 1.02,
                 boxShadow: "0 30px 60px -15px rgba(0,0,0, 0.2)"
               }}
-              className={`relative aspect-[227/476] w-full rounded-[23px] overflow-hidden group shadow-[0_20px_40px_-20px_rgba(0,0,0,0.15)] bg-white transition-all duration-500 ${i % 2 !== 0 ? 'mt-0 md:mt-16' : ''
+              className={`relative aspect-[227/476] w-full rounded-[23px] overflow-hidden group shadow-[0_20px_40px_-20px_rgba(0,0,0,0.15)] bg-white transition-[transform,box-shadow] duration-500 ${i % 2 !== 0 ? 'mt-0 md:mt-16' : ''
                 }`}
+              style={GPU_ACCELERATION}
             >
               <img
                 src={card.img}
                 alt={card.alt}
                 loading="lazy"
                 decoding="async"
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 will-change-transform"
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out translate-z-0"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </motion.div>
@@ -178,7 +172,8 @@ export default function ShowcaseSection() {
         </div>
 
         <motion.button
-          className="inline-flex items-center gap-2.5 px-8 py-4 bg-brand text-white font-bold text-lg rounded-full shadow-[0_10px_20px_rgba(104,57,149,0.2)] transition-all duration-500 lg:hover:scale-[1.02] lg:hover:-translate-y-1 lg:hover:shadow-[0_20px_40px_-10px_rgba(104,57,149,0.4)] active:scale-95"
+          whileTap={{ scale: 0.95 }}
+          className="inline-flex items-center gap-2.5 px-8 py-4 bg-brand text-white font-bold text-lg rounded-full shadow-[0_10px_20px_rgba(104,57,149,0.2)] transition-[transform,box-shadow,background-color] duration-500 lg:hover:scale-[1.02] lg:hover:-translate-y-1 lg:hover:shadow-[0_20px_40px_-10px_rgba(104,57,149,0.4)]"
         >
           View All Showcase <ArrowRight className="w-5 h-5" />
         </motion.button>

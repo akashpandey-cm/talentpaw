@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import useSmoothScroll from '../hooks/useSmoothScroll';
+import { GPU_ACCELERATION } from '../lib/brand';
 
 import '../styles/stacking.css'; // <-- Dedicated stacking styles
 
@@ -28,19 +29,25 @@ export default function LandingPage() {
     target: containerRef,
     offset: ['start start', 'end end'],
   });
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 25 });
+  
+  // Optimized snappier spring for premium feel
+  const smoothProgress = useSpring(scrollYProgress, { 
+    stiffness: 200, 
+    damping: 30,
+    restDelta: 0.001
+  });
+  
   const progressBarScaleX = useTransform(smoothProgress, [0, 1], [0, 1]);
 
   return (
-    // Changed overflow-x-hidden to overflow-clip for sticky to work correctly
     <div ref={containerRef} className="relative bg-white grid-bg-light overflow-clip min-h-screen">
       <Navbar />
 
       {/* ── Global Hiring Drawer ── */}
       <HiringDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 
-      {/* Main Structural Wrapper for Stacking Context */}
-      <main className="relative z-10 w-full flex flex-col">
+      {/* Main Structural Wrapper with GPU hardening */}
+      <main className="relative z-10 w-full flex flex-col" style={GPU_ACCELERATION}>
         {/* ── 01: HERO ── */}
         <div className="sticky-section bg-[#FAFAFB]">
           <HeroSection />
@@ -80,7 +87,6 @@ export default function LandingPage() {
         </div>
 
         {/* ── FOOTER ── */}
-        {/* Footer does not stack, it just appears at the bottom normally or we can stack it too */}
         <div className="sticky-section bg-white">
           <FooterSection />
         </div>
@@ -91,7 +97,6 @@ export default function LandingPage() {
         <motion.div className="h-full bg-brand origin-left" style={{ scaleX: progressBarScaleX }} />
       </div>
 
-      {/* ── Back to Top Button ── */}
       <BackToTop />
     </div>
   );
