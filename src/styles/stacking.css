@@ -1,0 +1,35 @@
+/* Awwwards-style Stacking Section CSS */
+
+@media (min-width: 768px) {
+  .sticky-section {
+    position: sticky;
+    top: 0;
+    overflow: hidden;
+    border-radius: 40px;
+    /* GPU acceleration for completely smooth sliding over backgrounds */
+    will-change: transform;
+    
+    /* Add a premium drop shadow so it appears physically raised over the underneath section */
+    box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.08);
+    
+    /* The margin-top pushes the sections down naturally, establishing a visual separation before they slide up */
+    margin-top: 4px;
+  }
+
+  /* We override the first sticky section (Hero) so it sits flat edge-to-edge at the start */
+  .sticky-section:first-child {
+    border-radius: 0;
+    box-shadow: none;
+    margin-top: 0;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+  }
+}
+
+/* Mobile: Remove single-screen fitting, allow natural scrolling */
+@media (max-width: 767px) {
+  .sticky-section {
+    position: relative;
+    overflow: visible;
+  }
+}

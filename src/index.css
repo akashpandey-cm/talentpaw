@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #683995;
+  --color-brand-light: #8b5cf6;
+  --color-gray-custom: #676767;
+  --color-bg-light: #ffffff;
+  --color-bg-alt: #f8f9fa;
+  
+  --font-outfit: 'Outfit', sans-serif;
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+  
+  body {
+    @apply bg-bg-light text-gray-custom selection:bg-brand/10;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    font-family: var(--font-outfit);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight font-bold font-outfit text-black;
+  }
+}
+
+@layer utilities {
+  .noise {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0.02;
+    z-index: 9999;
+    pointer-events: none;
+    background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+    background-repeat: repeat;
+  }
+
+  .glass {
+    @apply bg-white/70 border border-black/5 backdrop-blur-xl shadow-sm;
+  }
+
+  .grid-bg-light {
+    background-size: 40px 40px;
+    background-image:
+      linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  }
+
+  .btn-purple {
+    @apply flex flex-row justify-center items-center px-[20px] py-[10px] gap-[10px] bg-brand text-white font-medium text-[16px] leading-[20px] rounded-sm transition-all;
+    width: fit-content;
+    height: 40px;
+    transition: all 0.4s var(--ease-premium);
+  }
+  @media (min-width: 1024px) {
+    .btn-purple:hover {
+      transform: scale(1.02);
+      box-shadow: 0 12px 24px -8px rgba(104,57,149,0.4);
+    }
+    .btn-purple:active {
+      transform: scale(0.98);
+    }
+  }
+
+  .btn-outline {
+    @apply flex flex-row justify-center items-center px-[20px] py-[10px] gap-[10px] border border-gray-custom text-gray-custom font-medium text-[16px] leading-[20px] rounded-sm transition-all;
+    width: fit-content;
+    height: 40px;
+    transition: all 0.4s var(--ease-premium);
+  }
+  @media (min-width: 1024px) {
+    .btn-outline:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+      transform: scale(1.02);
+      border-color: rgba(0, 0, 0, 0.2);
+    }
+    .btn-outline:active {
+      transform: scale(0.98);
+    }
+  }
+
+  .nav-link-premium {
+    position: relative;
+  }
+  @media (min-width: 1024px) {
+    .nav-link-premium::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background-color: currentColor;
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform 0.3s var(--ease-premium);
+    }
+    .nav-link-premium:hover::after {
+      transform: scaleX(1);
+    }
+  }
+
+  .custom-cursor {
+    width: 15px;
+    height: 15px;
+    background: #683995;
+    border-radius: 50%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 10000;
+    opacity: 0.5;
+    transition: transform 0.1s ease-out;
+  }
+
+  .text-gradient-premium {
+    background: linear-gradient(148.93deg, #B400FF 0%, #830FB7 33.96%, #CB5564 56.61%, #FF8B00 81.2%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .animate-fluid-1 { animation: fluid-1 20s infinite ease-in-out; }
+  .animate-fluid-2 { animation: fluid-2 25s infinite ease-in-out 2s; }
+  .animate-fluid-3 { animation: fluid-3 22s infinite ease-in-out 5s; }
+
+  @keyframes fluid-1 {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+    50% { transform: translate3d(50px, -80px, 0) scale(1.1) rotate(45deg); }
+  }
+  @keyframes fluid-2 {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+    50% { transform: translate3d(-60px, 100px, 0) scale(1.2) rotate(-30deg); }
+  }
+  @keyframes fluid-3 {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+    50% { transform: translate3d(80px, -50px, 0) scale(1.05) rotate(90deg); }
+  }
+}

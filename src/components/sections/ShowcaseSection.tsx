@@ -1,0 +1,183 @@
+import { motion, useScroll, useTransform, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
+import { useState, useRef, useEffect } from 'react';
+import { ArrowRight } from 'lucide-react';
+import AntiGravityMesh from '../AntiGravityMesh';
+
+// Import Assets
+import imgGuitar from '../../assets/medium-shot-man-playing-guitar.jpg';
+import imgSingerRed from '../../assets/young-female-singer-red-dress.jpg';
+import imgFlute from '../../assets/man-playing-flute-concert.jpg';
+import imgMic from '../../assets/medium-shot-woman-holding-microphone.jpg';
+import imgComedian from '../../assets/medium-shot-stand-up-comedian.jpg';
+import imgSingerGold from '../../assets/cheerful-beautiful-young-woman-singer-holding-golden-vintage-microphone-lit-by-projector.jpg';
+
+const CATEGORIES = [
+  'All', 'Singer', 'Musician', 'Comedian', 'Magician', 'Dancer', 'Actor', 'Model', 'Host'
+];
+
+// Simplified stagger animation variants are directly applied below
+
+const TALENT_CARDS = [
+  { img: imgGuitar, alt: 'Guitarist' },
+  { img: imgSingerRed, alt: 'Singer Red' },
+  { img: imgFlute, alt: 'Flutist' },
+  { img: imgMic, alt: 'Vocalist' },
+  { img: imgComedian, alt: 'Comedian' },
+  { img: imgSingerGold, alt: 'Singer Gold' },
+];
+
+export default function ShowcaseSection() {
+  const [activeCat, setActiveCat] = useState('Singer');
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // HIGH-PERFORMANCE MOUSE TRACKING
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const smoothX = useSpring(mouseX, { damping: 40, stiffness: 120 });
+  const smoothY = useSpring(mouseY, { damping: 40, stiffness: 120 });
+  const spotlightTransform = useMotionTemplate`translate(${smoothX}px, ${smoothY}px)`;
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!sectionRef.current) return;
+      const rect = sectionRef.current.getBoundingClientRect();
+      mouseX.set(e.clientX - rect.left - 300);
+      mouseY.set(e.clientY - rect.top - 300);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [mouseX, mouseY]);
+
+  // Parallax scroll effect
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  const orb1Y = useTransform(scrollYProgress, [0, 1], [-100, 100]);
+  const orb2Y = useTransform(scrollYProgress, [0, 1], [100, -100]);
+  const gridY = useTransform(scrollYProgress, [0, 1], [-50, 50]);
+
+  return (
+    <section 
+      ref={sectionRef}
+      id="showcase"
+      className="relative min-h-[100vh] w-full flex flex-col justify-center py-20 px-6 overflow-hidden"
+      style={{ background: '#FAFAFB' }}
+    >
+      {/* ── Background Layer (Performance Optimized) ── */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0" style={{ willChange: "transform" }}>
+        
+        <AntiGravityMesh />
+
+        {/* Interactive Mouse Spotlight - GPU Accelerated */}
+        <motion.div
+          style={{ transform: spotlightTransform, willChange: 'transform' }}
+          className="absolute top-0 left-0 w-[600px] h-[600px] bg-indigo-500/[0.04] blur-[100px] rounded-full pointer-events-none translate-z-0"
+        />
+
+        {/* Parallax Grid */}
+        <motion.div
+          style={{ y: gridY, willChange: 'transform' }}
+          className="absolute inset-0 grid-bg-light opacity-[0.25]"
+        />
+
+        {/* Subtle Noise Texture */}
+        <div
+          className="absolute inset-0 opacity-[0.03] mix-blend-overlay"
+          style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")" }}
+        />
+
+        {/* Floating Particles */}
+        <div className="absolute inset-0" style={{ willChange: "transform" }}>
+          {[...Array(5)].map((_, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: "100%" }}
+              animate={{ opacity: [0, 0.4, 0], y: "-100%", x: Math.sin(i) * 100 }}
+              transition={{ duration: 10 + i * 2, repeat: Infinity, delay: i * 3, ease: "linear" }}
+              className="absolute w-1 h-1 bg-purple-400 rounded-full blur-[1px] translate-z-0"
+              style={{ left: `${20 + i * 15}%` }}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="max-w-[1440px] w-full mx-auto text-center relative z-10 flex flex-col items-center justify-center h-full" style={{ willChange: "transform" }}>
+        <motion.span
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="block text-[#676767] text-[13px] font-bold uppercase tracking-[4px] mb-4"
+        >
+          TALENTPAW TALENT
+        </motion.span>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          className="text-4xl md:text-[54px] lg:text-[76px] font-extrabold tracking-tighter text-black mb-8 leading-[0.9]"
+        >
+          Talent Showcase
+        </motion.h2>
+
+        {/* Categories Bar */}
+        <div className="flex flex-wrap justify-center items-center gap-4 md:gap-[30px] mb-12 w-full">
+          {CATEGORIES.map((cat) => (
+            <motion.button
+              key={cat}
+              onClick={() => setActiveCat(cat)}
+              className={`px-4 py-2 md:px-6 md:py-3 rounded-[8px] text-sm md:text-[16px] font-bold transition-all duration-500 lg:hover:-translate-y-1 lg:hover:shadow-[0_10px_20px_rgba(0,0,0,0.08)] active:scale-95 ${activeCat === cat
+                  ? 'bg-brand text-white shadow-lg shadow-brand/20'
+                  : 'bg-white border border-black/5 text-[#676767] hover:border-black/20 hover:bg-gray-50'
+                }`}
+            >
+              {cat}
+            </motion.button>
+          ))}
+        </div>
+
+        {/* Staggered Grid with Zigzag Pulse Entry Animations */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-[30px] mb-20 w-full items-start">
+          {TALENT_CARDS.map((card, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{
+                duration: 0.6,
+                delay: i * 0.1,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              whileHover={{ 
+                scale: 1.02,
+                boxShadow: "0 30px 60px -15px rgba(0,0,0, 0.2)"
+              }}
+              className={`relative aspect-[227/476] w-full rounded-[23px] overflow-hidden group shadow-[0_20px_40px_-20px_rgba(0,0,0,0.15)] bg-white transition-all duration-500 ${i % 2 !== 0 ? 'mt-0 md:mt-16' : ''
+                }`}
+            >
+              <img
+                src={card.img}
+                alt={card.alt}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 will-change-transform"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.button
+          className="inline-flex items-center gap-2.5 px-8 py-4 bg-brand text-white font-bold text-lg rounded-full shadow-[0_10px_20px_rgba(104,57,149,0.2)] transition-all duration-500 lg:hover:scale-[1.02] lg:hover:-translate-y-1 lg:hover:shadow-[0_20px_40px_-10px_rgba(104,57,149,0.4)] active:scale-95"
+        >
+          View All Showcase <ArrowRight className="w-5 h-5" />
+        </motion.button>
+      </div>
+    </section>
+  );
+}
