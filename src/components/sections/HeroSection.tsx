@@ -105,10 +105,15 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="text-[42px] sm:text-[56px] md:text-[76px] lg:text-[88px] xl:text-[95px] font-extrabold leading-[0.95] tracking-tighter text-black mb-10"
+            className="text-[60px] font-bold leading-[76px] tracking-tight mb-10 bg-clip-text text-transparent"
+            style={{ 
+              fontFamily: 'Outfit',
+              backgroundImage: 'linear-gradient(148.93deg, #B400FF 0%, #830FB7 33.96%, #CB5564 56.61%, #FF8B00 81.2%)'
+            }}
           >
             Build Your Dream<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B400FF] via-[#CB5564] to-[#FF8B00]">Support Team.</span>
+            Support Team<br />
+            in Days
           </motion.h1>
 
           <motion.p
@@ -140,7 +145,10 @@ export default function HeroSection() {
               />
             </Link>
             
-            <button className="h-16 px-12 bg-white border border-black/[0.08] text-black font-bold rounded-full shadow-lg shadow-black/[0.02] hover:shadow-xl hover:border-black/[0.15] transition-all duration-500 active:scale-95 lg:hover:-translate-y-1 lg:hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)]">
+            <button 
+              onClick={() => document.getElementById('showcase')?.scrollIntoView({ behavior: 'smooth' })}
+              className="h-16 px-12 bg-white border border-black/[0.08] text-black font-bold rounded-full shadow-lg shadow-black/[0.02] hover:shadow-xl hover:border-black/[0.15] transition-all duration-500 active:scale-95 lg:hover:-translate-y-1 lg:hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)]"
+            >
               View Showcase
             </button>
           </motion.div>

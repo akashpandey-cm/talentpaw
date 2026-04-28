@@ -19,7 +19,7 @@ function SectionTitle({ subtitle, title, description, light = false }: {
           <span className="text-[10px] font-black uppercase tracking-[3px]">{subtitle}</span>
         </div>
         <h2
-          className={`text-[38px] sm:text-[52px] md:text-[72px] lg:text-[88px] font-bold tracking-tighter leading-[0.95] mb-6 ${light ? 'text-white' : 'text-black'}`}
+          className={`text-[40px] md:text-[60px] font-bold tracking-tight leading-[1.1] md:leading-[76px] mb-6 font-['Outfit'] ${light ? 'text-white' : 'text-black'}`}
           dangerouslySetInnerHTML={{ __html: title }}
         />
         {description && (
@@ -77,7 +77,7 @@ export default function ManifestoSection() {
           <SectionTitle
             light
             subtitle="The Concept"
-            title="We Bridge Ambition with <span class='text-gradient-premium'>Elite Ability.</span>"
+            title="We Bridge<br/>Ambition with<br/><span class='text-gradient-premium'>Elite Ability.</span>"
             description="Traditional hiring is broken. We don't just provide a list of names; we deliver a curated selection of the absolute top 1% of talent, powered by precision AI and human expertise."
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-10">

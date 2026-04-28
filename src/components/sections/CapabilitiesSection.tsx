@@ -64,9 +64,12 @@ export default function CapabilitiesSection() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="text-center mb-4 md:mb-6 relative w-full max-w-2xl px-4"
         >
-          <h2 className="text-[38px] md:text-[60px] leading-[1] font-black text-[#0D0A1A] tracking-tighter">
-            World-Class{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7B61FF] to-[#FF4D8D]">
+          <h2 className="text-[40px] md:text-[60px] font-bold text-[#0D0A1A] leading-[1.1] md:leading-[76px] tracking-tight font-['Outfit']">
+            World-Class <br className="md:hidden" />
+            <span 
+              className="text-transparent bg-clip-text"
+              style={{ backgroundImage: 'linear-gradient(148.93deg, #B400FF 0%, #830FB7 33.96%, #CB5564 56.61%, #FF8B00 81.2%)' }}
+            >
               Talent Formats
             </span>
           </h2>
@@ -119,11 +122,17 @@ export default function CapabilitiesSection() {
                     rotateY,
                     zIndex,
                     opacity,
-                    boxShadow: isCenter ? ['0px 30px 60px -10px rgba(123,97,255,0.4)', '0px 30px 80px 10px rgba(123,97,255,0.8)', '0px 30px 60px -10px rgba(123,97,255,0.4)'] : '0px 20px 40px -20px rgba(0,0,0,0.5)',
+                    // Replaced keyframes with a stable glow to prevent jumping
+                    boxShadow: isCenter 
+                      ? '0px 25px 50px -12px rgba(123,97,255,0.5)' 
+                      : '0px 10px 20px -10px rgba(0,0,0,0.5)',
                   }}
                   transition={{
-                    default: { duration: 0.8, ease: [0.25, 1, 0.35, 1] },
-                    boxShadow: isCenter ? { duration: 3, repeat: Infinity, ease: "easeInOut" } : { duration: 0.8 }
+                    type: "spring",
+                    stiffness: 100,
+                    damping: 20,
+                    mass: 1,
+                    opacity: { duration: 0.4 }
                   }}
                   className={`absolute w-[160px] md:w-[220px] lg:w-[260px] aspect-[4/4.8] rounded-[24px] overflow-hidden bg-[#08060f] flex flex-col justify-center items-center ${isCenter ? 'cursor-default border-2 border-brand/40' : 'cursor-pointer border border-white/10 shadow-2xl'
                     }`}

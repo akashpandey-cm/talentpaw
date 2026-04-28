@@ -13,6 +13,7 @@ import CapabilitiesSection from '../components/sections/CapabilitiesSection';
 import CategoriesSection from '../components/sections/CategoriesSection';
 import CTASection        from '../components/sections/CTASection';
 import ShowcaseSection   from '../components/sections/ShowcaseSection';
+import TestimonialSection from '../components/sections/TestimonialSection';
 import FooterSection     from '../components/sections/FooterSection';
 import HiringDrawer      from '../components/sections/HiringDrawer';
 import BackToTop         from '../components/BackToTop';
@@ -60,9 +61,12 @@ export default function LandingPage() {
           <CapabilitiesSection />
         </div>
 
-        {/* ── 06: TALENT SHOWCASE ── */}
         <div className="sticky-section bg-[#FAFAFB]">
           <ShowcaseSection />
+        </div>
+
+        <div className="sticky-section bg-white">
+          <TestimonialSection />
         </div>
 
         {/* ── 07: CATEGORIES ── */}

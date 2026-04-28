@@ -31,10 +31,13 @@ export default function CategoriesSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="text-4xl md:text-[54px] lg:text-[76px] font-extrabold text-white leading-[0.9] tracking-tighter mb-8"
+              className="text-[40px] md:text-[60px] font-bold text-white leading-[1.1] md:leading-[76px] tracking-tight mb-8 font-['Outfit']"
             >
               Choose Your<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B400FF] via-[#CB5564] to-[#FF8B00]">
+              <span 
+                className="text-transparent bg-clip-text"
+                style={{ backgroundImage: 'linear-gradient(148.93deg, #B400FF 0%, #830FB7 33.96%, #CB5564 56.61%, #FF8B00 81.2%)' }}
+              >
                 Champion.
               </span>
             </motion.h2>

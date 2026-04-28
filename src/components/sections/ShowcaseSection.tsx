@@ -118,9 +118,15 @@ export default function ShowcaseSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="text-4xl md:text-[54px] lg:text-[76px] font-extrabold tracking-tighter text-black mb-8 leading-[0.9]"
+          className="text-[40px] md:text-[60px] font-bold tracking-tight text-black mb-8 leading-[1.1] md:leading-[76px] font-['Outfit']"
         >
-          Talent Showcase
+          The Global <br className="md:hidden" />
+          <span 
+            className="text-transparent bg-clip-text"
+            style={{ backgroundImage: 'linear-gradient(135deg, #7B61FF, #FF4D8D, #FF8A3D)' }}
+          >
+            Talent Showcase.
+          </span>
         </motion.h2>
 
         {/* Categories Bar */}
@@ -129,7 +135,7 @@ export default function ShowcaseSection() {
             <motion.button
               key={cat}
               onClick={() => setActiveCat(cat)}
-              className={`px-4 py-2 md:px-6 md:py-3 rounded-[8px] text-sm md:text-[16px] font-bold transition-all duration-500 lg:hover:-translate-y-1 lg:hover:shadow-[0_10px_20px_rgba(0,0,0,0.08)] active:scale-95 ${activeCat === cat
+              className={`px-4 py-2 md:px-6 md:py-3 rounded-[8px] text-sm md:text-[16px] font-medium transition-all duration-500 lg:hover:-translate-y-1 lg:hover:shadow-[0_10px_20px_rgba(0,0,0,0.08)] active:scale-95 ${activeCat === cat
                   ? 'bg-brand text-white shadow-lg shadow-brand/20'
                   : 'bg-white border border-black/5 text-[#676767] hover:border-black/20 hover:bg-gray-50'
                 }`}

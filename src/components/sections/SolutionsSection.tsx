@@ -254,7 +254,7 @@ export default function SolutionsSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={headerInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.1, ease: EASE }}
-            className="text-[44px] sm:text-[56px] md:text-[68px] font-black text-[#0D0A1A] tracking-tighter leading-[0.95]"
+            className="text-[40px] md:text-[60px] font-bold text-[#0D0A1A] tracking-tight leading-[1.1] md:leading-[76px]"
           >
             Top companies hire faster<br className="hidden md:block" />{' '}
             <span

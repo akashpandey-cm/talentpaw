@@ -103,20 +103,15 @@ export default function CTASection({ onBookNow }: CTASectionProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="text-[42px] sm:text-[76px] md:text-[96px] font-black text-black leading-[0.9] tracking-tighter mb-10"
+          className="text-[40px] md:text-[60px] font-bold text-black leading-[1.1] md:leading-[76px] tracking-tight mb-10 font-['Outfit']"
         >
           Scale your design<br />
-          <motion.span 
-            className="inline-block text-transparent bg-clip-text"
-            animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-            transition={{ duration: 10, repeat: Infinity }}
-            style={{ 
-              backgroundImage: 'linear-gradient(90deg, #7B61FF, #FF4D8D, #FF8A3D, #7B61FF)',
-              backgroundSize: '300% 100%'
-            }}
+          <span 
+            className="text-transparent bg-clip-text"
+            style={{ backgroundImage: 'linear-gradient(148.93deg, #B400FF 0%, #830FB7 33.96%, #CB5564 56.61%, #FF8B00 81.2%)' }}
           >
             Velocity.
-          </motion.span>
+          </span>
         </motion.h2>
 
         {/* Rich Subtext */}
