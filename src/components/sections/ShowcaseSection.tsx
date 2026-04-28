@@ -54,8 +54,7 @@ export default function ShowcaseSection() {
     offset: ["start end", "end start"]
   });
 
-  const orb1Y = useTransform(scrollYProgress, [0, 1], [-100, 100]);
-  const orb2Y = useTransform(scrollYProgress, [0, 1], [100, -100]);
+
   const gridY = useTransform(scrollYProgress, [0, 1], [-50, 50]);
 
   return (

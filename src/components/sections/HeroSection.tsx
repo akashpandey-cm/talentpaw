@@ -32,8 +32,7 @@ export default function HeroSection() {
     offset: ["start start", "end start"]
   });
 
-  const orb1Y = useTransform(scrollYProgress, [0, 1], [0, 200]);
-  const orb2Y = useTransform(scrollYProgress, [0, 1], [0, -200]);
+
   const gridY = useTransform(scrollYProgress, [0, 1], [0, 100]);
 
   return (

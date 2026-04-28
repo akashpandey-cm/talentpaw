@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Using actual assets
 import imgGuitar from '../../assets/medium-shot-man-playing-guitar.jpg';
@@ -31,7 +30,6 @@ export default function CapabilitiesSection() {
   const total = SLIDES.length;
 
   const nextSlide = () => setIndex((prev) => (prev + 1) % total);
-  const prevSlide = () => setIndex((prev) => (prev - 1 + total) % total);
 
   // Auto-play the 3D infinite carousel
   useEffect(() => {
