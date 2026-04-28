@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence, useAnimationFrame, useMotionValue, useTransform } from 'framer-motion';
 
 export interface Testimonial {
