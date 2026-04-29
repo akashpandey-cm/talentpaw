@@ -26,31 +26,38 @@ function App() {
     // Step 3: Overlay slides off. Reveal homepage.
     setTimeout(() => {
       setAppState('loaded');
-    }, 4000); // 3200ms + 800ms slide-out
+    }, 4400); // 3200ms + 1200ms slide-out
   };
 
   const handleLoaderComplete = () => {
     // Loader unmounts natively
   };
 
+  const isVisible = appState === 'loaded' || appState === 'transitioning_out';
+
   return (
     <>
       {/* BASE BACKGROUND TO PREVENT FLASHING DURING TRANSITION */}
-      {appState !== 'loaded' && (
+      {appState !== 'loaded' && appState !== 'transitioning_out' && (
         <div className="fixed inset-0 z-[9990] bg-[#040308]" />
       )}
 
       {/* HOMEPAGE / APP CONTENT */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.92, y: 40 }}
+        initial={{ opacity: 0, scale: 0.96, filter: 'blur(20px)' }}
         animate={{ 
-          opacity: appState === 'loaded' ? 1 : 0, 
-          scale: appState === 'loaded' ? 1 : 0.92,
-          y: appState === 'loaded' ? 0 : 40 
+          opacity: isVisible ? 1 : 0, 
+          scale: isVisible ? 1 : 0.96,
+          filter: isVisible ? 'blur(0px)' : 'blur(20px)'
         }}
-        transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
+        transition={{ 
+          duration: 1.8, 
+          ease: [0.22, 1, 0.36, 1], // Cinematic cubic-bezier
+          opacity: { duration: 1.2 },
+          filter: { duration: 1.5 }
+        }}
         style={{ 
-          visibility: appState === 'loaded' ? 'visible' : 'hidden',
+          visibility: isVisible ? 'visible' : 'hidden',
           transformOrigin: 'top center'
         }}
       >
@@ -93,7 +100,7 @@ function App() {
               borderBottomRightRadius: appState === 'transitioning_out' ? '100%' : '0%',
             }}
             transition={{ 
-              duration: 0.8, 
+              duration: 1.2, // Slower, smoother slide out
               ease: [0.76, 0, 0.24, 1] 
             }}
             className="fixed z-[9998] flex items-center justify-center flex-col pointer-events-none"
