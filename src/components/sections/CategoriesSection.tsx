@@ -63,11 +63,11 @@ export default function CategoriesSection() {
           >
             <Link
               to="/search"
-              className="group relative h-14 md:h-16 px-8 md:px-12 bg-white text-black font-bold text-base md:text-lg rounded-full flex items-center gap-4 transition-[box-shadow,transform] duration-300 active:scale-95 overflow-hidden"
+              className="group relative h-[52px] px-8 md:px-12 bg-white text-black font-bold text-base md:text-lg rounded-full flex items-center justify-center gap-4 transition-[box-shadow,transform] duration-300 active:scale-95 overflow-hidden shadow-sm hover:shadow-lg"
             >
               <span className="relative z-10">Explore All</span>
               <ArrowRight className="w-5 h-5 relative z-10 transition-transform group-hover:translate-x-1" />
-              <div className="absolute inset-0 bg-white/20 skew-x-[30deg] -translate-x-[150%] group-hover:translate-x-[250%] transition-transform duration-700 ease-in-out" />
+              <div className="absolute inset-0 bg-black/[0.03] skew-x-[30deg] -translate-x-[150%] group-hover:translate-x-[250%] transition-transform duration-700 ease-in-out" />
             </Link>
           </motion.div>
         </div>

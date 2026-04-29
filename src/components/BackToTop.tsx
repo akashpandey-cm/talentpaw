@@ -35,13 +35,13 @@ export default function BackToTop() {
           exit={{ opacity: 0, scale: 0.5, y: 20 }}
           transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[100] w-12 h-12 md:w-14 md:h-14 bg-white/80 backdrop-blur-md rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.1)] border border-white/50 flex items-center justify-center text-black hover:text-brand hover:scale-110 active:scale-95 transition-all duration-300 group"
+          className="fixed bottom-10 right-8 md:bottom-12 md:right-12 z-[100] w-14 h-14 bg-black/20 backdrop-blur-xl rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.3)] border border-white/10 flex items-center justify-center text-white hover:text-brand hover:border-brand/50 hover:bg-black/40 hover:scale-110 active:scale-95 transition-all duration-500 group"
           aria-label="Back to top"
         >
           {/* Subtle glowing ring on hover */}
-          <div className="absolute inset-0 rounded-full border border-brand opacity-0 group-hover:opacity-100 scale-150 group-hover:scale-100 transition-all duration-500 ease-out" />
+          <div className="absolute inset-0 rounded-full border-2 border-brand/20 opacity-0 group-hover:opacity-100 scale-150 group-hover:scale-110 transition-all duration-500 ease-out" />
           
-          <ArrowUp className="w-5 h-5 md:w-6 md:h-6" strokeWidth={2.5} />
+          <ArrowUp className="w-5 h-5 md:w-6 md:h-6 relative z-10" strokeWidth={3} />
         </motion.button>
       )}
     </AnimatePresence>

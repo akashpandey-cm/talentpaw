@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import FooterParticles from '../canvas/FooterParticles';
+import { lazy, Suspense } from 'react';
+
+const FooterParticles = lazy(() => import('../canvas/FooterParticles'));
 
 // Custom icons (kept local to avoid lucide-react export issues)
 const Twitter = ({ className }: { className?: string }) => (
@@ -34,102 +36,87 @@ const socials = [
 
 export default function FooterSection() {
   return (
-    <footer className="bg-[#050505] pt-40 pb-20 px-8 relative overflow-hidden">
+    <footer className="bg-[#050505] pt-12 pb-8 px-6 md:px-12 relative overflow-hidden w-full">
       {/* 3D Particle Field Background */}
-      <FooterParticles />
+      <Suspense fallback={null}>
+        <FooterParticles />
+      </Suspense>
 
       {/* Mesh Gradient */}
       <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#673997]/10 blur-[150px] rounded-full" />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#673997]/5 blur-[150px] rounded-full" />
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#B400FF]/5 blur-[120px] rounded-full" />
       </div>
 
-      {/* Infinite Marquee */}
-      <div className="absolute top-0 left-0 right-0 py-6 bg-white/5 border-y border-white/5 backdrop-blur-sm overflow-hidden flex whitespace-nowrap">
-        <motion.div
-          animate={{ x: [0, -1000] }}
-          transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-          className="flex gap-20 pr-20 items-center"
-        >
-          {[1,2,3,4,5].map(i => (
-            <div key={i} className="flex gap-20 items-center">
-              {['CONNECT', 'CREATE', 'HIRE', 'SCALE', 'DOMINATE'].map(word => (
-                <span key={word} className="text-white/20 text-[11px] font-black tracking-[0.5em]">{word}</span>
-              ))}
-            </div>
-          ))}
-        </motion.div>
-      </div>
-
-      <div className="max-w-[1620px] mx-auto relative pt-12 px-[5vw]">
-        <div className="flex flex-col lg:flex-row justify-between gap-x-12 gap-y-24 mb-16">
-          {/* Branding */}
-          <div className="flex flex-col gap-10">
-            <div>
-              <Link to="/">
-                <motion.div whileHover={{ scale: 1.05 }} className="flex items-center gap-4 mb-4">
-                  <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center relative overflow-hidden group shadow-2xl">
-                    <div className="absolute inset-[2px] rounded-[14px] bg-black" />
-                    <div className="relative text-xs font-black text-white italic">TP</div>
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#B400FF] via-[#CB5564] to-[#FF8B00] opacity-40 group-hover:opacity-100 transition-opacity" />
-                  </div>
-                  <div>
-                    <h3 className="text-4xl font-black text-white tracking-tighter leading-none mb-1">
-                      Talent<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B400FF] to-[#FF8B00]">PAW</span>
-                    </h3>
-                    <p className="text-white/30 text-[10px] font-black tracking-[4px] uppercase">The Elite Network</p>
-                  </div>
-                </motion.div>
-              </Link>
-            </div>
-            <p className="text-white/40 text-[18px] leading-relaxed max-w-[340px]">
+      <div className="max-w-[1400px] mx-auto relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-6 gap-12 lg:gap-8 mb-12">
+          {/* Branding Column - Takes 2 spans on large screens */}
+          <div className="lg:col-span-2 flex flex-col items-center lg:items-start text-center lg:text-left gap-6">
+            <Link to="/">
+              <motion.div whileHover={{ scale: 1.05 }} className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center relative overflow-hidden group shadow-2xl">
+                  <div className="absolute inset-[1.5px] rounded-[10px] bg-black" />
+                  <div className="relative text-[10px] font-black text-white italic">TP</div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#B400FF] via-[#CB5564] to-[#FF8B00] opacity-40 group-hover:opacity-100 transition-opacity" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-black text-white tracking-tighter leading-none mb-1">
+                    Talent<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B400FF] to-[#FF8B00]">PAW</span>
+                  </h3>
+                  <p className="text-white/30 text-[8px] font-black tracking-[3px] uppercase">The Elite Network</p>
+                </div>
+              </motion.div>
+            </Link>
+            <p className="text-white/40 text-[15px] leading-relaxed max-w-[300px]">
               We don&apos;t just build teams; we assemble legacies. The premier platform for top-tier global talent.
             </p>
-            <div className="flex gap-4">
+            <div className="flex gap-3">
               {socials.map(s => (
                 <motion.button
                   key={s.label}
                   whileHover={{ y: -5, scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  className="w-14 h-14 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all shadow-lg"
+                  className="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all"
                 >
-                  <s.icon className="w-6 h-6" />
+                  <s.icon className="w-5 h-5" />
                 </motion.button>
               ))}
             </div>
           </div>
 
-          {/* Nav Columns */}
-          {navColumns.map(col => (
-            <div key={col.title}>
-              <h4 className="text-white/20 text-xs font-black uppercase tracking-[5px] mb-10">{col.title}</h4>
-              <div className="flex flex-col gap-6">
-                {col.links.map(link => (
-                  <motion.a
-                    key={link}
-                    href="#"
-                    whileHover={{ x: 10 }}
-                    className="text-white/50 text-[18px] font-medium hover:text-white transition-colors flex items-center gap-2 group"
-                  >
-                    <span className="w-0 h-[2px] bg-brand group-hover:w-4 transition-all" />
-                    {link}
-                  </motion.a>
-                ))}
+          {/* Nav Columns Grid - Takes 4 spans on large screens, 2 cols on mobile */}
+          <div className="lg:col-span-4 grid grid-cols-2 sm:grid-cols-4 gap-8 w-full">
+            {navColumns.map(col => (
+              <div key={col.title}>
+                <h4 className="text-white/20 text-[9px] font-black uppercase tracking-[3px] mb-6">{col.title}</h4>
+                <div className="flex flex-col gap-4">
+                  {col.links.map(link => (
+                    <motion.a
+                      key={link}
+                      href="#"
+                      whileHover={{ x: 5 }}
+                      className="text-white/50 text-[14px] font-medium hover:text-white transition-colors flex items-center gap-2 group"
+                    >
+                      <span className="w-0 h-[1.5px] bg-brand group-hover:w-3 transition-all" />
+                      {link}
+                    </motion.a>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-10 pt-10 border-t border-white/5">
-          <div className="flex flex-wrap justify-center gap-8 text-white/30 text-[13px] font-medium tracking-wide">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-white/5">
+          <div className="flex flex-wrap justify-center gap-6 text-white/30 text-[11px] font-medium tracking-wide">
             <span>© 2026 COLLECTIVE</span>
             <a href="#" className="hover:text-white transition-colors">PRIVACY_PROTOCOL</a>
             <a href="#" className="hover:text-white transition-colors">TERMS_OF_SERVICE</a>
           </div>
-          <div className="flex items-center gap-4 px-6 py-3 bg-white/5 rounded-full border border-white/5 backdrop-blur-md">
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_#22c55e]" />
-            <span className="text-white/40 text-[11px] font-black tracking-widest uppercase">System Operational</span>
+          <div className="flex items-center gap-3 px-4 py-2 bg-white/5 rounded-full border border-white/5 backdrop-blur-md">
+            <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+            <span className="text-white/40 text-[9px] font-black tracking-widest uppercase">System Operational</span>
           </div>
         </div>
       </div>

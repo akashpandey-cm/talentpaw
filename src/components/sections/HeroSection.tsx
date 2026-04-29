@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Zap } from 'lucide-react';
+import { SVGHoverButton } from '../ui/SVGHoverButton';
 import FilmReelCarousel from '../FilmReelCarousel';
 import AntiGravityMesh from '../AntiGravityMesh';
 import { useEffect, useRef } from 'react';
@@ -122,24 +123,19 @@ export default function HeroSection() {
             transition={{ delay: 0.3, duration: 0.6, ease: EASE_PREMIUM }}
             className="flex flex-col sm:flex-row gap-4 sm:gap-5"
           >
-            <Link
-              to="/search"
-              className="group relative h-16 px-12 bg-black text-white font-bold rounded-full flex items-center justify-center gap-3 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.4)] transition-all duration-500 overflow-hidden active:scale-95 lg:hover:scale-[1.02] lg:hover:-translate-y-1 lg:hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)]"
-            >
-              <span className="relative z-10">Join Network</span>
-              <Zap className="relative z-10 w-5 h-5 fill-white" />
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              {/* Performance Optimized Shimmer: runs ONLY on hover using CSS transition */}
-              <div className="absolute inset-0 w-1/2 h-full bg-white/10 skew-x-[30deg] -translate-x-[150%] group-hover:translate-x-[250%] transition-transform duration-1000 ease-in-out" />
+            <Link to="/search">
+              <SVGHoverButton 
+                label="Join Network" 
+                dark={true} 
+                icon={<Zap className="w-5 h-5 fill-current" />}
+              />
             </Link>
             
-            <motion.button 
-              whileTap={{ scale: 0.95 }}
+            <SVGHoverButton 
+              label="View Showcase" 
+              dark={false} 
               onClick={() => document.getElementById('showcase')?.scrollIntoView({ behavior: 'smooth' })}
-              className="h-16 px-12 bg-white border border-black/[0.08] text-black font-bold rounded-full shadow-lg shadow-black/[0.02] hover:shadow-xl hover:border-black/[0.15] transition-all duration-500 active:scale-95 lg:hover:-translate-y-1 lg:hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)]"
-            >
-              View Showcase
-            </motion.button>
+            />
           </motion.div>
         </div>
 

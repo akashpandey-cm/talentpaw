@@ -75,7 +75,7 @@ function Btn({
       whileHover={{ y: -2 }}
       whileTap={{ scale: 0.97 }}
       transition={{ duration: 0.25, ease: EASE_PREMIUM }}
-      className={`relative h-11 px-6 rounded-full font-semibold text-sm flex items-center gap-2 overflow-hidden transition-[background-color,border-color] duration-300 ${outline ? baseOutline : baseSolid}`}
+      className={`relative h-[52px] px-8 rounded-full font-semibold text-sm flex items-center justify-center gap-2 overflow-hidden transition-[background-color,border-color] duration-300 ${outline ? baseOutline : baseSolid}`}
       style={
         !outline && !dark
           ? {
@@ -142,7 +142,7 @@ function Card({ panel, slideFrom }: { panel: Panel; slideFrom: 'left' | 'right' 
           decoding="async"
           animate={{ 
             scale: hov ? 1.05 : 1.1,
-            filter: hov ? 'brightness(1)' : 'brightness(0.7)'
+            filter: hov ? 'brightness(1.05)' : 'brightness(0.95)'
           }}
           transition={{ duration: 0.8, ease: EASE_PREMIUM }}
           className="absolute inset-0 w-full h-full object-cover z-0 will-change-transform translate-z-0"
@@ -150,15 +150,15 @@ function Card({ panel, slideFrom }: { panel: Panel; slideFrom: 'left' | 'right' 
 
         {/* Dynamic Overlay */}
         <motion.div 
-          className="absolute inset-0 bg-black/40 z-10 pointer-events-none"
+          className="absolute inset-0 bg-black/20 z-10 pointer-events-none"
           animate={{ opacity: hov ? 0 : 1 }}
           transition={{ duration: 0.6, ease: EASE_PREMIUM }}
         />
 
         {/* Gradient for content legibility */}
         <motion.div 
-          className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent z-20 pointer-events-none"
-          animate={{ opacity: hov ? 0.7 : 1 }}
+          className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent z-20 pointer-events-none"
+          animate={{ opacity: hov ? 0.6 : 1 }}
         />
 
         {/* Content Container */}
@@ -167,10 +167,24 @@ function Card({ panel, slideFrom }: { panel: Panel; slideFrom: 'left' | 'right' 
           {/* Eyebrow Badge */}
           <div className="flex mb-3">
             <span
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-white text-[10px] font-semibold uppercase tracking-[2px] backdrop-blur-md border border-white/20 shadow-xl"
-              style={{ background: 'rgba(255,255,255,0.1)' }}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-white text-[10px] font-bold uppercase tracking-[2px] backdrop-blur-md shadow-xl border`}
+              style={{ 
+                background: eyebrow.toLowerCase().includes('client') 
+                  ? 'rgba(180, 0, 255, 0.15)' 
+                  : 'rgba(255, 139, 0, 0.15)',
+                borderColor: eyebrow.toLowerCase().includes('client')
+                  ? 'rgba(180, 0, 255, 0.3)'
+                  : 'rgba(255, 139, 0, 0.3)'
+              }}
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-white/80" />
+              <span 
+                className="w-1.5 h-1.5 rounded-full" 
+                style={{ 
+                  backgroundColor: eyebrow.toLowerCase().includes('client') 
+                    ? '#B400FF' 
+                    : '#FF8B00' 
+                }}
+              />
               {eyebrow}
             </span>
           </div>

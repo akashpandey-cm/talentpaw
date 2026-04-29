@@ -1,35 +1,52 @@
-/* Awwwards-style Stacking Section CSS */
+/* ─── Cinematic Stacking & Snapping System ─── */
+
+/* Container for the entire scrollable area */
+.snap-container {
+  height: auto;
+  width: 100%;
+  background: #FAFAFB;
+}
 
 @media (min-width: 768px) {
   .sticky-section {
     position: sticky;
     top: 0;
+    height: 100vh;
+    width: 100%;
     overflow: hidden;
-    border-radius: 40px;
-    /* GPU acceleration for completely smooth sliding over backgrounds */
+    
+    /* Ensure completely flush fit without gaps */
     will-change: transform;
-    
-    /* Add a premium drop shadow so it appears physically raised over the underneath section */
-    box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.08);
-    
-    /* The margin-top pushes the sections down naturally, establishing a visual separation before they slide up */
-    margin-top: 4px;
+    /* Remove shadow/radius/margin that create gaps */
+    box-shadow: none;
+    border-radius: 0;
+    margin-top: 0;
   }
 
-  /* We override the first sticky section (Hero) so it sits flat edge-to-edge at the start */
-  .sticky-section:first-child {
-    border-radius: 0;
-    box-shadow: none;
-    margin-top: 0;
-    border-bottom-left-radius: 40px;
-    border-bottom-right-radius: 40px;
+  /* Keep the stacking shadow only on the edge if needed, or remove for total flush fit */
+  .sticky-section {
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.05);
   }
 }
 
-/* Mobile: Remove single-screen fitting, allow natural scrolling */
+/* Mobile: Ensure full screen fit */
 @media (max-width: 767px) {
   .sticky-section {
     position: relative;
-    overflow: visible;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
   }
+}
+
+/* Scrollbar styling for a cleaner look */
+.snap-container::-webkit-scrollbar {
+  width: 6px;
+}
+.snap-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+.snap-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }

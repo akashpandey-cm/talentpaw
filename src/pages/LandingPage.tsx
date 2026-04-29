@@ -1,34 +1,34 @@
-import { useRef, useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import Navbar from '../components/Navbar';
 import useSmoothScroll from '../hooks/useSmoothScroll';
 import { GPU_ACCELERATION } from '../lib/brand';
 
 import '../styles/stacking.css'; // <-- Dedicated stacking styles
 
-// ── Section Components ────────────────────────────────────────────────
-import HeroSection       from '../components/sections/HeroSection';
-import SolutionsSection  from '../components/sections/SolutionsSection';
-import ManifestoSection  from '../components/sections/ManifestoSection';
-import CapabilitiesSection from '../components/sections/CapabilitiesSection';
-import CategoriesSection from '../components/sections/CategoriesSection';
-import CTASection        from '../components/sections/CTASection';
-import ShowcaseSection   from '../components/sections/ShowcaseSection';
-import TestimonialSection from '../components/sections/TestimonialSection';
-import FooterSection     from '../components/sections/FooterSection';
+// ── Section Components (Lazy Loaded) ──────────────────────────────────
+// This prevents heavy components from blocking the initial render of the Hero.
+// Sections will load as the user starts their experience.
+const HeroSection         = lazy(() => import('../components/sections/HeroSection'));
+const SolutionsSection    = lazy(() => import('../components/sections/SolutionsSection'));
+const ManifestoSection    = lazy(() => import('../components/sections/ManifestoSection'));
+const CapabilitiesSection = lazy(() => import('../components/sections/CapabilitiesSection'));
+const CategoriesSection   = lazy(() => import('../components/sections/CategoriesSection'));
+const CTASection          = lazy(() => import('../components/sections/CTASection'));
+const ShowcaseSection     = lazy(() => import('../components/sections/ShowcaseSection'));
+const TestimonialSection  = lazy(() => import('../components/sections/TestimonialSection'));
+const FooterSection       = lazy(() => import('../components/sections/FooterSection'));
+
 import HiringDrawer      from '../components/sections/HiringDrawer';
-import BackToTop         from '../components/BackToTop';
+
+// Fallback component for smooth loading
+const SectionFallback = () => <div className="h-[80vh] w-full bg-[#FAFAFB] animate-pulse rounded-[40px] m-4" />;
 
 export default function LandingPage() {
   useSmoothScroll();
 
-  const containerRef = useRef<HTMLDivElement>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end'],
-  });
+  const { scrollYProgress } = useScroll();
   
   // Optimized snappier spring for premium feel
   const smoothProgress = useSpring(scrollYProgress, { 
@@ -40,64 +40,66 @@ export default function LandingPage() {
   const progressBarScaleX = useTransform(smoothProgress, [0, 1], [0, 1]);
 
   return (
-    <div ref={containerRef} className="relative bg-white grid-bg-light overflow-clip min-h-screen">
-      <Navbar />
+    <div className="relative w-full bg-white">
+
 
       {/* ── Global Hiring Drawer ── */}
       <HiringDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 
-      {/* Main Structural Wrapper with GPU hardening */}
-      <main className="relative z-10 w-full flex flex-col" style={GPU_ACCELERATION}>
-        {/* ── 01: HERO ── */}
-        <div className="sticky-section bg-[#FAFAFB]">
-          <HeroSection />
-        </div>
+      {/* ── Cinematic Snap Container ── */}
+      <div className="snap-container">
+        <main className="relative w-full flex flex-col" style={GPU_ACCELERATION}>
+          <Suspense fallback={<SectionFallback />}>
+            {/* ── 01: HERO ── */}
+            <div className="sticky-section">
+              <HeroSection />
+            </div>
 
-        {/* ── 02: SOLUTIONS ── */}
-        <div className="sticky-section bg-[#FAFAFB]">
-          <SolutionsSection />
-        </div>
+            {/* ── 02: SOLUTIONS ── */}
+            <div className="sticky-section">
+              <SolutionsSection />
+            </div>
 
-        {/* ── 04: MANIFESTO ── */}
-        <div className="sticky-section bg-[#111111]">
-          <ManifestoSection />
-        </div>
+            {/* ── 04: MANIFESTO ── */}
+            <div className="sticky-section bg-[#111111]">
+              <ManifestoSection />
+            </div>
 
-        {/* ── 05: CAPABILITIES ── */}
-        <div className="sticky-section bg-white">
-          <CapabilitiesSection />
-        </div>
+            {/* ── 05: CAPABILITIES ── */}
+            <div className="sticky-section bg-white">
+              <CapabilitiesSection />
+            </div>
 
-        <div className="sticky-section bg-[#FAFAFB]">
-          <ShowcaseSection />
-        </div>
+            {/* ── 06: SHOWCASE ── */}
+            <div className="sticky-section">
+              <ShowcaseSection />
+            </div>
 
-        <div className="sticky-section bg-white">
-          <TestimonialSection />
-        </div>
+            {/* ── 07: TESTIMONIALS ── */}
+            <div className="sticky-section bg-white">
+              <TestimonialSection />
+            </div>
 
-        {/* ── 07: CATEGORIES ── */}
-        <div className="sticky-section bg-white">
-          <CategoriesSection />
-        </div>
+            {/* ── 08: CATEGORIES ── */}
+            <div className="sticky-section bg-white">
+              <CategoriesSection />
+            </div>
 
-        {/* ── 08: FINAL CTA ── */}
-        <div className="sticky-section bg-[#FAFAFB]">
-          <CTASection onBookNow={() => setIsDrawerOpen(true)} />
-        </div>
-
-        {/* ── FOOTER ── */}
-        <div className="sticky-section bg-white">
-          <FooterSection />
-        </div>
-      </main>
+            {/* ── 09: FINAL CTA + FOOTER ── */}
+            <div className="sticky-section bg-[#050505] flex flex-col h-screen overflow-hidden">
+              <div className="flex-grow bg-[#FAFAFB] flex flex-col">
+                <CTASection onBookNow={() => setIsDrawerOpen(true)} compact={true} />
+              </div>
+              <FooterSection />
+            </div>
+          </Suspense>
+        </main>
+      </div>
 
       {/* ── Global Progress Bar ── */}
       <div className="fixed top-0 left-0 right-0 h-[4px] bg-black/5 z-[100] pointer-events-none">
         <motion.div className="h-full bg-brand origin-left" style={{ scaleX: progressBarScaleX }} />
       </div>
-
-      <BackToTop />
     </div>
   );
 }

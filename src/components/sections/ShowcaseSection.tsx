@@ -1,74 +1,250 @@
 import { motion, useScroll, useTransform, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback, lazy, Suspense, memo } from 'react';
 import { ArrowRight } from 'lucide-react';
-import AntiGravityMesh from '../AntiGravityMesh';
 import { BRAND_GRADIENT, EASE_PREMIUM, GPU_ACCELERATION } from '../../lib/brand';
 
-// Import Assets
-import imgGuitar from '../../assets/medium-shot-man-playing-guitar.webp';
-import imgSingerRed from '../../assets/young-female-singer-red-dress.webp';
-import imgFlute from '../../assets/man-playing-flute-concert.webp';
-import imgMic from '../../assets/medium-shot-woman-holding-microphone.webp';
-import imgComedian from '../../assets/medium-shot-stand-up-comedian.webp';
-import imgSingerGold from '../../assets/cheerful-beautiful-young-woman-singer-holding-golden-vintage-microphone-lit-by-projector.webp';
+// Lazy load heavy 3D component
+const AntiGravityMesh = lazy(() => import('../AntiGravityMesh'));
 
-const CATEGORIES = [
-  'All', 'Singer', 'Musician', 'Comedian', 'Magician', 'Dancer', 'Actor', 'Model', 'Host'
-];
+// Singer Assets
+import imgSinger1 from '../../assets/singer/cwbmcgk7veiirfjggmyj.webp';
+import imgSinger2 from '../../assets/singer/erzi5zlyoifw3jfwmsna.webp';
+import imgSinger3 from '../../assets/singer/gvlu6womhuiru8t6tckf.webp';
+import imgSinger4 from '../../assets/singer/hlbtz75bph4eo0obbkhl.webp';
+import imgSinger5 from '../../assets/singer/mckuw77seo1r35a8dwis.webp';
+import imgSinger6 from '../../assets/singer/prjhrpzkuqvdygxsrlti.webp';
+
+// DJ Assets
+import imgDJ1 from '../../assets/b2tqjrwujusfhvlbo1fg.webp';
+import imgDJ2 from '../../assets/hhyo2tcnsbwjfj7v9lyn.webp';
+import imgDJ3 from '../../assets/lcs0vfehbdrtso2l3fco.webp';
+import imgDJ4 from '../../assets/rlmlbquu3nboqe0hqplt.webp';
+import imgDJ5 from '../../assets/vbfhorhdgk1yp2s8js9w.webp';
+import imgDJ6 from '../../assets/vqddcuprewtlogi8yawx.webp';
+
+// Model Assets
+import imgModel1 from '../../assets/model/cohhoxdb9dbo80wry2bk.webp';
+import imgModel2 from '../../assets/model/dmab2haxtpa2luxobod5.webp';
+import imgModel3 from '../../assets/model/dpehjsj73hh4ukc8ewdz.webp';
+import imgModel4 from '../../assets/model/lbahhnnb6yrywfjhnkdy.webp';
+import imgModel5 from '../../assets/model/mc1lod5howquufwxg1vp.webp';
+import imgModel6 from '../../assets/model/n3oawijkse4ttrwkbcxo.webp';
+
+// Photographer Assets
+import imgPhoto1 from '../../assets/photographer/hzoqxvagfvn5wvhctdg8.webp';
+import imgPhoto2 from '../../assets/photographer/iejz4ebg5g8dheavhicd.webp';
+import imgPhoto3 from '../../assets/photographer/kd01pmlsue6pnj54a9bs.webp';
+import imgPhoto4 from '../../assets/photographer/o01icro3sbkbya52oihg.webp';
+import imgPhoto5 from '../../assets/photographer/pxa4fmob1dnmlh4z2mx6.webp';
+import imgPhoto6 from '../../assets/photographer/yffjb5idppwsid3yepnk.webp';
+
+// Voice Actor Assets
+import imgVoice1 from '../../assets/voiceactor/c4hhlnqpxr4djcijeqbv.webp';
+import imgVoice2 from '../../assets/voiceactor/egdllcst3tfwwihzazlr.webp';
+import imgVoice3 from '../../assets/voiceactor/ezfvyxumovnmr687nvsk.webp';
+import imgVoice4 from '../../assets/voiceactor/gv1kwnz3r3oocfo2jqan.webp';
+import imgVoice5 from '../../assets/voiceactor/rprww33zcqrxjtsulkek.webp';
+import imgVoice6 from '../../assets/voiceactor/s7vyie63svffs9pecqln.webp';
+
+// Musician Assets
+import imgMusic1 from '../../assets/voiceactor/musician/ab1jdl3dmvb5rie6i2go.webp';
+import imgMusic2 from '../../assets/voiceactor/musician/dvcjhsklpzzqtnabayft.webp';
+import imgMusic3 from '../../assets/voiceactor/musician/iabeypkbtkojmtbacasn.webp';
+import imgMusic4 from '../../assets/voiceactor/musician/jehmx0xemu2rjt7dy8ds.webp';
+import imgMusic5 from '../../assets/voiceactor/musician/mz4phyiq3fbl2prcegwy.webp';
+import imgMusic6 from '../../assets/voiceactor/musician/tjau6haott6h3pajgkvl.webp';
+
+// Comedian Assets
+import imgCom1 from '../../assets/voiceactor/musician/comedian/d9cucyg4ga0dq1eczfdt.webp';
+import imgCom2 from '../../assets/voiceactor/musician/comedian/djz2zhqlgagvpa8ipeoz.webp';
+import imgCom3 from '../../assets/voiceactor/musician/comedian/quybfsxhz5mlshiczeey.webp';
+import imgCom4 from '../../assets/voiceactor/musician/comedian/srljjjwhd90b0alophoz.webp';
+import imgCom5 from '../../assets/voiceactor/musician/comedian/uyg7n02kpdmfpy94ig0n.webp';
+import imgCom6 from '../../assets/voiceactor/musician/comedian/xh3lkm23o0w8bpis3pfx.webp';
+
+// Copywriter Assets
+import imgCopy1 from '../../assets/content writer/is5oxc316p34lsr3upyp.webp';
+import imgCopy2 from '../../assets/content writer/m7qcfelzb9ktclmi3rah.webp';
+import imgCopy3 from '../../assets/content writer/qwx81lzcnruduxg6nbkm.webp';
+import imgCopy4 from '../../assets/content writer/vajlpnnnqtru0juv8ngl.webp';
+import imgCopy5 from '../../assets/content writer/wgx5418sexzqgcmlbdsz.webp';
+import imgCopy6 from '../../assets/content writer/x9aon2q2jbuyfxerww7d.webp';
 
 const TALENT_CARDS = [
-  { img: imgGuitar, alt: 'Guitarist' },
-  { img: imgSingerRed, alt: 'Singer Red' },
-  { img: imgFlute, alt: 'Flutist' },
-  { img: imgMic, alt: 'Vocalist' },
-  { img: imgComedian, alt: 'Comedian' },
-  { img: imgSingerGold, alt: 'Singer Gold' },
+  // Singer Cards - All New Specific Assets
+  { img: imgSinger1, alt: 'Singer Performance 1', category: 'Singer' },
+  { img: imgSinger2, alt: 'Singer Performance 2', category: 'Singer' },
+  { img: imgSinger3, alt: 'Singer Performance 3', category: 'Singer' },
+  { img: imgSinger4, alt: 'Singer Performance 4', category: 'Singer' },
+  { img: imgSinger5, alt: 'Singer Performance 5', category: 'Singer' },
+  { img: imgSinger6, alt: 'Singer Performance 6', category: 'Singer' },
+  
+  // DJ Cards
+  { img: imgDJ1, alt: 'DJ Performance 1', category: 'DJ' },
+  { img: imgDJ2, alt: 'DJ Performance 2', category: 'DJ' },
+  { img: imgDJ3, alt: 'DJ Performance 3', category: 'DJ' },
+  { img: imgDJ4, alt: 'DJ Performance 4', category: 'DJ' },
+  { img: imgDJ5, alt: 'DJ Performance 5', category: 'DJ' },
+  { img: imgDJ6, alt: 'DJ Performance 6', category: 'DJ' },
+
+  // Model Cards
+  { img: imgModel1, alt: 'Model Performance 1', category: 'Model' },
+  { img: imgModel2, alt: 'Model Performance 2', category: 'Model' },
+  { img: imgModel3, alt: 'Model Performance 3', category: 'Model' },
+  { img: imgModel4, alt: 'Model Performance 4', category: 'Model' },
+  { img: imgModel5, alt: 'Model Performance 5', category: 'Model' },
+  { img: imgModel6, alt: 'Model Performance 6', category: 'Model' },
+
+  // Photographer Cards
+  { img: imgPhoto1, alt: 'Photographer Performance 1', category: 'Photographer' },
+  { img: imgPhoto2, alt: 'Photographer Performance 2', category: 'Photographer' },
+  { img: imgPhoto3, alt: 'Photographer Performance 3', category: 'Photographer' },
+  { img: imgPhoto4, alt: 'Photographer Performance 4', category: 'Photographer' },
+  { img: imgPhoto5, alt: 'Photographer Performance 5', category: 'Photographer' },
+  { img: imgPhoto6, alt: 'Photographer Performance 6', category: 'Photographer' },
+
+  // Voice Actor Cards
+  { img: imgVoice1, alt: 'Voice Actor Performance 1', category: 'Voice Actor' },
+  { img: imgVoice2, alt: 'Voice Actor Performance 2', category: 'Voice Actor' },
+  { img: imgVoice3, alt: 'Voice Actor Performance 3', category: 'Voice Actor' },
+  { img: imgVoice4, alt: 'Voice Actor Performance 4', category: 'Voice Actor' },
+  { img: imgVoice5, alt: 'Voice Actor Performance 5', category: 'Voice Actor' },
+  { img: imgVoice6, alt: 'Voice Actor Performance 6', category: 'Voice Actor' },
+
+  // Musician Cards
+  { img: imgMusic1, alt: 'Musician Performance 1', category: 'Musician' },
+  { img: imgMusic2, alt: 'Musician Performance 2', category: 'Musician' },
+  { img: imgMusic3, alt: 'Musician Performance 3', category: 'Musician' },
+  { img: imgMusic4, alt: 'Musician Performance 4', category: 'Musician' },
+  { img: imgMusic5, alt: 'Musician Performance 5', category: 'Musician' },
+  { img: imgMusic6, alt: 'Musician Performance 6', category: 'Musician' },
+
+  // Comedian Cards
+  { img: imgCom1, alt: 'Comedian Performance 1', category: 'Comedian' },
+  { img: imgCom2, alt: 'Comedian Performance 2', category: 'Comedian' },
+  { img: imgCom3, alt: 'Comedian Performance 3', category: 'Comedian' },
+  { img: imgCom4, alt: 'Comedian Performance 4', category: 'Comedian' },
+  { img: imgCom5, alt: 'Comedian Performance 5', category: 'Comedian' },
+  { img: imgCom6, alt: 'Comedian Performance 6', category: 'Comedian' },
+
+  // Copywriter Cards
+  { img: imgCopy1, alt: 'Copywriter Performance 1', category: 'Copywriter' },
+  { img: imgCopy2, alt: 'Copywriter Performance 2', category: 'Copywriter' },
+  { img: imgCopy3, alt: 'Copywriter Performance 3', category: 'Copywriter' },
+  { img: imgCopy4, alt: 'Copywriter Performance 4', category: 'Copywriter' },
+  { img: imgCopy5, alt: 'Copywriter Performance 5', category: 'Copywriter' },
+  { img: imgCopy6, alt: 'Copywriter Performance 6', category: 'Copywriter' },
 ];
+
+const CATEGORIES = [
+  'Singer', 'DJ', 'Model', 'Photographer', 'Voice Actor', 'Musician', 'Comedian', 'Copywriter'
+];
+
+// Smooth Lazy Image Component
+const LazyImage = ({ src, alt }: { src: string; alt: string }) => {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <div className="relative w-full h-full">
+      <motion.img
+        src={src}
+        alt={alt}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: loaded ? 1 : 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        onLoad={() => setLoaded(true)}
+        loading="lazy"
+        decoding="async"
+        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+      />
+      {!loaded && (
+        <div className="absolute inset-0 bg-black/[0.03] animate-pulse" />
+      )}
+    </div>
+  );
+};
+
+// Memoized Talent Card (Prevents unnecessary re-renders)
+const TalentCard = memo(({ card, index }: { card: typeof TALENT_CARDS[0]; index: number }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 40 }}
+    animate={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, amount: 0.2 }}
+    transition={{ duration: 0.7, delay: Math.min(index * 0.08, 0.4) }}
+    whileHover={{ scale: 1.02, boxShadow: "0 30px 60px -15px rgba(0,0,0,0.2)" }}
+    className={`relative aspect-[227/476] w-full rounded-[23px] overflow-hidden group shadow-[0_20px_40px_-20px_rgba(0,0,0,0.15)] bg-white transition-all duration-500 ${index % 2 !== 0 ? 'mt-0 md:mt-16' : ''}`}
+    style={GPU_ACCELERATION}
+  >
+    <LazyImage src={card.img} alt={card.alt} />
+    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+  </motion.div>
+));
 
 export default function ShowcaseSection() {
   const [activeCat, setActiveCat] = useState('Singer');
   const sectionRef = useRef<HTMLElement>(null);
 
-  // HIGH-PERFORMANCE MOUSE TRACKING
+  // Filter cards based on active category
+  const filteredCards = TALENT_CARDS.filter(card => card.category === activeCat);
+
+  // Optimized Mouse Tracking with Throttling
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const smoothX = useSpring(mouseX, { damping: 40, stiffness: 120 });
-  const smoothY = useSpring(mouseY, { damping: 40, stiffness: 120 });
+  const smoothX = useSpring(mouseX, { damping: 50, stiffness: 100 });
+  const smoothY = useSpring(mouseY, { damping: 50, stiffness: 100 });
   const spotlightTransform = useMotionTemplate`translate(${smoothX}px, ${smoothY}px)`;
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!sectionRef.current) return;
-      const rect = sectionRef.current.getBoundingClientRect();
-      mouseX.set(e.clientX - rect.left - 300);
-      mouseY.set(e.clientY - rect.top - 300);
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!sectionRef.current) return;
+    const rect = sectionRef.current.getBoundingClientRect();
+    mouseX.set(e.clientX - rect.left - 300);
+    mouseY.set(e.clientY - rect.top - 300);
   }, [mouseX, mouseY]);
 
-  // Parallax scroll effect
+  useEffect(() => {
+    let rafId: number;
+    let lastTime = 0;
+
+    const throttledMove = (e: MouseEvent) => {
+      const now = performance.now();
+      if (now - lastTime < 32) return; // ~30fps
+      lastTime = now;
+      rafId = requestAnimationFrame(() => handleMouseMove(e));
+    };
+
+    window.addEventListener('mousemove', throttledMove, { passive: true });
+
+    return () => {
+      window.removeEventListener('mousemove', throttledMove);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [handleMouseMove]);
+
+  // Parallax (Lightweight)
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"]
   });
 
-  const gridY = useTransform(scrollYProgress, [0, 1], [-50, 50]);
+  const gridY = useTransform(scrollYProgress, [0, 1], [-30, 30]);
 
   return (
-    <section 
+    <section
       ref={sectionRef}
       id="showcase"
-      className="relative min-h-[100vh] w-full flex flex-col justify-center py-20 px-6 overflow-hidden bg-[#FAFAFB]"
+      className="relative min-h-[100vh] w-full flex flex-col justify-center py-12 px-6 overflow-hidden bg-[#FAFAFB]"
     >
-      {/* ── Background Layer ── */}
+      {/* Background Layer */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0" style={GPU_ACCELERATION}>
-        <AntiGravityMesh />
 
-        {/* Interactive Mouse Spotlight */}
+        {/* Lazy Loaded Heavy 3D Component */}
+        <Suspense fallback={null}>
+          <AntiGravityMesh />
+        </Suspense>
+
+        {/* Spotlight */}
         <motion.div
-          style={{ ...GPU_ACCELERATION, transform: spotlightTransform }}
-          className="absolute left-0 top-0 w-[800px] h-[800px] bg-brand/[0.04] blur-[120px] rounded-full pointer-events-none translate-z-0"
+          style={{ transform: spotlightTransform, ...GPU_ACCELERATION }}
+          className="absolute left-0 top-0 w-[800px] h-[800px] bg-brand/[0.035] blur-[120px] rounded-full pointer-events-none"
         />
 
         {/* Parallax Grid */}
@@ -77,64 +253,41 @@ export default function ShowcaseSection() {
           className="absolute inset-0 grid-bg-light opacity-[0.25]"
         />
 
-        {/* Subtle Noise Texture */}
+        {/* Noise Texture */}
         <div
           className="absolute inset-0 opacity-[0.03] mix-blend-overlay"
-          style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")" }}
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`
+          }}
         />
-
-        {/* Floating Particles - CSS animation for better frame budget */}
-        <div className="absolute inset-0" style={GPU_ACCELERATION}>
-          {[...Array(3)].map((_, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: "100%" }}
-              animate={{ opacity: [0, 0.4, 0], y: "-100%" }}
-              transition={{ duration: 15 + i * 5, repeat: Infinity, delay: i * 3, ease: "linear" }}
-              className="absolute w-1 h-1 bg-purple-400 rounded-full blur-[1px] translate-z-0"
-              style={{ left: `${20 + i * 30}%` }}
-            />
-          ))}
-        </div>
       </div>
 
-      <div className="max-w-[1440px] w-full mx-auto text-center relative z-10 flex flex-col items-center justify-center h-full" style={GPU_ACCELERATION}>
-        <motion.span
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.6, ease: EASE_PREMIUM }}
-          className="block text-[#676767] text-[13px] font-bold uppercase tracking-[4px] mb-4"
-        >
-          TALENTPAW TALENT
-        </motion.span>
+      <div className="max-w-[1440px] w-full mx-auto text-center relative z-10 flex flex-col items-center justify-center h-full pt-12" style={GPU_ACCELERATION}>
 
         <motion.h2
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: EASE_PREMIUM }}
-          className="text-[40px] md:text-[60px] font-bold tracking-tight text-black mb-8 leading-[1.1] md:leading-[76px] font-['Outfit']"
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: EASE_PREMIUM }}
+          className="text-[40px] md:text-[60px] font-bold tracking-tight text-black mb-6 leading-[1.1] md:leading-[76px] font-['Outfit']"
         >
           The Global <br className="md:hidden" />
-          <span 
-            className="text-transparent bg-clip-text"
-            style={{ backgroundImage: BRAND_GRADIENT }}
-          >
+          <span className="text-transparent bg-clip-text" style={{ backgroundImage: BRAND_GRADIENT }}>
             Talent Showcase.
           </span>
         </motion.h2>
 
-        {/* Categories Bar */}
-        <div className="flex flex-wrap justify-center items-center gap-4 md:gap-[30px] mb-12 w-full">
+        {/* Categories Bar - Exact Figma Specs: Height 43px, Gap 30px, White Background */}
+        <div className="flex flex-wrap justify-center gap-[30px] mb-10 w-full">
           {CATEGORIES.map((cat) => (
             <motion.button
               key={cat}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ y: -1 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => setActiveCat(cat)}
-              className={`px-4 py-2 md:px-6 md:py-3 rounded-[8px] text-sm md:text-[16px] font-medium transition-[background-color,color,border-color,box-shadow,transform] duration-500 lg:hover:-translate-y-1 lg:hover:shadow-[0_10px_20px_rgba(0,0,0,0.08)] active:scale-95 ${activeCat === cat
-                  ? 'bg-brand text-white shadow-lg shadow-brand/20'
-                  : 'bg-white border border-black/5 text-[#676767] hover:border-black/20 hover:bg-gray-50'
+              className={`px-6 h-[43px] rounded-md text-[15px] font-medium transition-all duration-300 flex items-center justify-center font-['Outfit'] ${activeCat === cat
+                ? 'bg-[#683995] text-white shadow-lg shadow-[#683995]/20'
+                : 'bg-white text-[#676767] border border-black/[0.03] hover:border-black/[0.1] shadow-sm'
                 }`}
             >
               {cat}
@@ -142,40 +295,20 @@ export default function ShowcaseSection() {
           ))}
         </div>
 
-        {/* Staggered Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-[30px] mb-20 w-full items-start">
-          {TALENT_CARDS.map((card, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.6, delay: i * 0.1, ease: EASE_PREMIUM }}
-              whileHover={{ 
-                scale: 1.02,
-                boxShadow: "0 30px 60px -15px rgba(0,0,0, 0.2)"
-              }}
-              className={`relative aspect-[227/476] w-full rounded-[23px] overflow-hidden group shadow-[0_20px_40px_-20px_rgba(0,0,0,0.15)] bg-white transition-[transform,box-shadow] duration-500 ${i % 2 !== 0 ? 'mt-0 md:mt-16' : ''
-                }`}
-              style={GPU_ACCELERATION}
-            >
-              <img
-                src={card.img}
-                alt={card.alt}
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out translate-z-0"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            </motion.div>
+        {/* Talent Grid - Optimized with Memo */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 mb-12 w-full h-auto min-h-[500px]">
+          {filteredCards.map((card, i) => (
+            <TalentCard key={`${activeCat}-${i}`} card={card} index={i} />
           ))}
         </div>
 
         <motion.button
-          whileTap={{ scale: 0.95 }}
-          className="inline-flex items-center gap-2.5 px-8 py-4 bg-brand text-white font-bold text-lg rounded-full shadow-[0_10px_20px_rgba(104,57,149,0.2)] transition-[transform,box-shadow,background-color] duration-500 lg:hover:scale-[1.02] lg:hover:-translate-y-1 lg:hover:shadow-[0_20px_40px_-10px_rgba(104,57,149,0.4)]"
+          whileHover={{ scale: 1.03, y: -2 }}
+          whileTap={{ scale: 0.97 }}
+          className="inline-flex items-center justify-center gap-3 px-10 h-[43px] bg-brand text-white font-bold text-base rounded-full shadow-xl transition-all duration-300 hover:shadow-2xl"
         >
-          View All Showcase <ArrowRight className="w-5 h-5" />
+          View All Showcase
+          <ArrowRight className="w-5 h-5" />
         </motion.button>
       </div>
     </section>

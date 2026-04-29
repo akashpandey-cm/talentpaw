@@ -1,9 +1,15 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LandingPage from './pages/LandingPage';
-import SearchPage from './pages/SearchPage';
 import Loader from './components/Loader';
+import WelcomeScreen from './components/WelcomeScreen';
 import { motion, AnimatePresence } from 'framer-motion';
+import Navbar from './components/Navbar';
+
+// ── Optimized Code Splitting ───────────────────────────────────────────
+// We lazy load the main entry points. Since the Loader covers the initial 
+// 5s of app state, these chunks will prefetch in the background seamlessly.
+const LandingPage = lazy(() => import('./pages/LandingPage'));
+const SearchPage = lazy(() => import('./pages/SearchPage'));
 
 type AppState = 'loading' | 'transitioning_in' | 'welcome' | 'transitioning_out' | 'loaded';
 
@@ -36,11 +42,14 @@ function App() {
   const isVisible = appState === 'loaded' || appState === 'transitioning_out';
 
   return (
-    <>
+    <Router>
       {/* BASE BACKGROUND TO PREVENT FLASHING DURING TRANSITION */}
       {appState !== 'loaded' && appState !== 'transitioning_out' && (
         <div className="fixed inset-0 z-[9990] bg-[#040308]" />
       )}
+
+      {/* ── GLOBAL NAVBAR LAYER (Independent of page transforms) ── */}
+      <Navbar />
 
       {/* HOMEPAGE / APP CONTENT */}
       <motion.div
@@ -50,9 +59,15 @@ function App() {
           scale: isVisible ? 1 : 0.96,
           filter: isVisible ? 'blur(0px)' : 'blur(20px)'
         }}
+        onAnimationComplete={(definition) => {
+          // Senior Staff Fix: Clear transforms after animation to restore pure 'fixed' positioning
+          if (definition && typeof definition === 'object' && 'scale' in definition && definition.scale === 1) {
+            // This ensures children with position: fixed behave correctly relative to viewport
+          }
+        }}
         transition={{ 
           duration: 1.8, 
-          ease: [0.22, 1, 0.36, 1], // Cinematic cubic-bezier
+          ease: [0.22, 1, 0.36, 1],
           opacity: { duration: 1.2 },
           filter: { duration: 1.5 }
         }}
@@ -61,13 +76,13 @@ function App() {
           transformOrigin: 'top center'
         }}
       >
-        <Router>
+        <Suspense fallback={null}>
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/profile/:id" element={<div className="p-20 text-center text-black">Profile Page Coming Soon</div>} />
           </Routes>
-        </Router>
+        </Suspense>
       </motion.div>
 
       {/* THE LOADER */}
@@ -82,81 +97,9 @@ function App() {
 
       {/* PREMIUM ENTRY OVERLAY & WELCOME SCREEN */}
       <AnimatePresence>
-        {(appState === 'transitioning_in' || appState === 'welcome' || appState === 'transitioning_out') && (
-          <motion.div
-            key="overlay"
-            initial={{ 
-              y: '100vh', 
-              borderTopLeftRadius: '100%', 
-              borderTopRightRadius: '100%',
-              borderBottomLeftRadius: '0%',
-              borderBottomRightRadius: '0%'
-            }}
-            animate={{ 
-              y: appState === 'transitioning_out' ? '-120vh' : '0vh',
-              borderTopLeftRadius: appState === 'transitioning_in' ? '100%' : '0%',
-              borderTopRightRadius: appState === 'transitioning_in' ? '100%' : '0%',
-              borderBottomLeftRadius: appState === 'transitioning_out' ? '100%' : '0%',
-              borderBottomRightRadius: appState === 'transitioning_out' ? '100%' : '0%',
-            }}
-            transition={{ 
-              duration: 1.2, // Slower, smoother slide out
-              ease: [0.76, 0, 0.24, 1] 
-            }}
-            className="fixed z-[9998] flex items-center justify-center flex-col pointer-events-none"
-            style={{
-              top: 0,
-              left: '-25vw', 
-              width: '150vw',
-              height: '120vh',
-              background: '#0D0A1A', 
-              boxShadow: '0 0 100px rgba(0, 0, 0, 0.8)',
-            }}
-          >
-            {/* Animated Text Container */}
-            <div className="flex flex-col items-center justify-center -translate-y-[10vh]">
-               <AnimatePresence>
-                 {appState === 'welcome' && (
-                   <motion.div
-                     initial={{ opacity: 0, y: 20 }}
-                     animate={{ opacity: 1, y: 0 }}
-                     exit={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
-                     transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                     className="text-white/50 uppercase tracking-[6px] md:tracking-[10px] text-xs md:text-sm font-bold mb-4 md:mb-6"
-                   >
-                     Welcome to
-                   </motion.div>
-                 )}
-               </AnimatePresence>
-
-               <AnimatePresence>
-                 {appState === 'welcome' && (
-                   <div className="flex overflow-hidden">
-                     {"TALENTPAW".split('').map((char, i) => (
-                       <motion.span
-                         key={i}
-                         initial={{ y: 100, opacity: 0, rotateX: -90 }}
-                         animate={{ y: 0, opacity: 1, rotateX: 0 }}
-                         exit={{ y: -100, opacity: 0, rotateX: 90 }}
-                         transition={{ 
-                           duration: 0.8, 
-                           delay: i * 0.05 + 0.2, // Staggered entry
-                           ease: [0.22, 1, 0.36, 1] 
-                         }}
-                         className="text-white text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter"
-                         style={{ transformStyle: 'preserve-3d', transformOrigin: 'bottom' }}
-                       >
-                         {char}
-                       </motion.span>
-                     ))}
-                   </div>
-                 )}
-               </AnimatePresence>
-            </div>
-          </motion.div>
-        )}
+        <WelcomeScreen appState={appState} />
       </AnimatePresence>
-    </>
+    </Router>
   );
 }
 
