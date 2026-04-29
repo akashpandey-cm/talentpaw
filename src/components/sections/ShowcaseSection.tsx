@@ -243,7 +243,7 @@ export default function ShowcaseSection() {
 
         {/* Spotlight */}
         <motion.div
-          style={{ transform: spotlightTransform, ...GPU_ACCELERATION }}
+          style={{ ...GPU_ACCELERATION, transform: spotlightTransform }}
           className="absolute left-0 top-0 w-[800px] h-[800px] bg-brand/[0.035] blur-[120px] rounded-full pointer-events-none"
         />
 
