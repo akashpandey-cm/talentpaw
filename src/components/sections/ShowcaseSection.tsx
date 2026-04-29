@@ -249,7 +249,7 @@ export default function ShowcaseSection() {
 
         {/* Parallax Grid */}
         <motion.div
-          style={{ y: gridY, ...GPU_ACCELERATION }}
+          style={{ ...GPU_ACCELERATION, y: gridY }}
           className="absolute inset-0 grid-bg-light opacity-[0.25]"
         />
 
