@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
+import { X, CheckCircle2 } from 'lucide-react';
+import { useState } from 'react';
 
 interface HiringDrawerProps {
   isOpen: boolean;
@@ -7,6 +8,17 @@ interface HiringDrawerProps {
 }
 
 export default function HiringDrawer({ isOpen, onClose }: HiringDrawerProps) {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitted(true);
+    // Auto-close after 3 seconds
+    setTimeout(() => {
+      setIsSubmitted(false);
+      onClose();
+    }, 3000);
+  };
   return (
     <AnimatePresence>
       {isOpen && (
@@ -60,50 +72,79 @@ export default function HiringDrawer({ isOpen, onClose }: HiringDrawerProps) {
               <p className="text-black/40 text-lg font-medium">Curate your elite team with expert precision.</p>
             </div>
 
-            <form className="space-y-8" onSubmit={e => e.preventDefault()}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-3">
-                  <label className="text-[11px] font-black uppercase tracking-[2.5px] text-black/30 px-1">Full Name</label>
-                  <input
-                    type="text"
-                    className="w-full h-16 bg-black/[0.03] rounded-3xl px-8 outline-none focus:ring-4 focus:ring-purple-500/10 border border-transparent focus:border-purple-500/20 transition-all font-semibold"
-                    placeholder="Enter your name"
-                  />
-                </div>
-                <div className="space-y-3">
-                  <label className="text-[11px] font-black uppercase tracking-[2.5px] text-black/30 px-1">Corporate Email</label>
-                  <input
-                    type="email"
-                    className="w-full h-16 bg-black/[0.03] rounded-3xl px-8 outline-none focus:ring-4 focus:ring-purple-500/10 border border-transparent focus:border-purple-500/20 transition-all font-semibold"
-                    placeholder="name@company.com"
-                  />
-                </div>
-              </div>
-              <div className="space-y-3">
-                <label className="text-[11px] font-black uppercase tracking-[2.5px] text-black/30 px-1">Phone Number</label>
-                <input
-                  type="tel"
-                  className="w-full h-16 bg-black/[0.03] rounded-3xl px-8 outline-none focus:ring-4 focus:ring-purple-500/10 border border-transparent focus:border-purple-500/20 transition-all font-semibold"
-                  placeholder="+1 (555) 000-0000"
-                />
-              </div>
-              <div className="space-y-3">
-                <label className="text-[11px] font-black uppercase tracking-[2.5px] text-black/30 px-1">Project Scope</label>
-                <textarea
-                  className="w-full h-40 bg-black/[0.03] rounded-[32px] px-8 py-6 outline-none focus:ring-4 focus:ring-purple-500/10 border border-transparent focus:border-purple-500/20 transition-all font-semibold resize-none"
-                  placeholder="Tell us about the elite talent you need..."
-                />
-              </div>
+            <AnimatePresence mode="wait">
+              {!isSubmitted ? (
+                <motion.form 
+                  key="form"
+                  initial={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-8" 
+                  onSubmit={handleSubmit}
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-3">
+                      <label className="text-[11px] font-black uppercase tracking-[2.5px] text-black/30 px-1">Full Name</label>
+                      <input
+                        required
+                        type="text"
+                        className="w-full h-16 bg-black/[0.03] rounded-3xl px-8 outline-none focus:ring-4 focus:ring-purple-500/10 border border-transparent focus:border-purple-500/20 transition-all font-semibold"
+                        placeholder="Enter your name"
+                      />
+                    </div>
+                    <div className="space-y-3">
+                      <label className="text-[11px] font-black uppercase tracking-[2.5px] text-black/30 px-1">Corporate Email</label>
+                      <input
+                        required
+                        type="email"
+                        className="w-full h-16 bg-black/[0.03] rounded-3xl px-8 outline-none focus:ring-4 focus:ring-purple-500/10 border border-transparent focus:border-purple-500/20 transition-all font-semibold"
+                        placeholder="name@company.com"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[11px] font-black uppercase tracking-[2.5px] text-black/30 px-1">Phone Number</label>
+                    <input
+                      required
+                      type="tel"
+                      className="w-full h-16 bg-black/[0.03] rounded-3xl px-8 outline-none focus:ring-4 focus:ring-purple-500/10 border border-transparent focus:border-purple-500/20 transition-all font-semibold"
+                      placeholder="+1 (555) 000-0000"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[11px] font-black uppercase tracking-[2.5px] text-black/30 px-1">Project Scope</label>
+                    <textarea
+                      required
+                      className="w-full h-40 bg-black/[0.03] rounded-[32px] px-8 py-6 outline-none focus:ring-4 focus:ring-purple-500/10 border border-transparent focus:border-purple-500/20 transition-all font-semibold resize-none"
+                      placeholder="Tell us about the elite talent you need..."
+                    />
+                  </div>
 
-              <motion.button
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full h-20 bg-black text-white font-black text-xl rounded-[28px] shadow-2xl shadow-black/10 mt-6 relative overflow-hidden group"
-              >
-                <span className="relative z-10">Submit Hiring Request</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              </motion.button>
-            </form>
+                  <motion.button
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full h-20 bg-black text-white font-black text-xl rounded-[28px] shadow-2xl shadow-black/10 mt-6 relative overflow-hidden group"
+                  >
+                    <span className="relative z-10">Submit Hiring Request</span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </motion.button>
+                </motion.form>
+              ) : (
+                <motion.div
+                  key="success"
+                  initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  className="py-20 flex flex-col items-center text-center"
+                >
+                  <div className="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center mb-8">
+                    <CheckCircle2 className="w-12 h-12 text-green-500" />
+                  </div>
+                  <h3 className="text-3xl font-black mb-4">Request Received!</h3>
+                  <p className="text-black/40 text-lg font-medium max-w-sm">
+                    Our concierge team will review your requirements and get back to you within 24 hours.
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         </div>
       )}

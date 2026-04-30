@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import useSmoothScroll from '../hooks/useSmoothScroll';
 import { GPU_ACCELERATION } from '../lib/brand';
@@ -18,15 +18,14 @@ const ShowcaseSection     = lazy(() => import('../components/sections/ShowcaseSe
 const TestimonialSection  = lazy(() => import('../components/sections/TestimonialSection'));
 const FooterSection       = lazy(() => import('../components/sections/FooterSection'));
 
-import HiringDrawer      from '../components/sections/HiringDrawer';
+
 
 // Fallback component for smooth loading
 const SectionFallback = () => <div className="h-[80vh] w-full bg-[#FAFAFB] animate-pulse rounded-[40px] m-4" />;
 
-export default function LandingPage() {
+export default function LandingPage({ onStartHiring }: { onStartHiring: () => void }) {
   useSmoothScroll();
 
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const { scrollYProgress } = useScroll();
   
@@ -43,8 +42,6 @@ export default function LandingPage() {
     <div className="relative w-full bg-white">
 
 
-      {/* ── Global Hiring Drawer ── */}
-      <HiringDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 
       {/* ── Cinematic Snap Container ── */}
       <div className="snap-container">
@@ -88,7 +85,7 @@ export default function LandingPage() {
             {/* ── 09: FINAL CTA + FOOTER ── */}
             <div className="sticky-section bg-[#050505] flex flex-col h-screen overflow-hidden">
               <div className="flex-grow bg-[#FAFAFB] flex flex-col">
-                <CTASection onBookNow={() => setIsDrawerOpen(true)} compact={true} />
+                <CTASection onBookNow={onStartHiring} compact={true} />
               </div>
               <FooterSection />
             </div>

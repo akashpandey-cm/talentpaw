@@ -4,6 +4,7 @@ import Loader from './components/Loader';
 import WelcomeScreen from './components/WelcomeScreen';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
+import HiringDrawer from './components/sections/HiringDrawer';
 
 // ── Optimized Code Splitting ───────────────────────────────────────────
 // We lazy load the main entry points. Since the Loader covers the initial 
@@ -15,6 +16,7 @@ type AppState = 'loading' | 'transitioning_in' | 'welcome' | 'transitioning_out'
 
 function App() {
   const [appState, setAppState] = useState<AppState>('loading');
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const handleStartTransition = () => {
     setAppState('transitioning_in');
@@ -51,6 +53,9 @@ function App() {
       {/* ── GLOBAL NAVBAR LAYER (Independent of page transforms) ── */}
       <Navbar />
 
+      {/* ── GLOBAL HIRING DRAWER ── */}
+      <HiringDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+
       {/* HOMEPAGE / APP CONTENT */}
       <motion.div
         initial={{ opacity: 0, scale: 0.96, filter: 'blur(20px)' }}
@@ -78,7 +83,7 @@ function App() {
       >
         <Suspense fallback={null}>
           <Routes>
-            <Route path="/" element={<LandingPage />} />
+            <Route path="/" element={<LandingPage onStartHiring={() => setIsDrawerOpen(true)} />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/profile/:id" element={<div className="p-20 text-center text-black">Profile Page Coming Soon</div>} />
           </Routes>
