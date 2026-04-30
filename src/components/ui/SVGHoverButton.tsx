@@ -28,7 +28,7 @@ export const SVGHoverButton: React.FC<SVGHoverButtonProps> = ({
       onHoverEnd={() => setIsHovered(false)}
       onClick={onClick}
       whileTap={{ scale: 0.98 }}
-      className={`group relative h-[52px] w-[200px] overflow-hidden rounded-full flex items-center justify-center transition-all duration-500 ${className}`}
+      className={`group relative h-[50px] md:h-[52px] w-full sm:w-[200px] overflow-hidden rounded-full flex items-center justify-center transition-all duration-500 ${className}`}
     >
       {/* Background Layer */}
       <div 
@@ -67,7 +67,7 @@ export const SVGHoverButton: React.FC<SVGHoverButtonProps> = ({
       </svg>
 
       {/* Label & Icon */}
-      <span className={`relative z-10 font-bold uppercase tracking-widest text-[13px] flex items-center justify-center gap-3 transition-colors duration-500 ${
+      <span className={`relative z-10 font-bold uppercase tracking-wide md:tracking-widest text-[12px] md:text-[13px] flex items-center justify-center gap-3 transition-colors duration-500 ${
         isHovered 
           ? 'text-white' 
           : (dark ? 'text-white' : 'text-black')

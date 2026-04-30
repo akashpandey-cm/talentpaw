@@ -75,7 +75,7 @@ function Btn({
       whileHover={{ y: -2 }}
       whileTap={{ scale: 0.97 }}
       transition={{ duration: 0.25, ease: EASE_PREMIUM }}
-      className={`relative h-[52px] px-8 rounded-full font-semibold text-sm flex items-center justify-center gap-2 overflow-hidden transition-[background-color,border-color] duration-300 ${outline ? baseOutline : baseSolid}`}
+      className={`relative h-[48px] md:h-[52px] px-6 md:px-8 rounded-full font-semibold text-sm flex items-center justify-center gap-2 overflow-hidden transition-[background-color,border-color] duration-300 w-full sm:w-auto ${outline ? baseOutline : baseSolid}`}
       style={
         !outline && !dark
           ? {
@@ -169,7 +169,7 @@ function Card({ panel, slideFrom }: { panel: Panel; slideFrom: 'left' | 'right' 
           y: hov ? -8 : 0,
         }}
         transition={{ duration: 0.6, ease: EASE_PREMIUM }}
-        className={`relative h-auto min-h-[480px] md:h-[480px] rounded-[32px] overflow-hidden flex flex-col justify-end group transition-[box-shadow] duration-700 bg-black ${hov ? 'lg:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.4)]' : 'shadow-[0_20px_40px_-20px_rgba(0,0,0,0.15)]'}`}
+        className={`relative h-auto min-h-[430px] md:min-h-[480px] md:h-[480px] rounded-[24px] md:rounded-[32px] overflow-hidden flex flex-col justify-end group transition-[box-shadow] duration-700 bg-black ${hov ? 'lg:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.4)]' : 'shadow-[0_20px_40px_-20px_rgba(0,0,0,0.15)]'}`}
         style={GPU_ACCELERATION}
       >
         {/* Full-bleed Background Image */}
@@ -200,7 +200,7 @@ function Card({ panel, slideFrom }: { panel: Panel; slideFrom: 'left' | 'right' 
         />
 
         {/* Content Container */}
-        <div className="relative z-30 p-8 flex flex-col mt-auto w-full">
+        <div className="relative z-30 p-6 md:p-8 flex flex-col mt-auto w-full">
           
           {/* Eyebrow Badge */}
           <motion.div 
@@ -277,7 +277,7 @@ function Card({ panel, slideFrom }: { panel: Panel; slideFrom: 'left' | 'right' 
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 1.0 }}
-            className="flex flex-wrap items-center gap-3"
+            className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3"
           >
             <Btn dark={false}>{cta.primary}</Btn>
             <Btn dark={true} outline>{cta.secondary}</Btn>
@@ -303,7 +303,7 @@ export default function SolutionsSection() {
   return (
     <section
       id="solutions"
-      className="pt-20 pb-[120px] px-6 relative overflow-hidden bg-[#FAFAFB]"
+      className="pt-24 md:pt-20 pb-20 md:pb-[120px] px-4 md:px-6 relative overflow-hidden bg-[#FAFAFB]"
     >
       <AntiGravityMesh />
       {/* Noise texture overlay */}
@@ -314,7 +314,7 @@ export default function SolutionsSection() {
 
       <div className="relative max-w-[1280px] mx-auto">
         {/* Header */}
-        <div className="mb-12 max-w-4xl" style={GPU_ACCELERATION}>
+        <div className="mb-10 md:mb-12 max-w-4xl" style={GPU_ACCELERATION}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -329,7 +329,7 @@ export default function SolutionsSection() {
           </motion.div>
 
           <motion.h2
-            className="text-[40px] md:text-[60px] font-bold text-[#0D0A1A] tracking-tight leading-[1.1] md:leading-[76px]"
+            className="text-[34px] sm:text-[40px] md:text-[60px] font-bold text-[#0D0A1A] tracking-tight leading-[1.08] md:leading-[76px]"
           >
             <ZigZagText text="Top companies hire faster" delay={0.1} />
             <br className="hidden md:block" />{' '}
@@ -346,14 +346,14 @@ export default function SolutionsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.6, delay: 0.2, ease: EASE_PREMIUM }}
-            className="mt-6 text-xl text-[#6B7280] leading-relaxed max-w-xl"
+            className="mt-5 md:mt-6 text-[16px] md:text-xl text-[#6B7280] leading-relaxed max-w-xl"
           >
             Whether you need to hire or want to be hired — we built the perfect pathway for both sides.
           </motion.p>
         </div>
 
         {/* Cards grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-stretch">
           {PANELS.map((panel, i) => (
             <Card
               key={panel.title}

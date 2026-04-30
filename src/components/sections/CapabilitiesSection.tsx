@@ -80,7 +80,7 @@ const SlideCard = memo(({ slide, i, index, total, isMobile, onSelect }: {
   const offset = getOffset();
   const isCenter = offset === 0;
 
-  const xOffset = isMobile ? 65 : 220;
+  const xOffset = isMobile ? 58 : 220;
   const x = offset * xOffset;
   const scale = isCenter ? 1 : Math.max(0.65, 1 - Math.abs(offset) * 0.15);
   const rotateY = offset * -35;
@@ -97,7 +97,7 @@ const SlideCard = memo(({ slide, i, index, total, isMobile, onSelect }: {
         damping: 32,
         mass: 0.5,
       }}
-      className={`absolute w-[160px] md:w-[220px] lg:w-[260px] aspect-[4/4.8] rounded-[24px] overflow-hidden bg-[#08060f] flex flex-col justify-center items-center ${isCenter ? 'cursor-default border-2 border-brand/40' : 'cursor-pointer border border-white/10'
+      className={`absolute w-[136px] sm:w-[160px] md:w-[220px] lg:w-[260px] aspect-[4/4.8] rounded-[20px] md:rounded-[24px] overflow-hidden bg-[#08060f] flex flex-col justify-center items-center ${isCenter ? 'cursor-default border-2 border-brand/40' : 'cursor-pointer border border-white/10'
         }`}
       style={{
         originX: 0.5,
@@ -181,7 +181,7 @@ export default function CapabilitiesSection() {
   }, [total]);
 
   return (
-    <section className="relative min-h-[100vh] w-full flex flex-col items-center pt-[100px] pb-8 md:pt-[120px] md:pb-10 px-4 overflow-hidden bg-gradient-to-br from-[#F4F6F9] via-[#FDF5F1] to-[#FFE8DB]">
+    <section className="relative min-h-[100svh] w-full flex flex-col items-center pt-24 pb-8 md:pt-[120px] md:pb-10 px-4 overflow-hidden bg-gradient-to-br from-[#F4F6F9] via-[#FDF5F1] to-[#FFE8DB]">
 
       {/* Background Glows */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" style={GPU_ACCELERATION}>
@@ -196,16 +196,16 @@ export default function CapabilitiesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.8, ease: EASE_PREMIUM }}
-          className="text-center mb-6 md:mb-8 relative w-full max-w-2xl px-4"
+          className="text-center mb-4 md:mb-8 relative w-full max-w-2xl px-2 md:px-4"
           style={GPU_ACCELERATION}
         >
-          <h2 className="text-[40px] md:text-[60px] font-bold text-[#0D0A1A] leading-[1.1] tracking-tight font-['Outfit']">
+          <h2 className="text-[34px] sm:text-[40px] md:text-[60px] font-bold text-[#0D0A1A] leading-[1.08] md:leading-[1.1] tracking-tight font-['Outfit']">
             World-Class <br className="md:hidden" />
             <span className="text-transparent bg-clip-text" style={{ backgroundImage: BRAND_GRADIENT }}>
               Talent Formats
             </span>
           </h2>
-          <p className="mt-4 text-gray-500 max-w-lg mx-auto text-[15px] md:text-[18px]">
+          <p className="mt-3 md:mt-4 text-gray-500 max-w-lg mx-auto text-[14px] md:text-[18px] leading-relaxed">
             Experience an elite showcase. Our platform instantly connects you with strictly vetted industry visionaries.
           </p>
         </motion.div>
@@ -216,7 +216,7 @@ export default function CapabilitiesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.8, delay: 0.2, ease: EASE_PREMIUM }}
-          className="relative w-full max-w-[1100px] h-[420px] md:h-[460px] lg:h-[520px] bg-white/0 backdrop-blur-2xl rounded-[40px] md:rounded-[60px] flex flex-col items-center justify-center p-4"
+          className="relative w-full max-w-[1100px] h-[350px] sm:h-[420px] md:h-[460px] lg:h-[520px] bg-white/0 backdrop-blur-2xl rounded-[32px] sm:rounded-[40px] md:rounded-[60px] flex flex-col items-center justify-center p-3 md:p-4"
           style={GPU_ACCELERATION}
         >
           <div className="absolute top-4 md:top-8 left-1/2 -translate-x-1/2 w-[80px] h-[6px] bg-black/10 rounded-full" />

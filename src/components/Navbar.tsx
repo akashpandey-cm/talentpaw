@@ -67,7 +67,7 @@ export default function Navbar() {
             <NavLink href="#how-it-works" mobile>Pricing</NavLink>
             <hr className="border-black/5" />
             <button className="w-full h-10 border border-gray-custom text-gray-custom font-medium rounded-sm">Log In</button>
-            <button className="btn-purple w-full">Get Started</button>
+            <button className="btn-purple !w-full">Get Started</button>
           </motion.div>
         )}
       </AnimatePresence>

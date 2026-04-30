@@ -37,7 +37,7 @@ export default function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-[100vh] w-full flex items-center pt-20 pb-10 overflow-hidden bg-[#FAFAFB]"
+      className="relative min-h-[100svh] w-full flex items-center pt-24 md:pt-20 pb-12 md:pb-10 overflow-hidden bg-[#FAFAFB]"
     >
       <AntiGravityMesh />
 
@@ -90,16 +90,16 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full relative z-10">
         <div style={GPU_ACCELERATION}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: EASE_PREMIUM }}
           >
-            <div className="inline-flex items-center gap-2 mb-8 bg-white/50 border border-black/5 px-4 py-2 rounded-full backdrop-blur-md shadow-sm animate-[bounce_4s_infinite_ease-in-out]">
+            <div className="inline-flex items-center gap-2 mb-6 md:mb-8 bg-white/50 border border-black/5 px-4 py-2 rounded-full backdrop-blur-md shadow-sm animate-[bounce_4s_infinite_ease-in-out]">
               <div className="w-2 h-2 rounded-full bg-brand animate-ping" />
-              <span className="text-[10px] font-black uppercase tracking-[5px] text-brand/80">Live Talent Network</span>
+              <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[3px] sm:tracking-[5px] text-brand/80">Live Talent Network</span>
             </div>
           </motion.div>
 
@@ -107,7 +107,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.6, ease: EASE_PREMIUM }}
-            className="text-[40px] md:text-[60px] font-bold leading-[1.1] md:leading-[76px] tracking-tight mb-10 text-black font-['Outfit']"
+            className="text-[36px] sm:text-[40px] md:text-[60px] font-bold leading-[1.08] md:leading-[76px] tracking-tight mb-7 md:mb-10 text-black font-['Outfit']"
           >
             Build Your Dream<br />
             <span
@@ -123,7 +123,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6, ease: EASE_PREMIUM }}
-            className="text-[20px] text-gray-500 leading-tight max-w-lg mb-12 font-medium"
+            className="text-[17px] md:text-[20px] text-gray-500 leading-relaxed md:leading-tight max-w-lg mb-9 md:mb-12 font-medium"
           >
             Curating the world&apos;s most sought-after talent for visionary brands and revolutionary projects.
           </motion.p>
@@ -134,7 +134,7 @@ export default function HeroSection() {
             transition={{ delay: 0.3, duration: 0.6, ease: EASE_PREMIUM }}
             className="flex flex-col sm:flex-row gap-4 sm:gap-5"
           >
-            <Link to="/search">
+            <Link to="/search" className="w-full sm:w-auto">
               <SVGHoverButton
                 label="Join Network"
                 dark={true}

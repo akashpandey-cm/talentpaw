@@ -195,7 +195,7 @@ const TalentCard = memo(({ card, index }: { card: typeof TALENT_CARDS[0]; index:
     viewport={{ once: true, amount: 0.2 }}
     transition={{ duration: 0.7, delay: Math.min(index * 0.08, 0.4) }}
     whileHover={{ scale: 1.02, boxShadow: "0 30px 60px -15px rgba(0,0,0,0.2)" }}
-    className={`relative aspect-[227/476] w-full rounded-[23px] overflow-hidden group shadow-[0_20px_40px_-20px_rgba(0,0,0,0.15)] bg-white transition-all duration-500 ${index % 2 !== 0 ? 'mt-0 md:mt-16' : ''}`}
+    className={`relative aspect-[3/4] md:aspect-[227/476] w-full rounded-[18px] md:rounded-[23px] overflow-hidden group shadow-[0_20px_40px_-20px_rgba(0,0,0,0.15)] bg-white transition-all duration-500 ${index % 2 !== 0 ? 'mt-0 md:mt-16' : ''}`}
     style={GPU_ACCELERATION}
   >
     <LazyImage src={card.img} alt={card.alt} />
@@ -255,7 +255,7 @@ export default function ShowcaseSection() {
     <section
       ref={sectionRef}
       id="showcase"
-      className="relative min-h-[100vh] w-full flex flex-col justify-center py-12 px-6 overflow-hidden bg-[#FAFAFB]"
+      className="relative min-h-[100svh] w-full flex flex-col justify-center py-20 md:py-12 px-4 md:px-6 overflow-visible md:overflow-hidden bg-[#FAFAFB]"
     >
       {/* Background Layer */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0" style={GPU_ACCELERATION}>
@@ -286,10 +286,10 @@ export default function ShowcaseSection() {
         />
       </div>
 
-      <div className="max-w-[1440px] w-full mx-auto text-center relative z-10 flex flex-col items-center justify-center h-full pt-12" style={GPU_ACCELERATION}>
+      <div className="max-w-[1440px] w-full mx-auto text-center relative z-10 flex flex-col items-center justify-center h-full pt-8 md:pt-12" style={GPU_ACCELERATION}>
 
         <h2
-          className="text-[40px] md:text-[60px] font-bold tracking-tight text-black mb-6 leading-[1.1] md:leading-[76px] font-['Outfit']"
+          className="text-[34px] sm:text-[40px] md:text-[60px] font-bold tracking-tight text-black mb-5 md:mb-6 leading-[1.08] md:leading-[76px] font-['Outfit']"
         >
           <ZigZagText text="The Global" delay={0.1} /> <br className="md:hidden" />
           <ZigZagText 
@@ -301,14 +301,14 @@ export default function ShowcaseSection() {
         </h2>
 
         {/* Categories Bar - Exact Figma Specs: Height 43px, Gap 30px, White Background */}
-        <div className="flex flex-wrap justify-center gap-[30px] mb-10 w-full">
+        <div className="flex flex-nowrap md:flex-wrap justify-start md:justify-center gap-3 md:gap-[30px] mb-8 md:mb-10 w-full overflow-x-auto pb-2 md:overflow-visible md:pb-0">
           {CATEGORIES.map((cat) => (
             <motion.button
               key={cat}
               whileHover={{ y: -1 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setActiveCat(cat)}
-              className={`px-6 h-[43px] rounded-md text-[15px] font-medium transition-all duration-300 flex items-center justify-center font-['Outfit'] ${activeCat === cat
+              className={`shrink-0 px-5 md:px-6 h-[40px] md:h-[43px] rounded-md text-[14px] md:text-[15px] font-medium transition-all duration-300 flex items-center justify-center font-['Outfit'] ${activeCat === cat
                 ? 'bg-[#683995] text-white shadow-lg shadow-[#683995]/20'
                 : 'bg-white text-[#676767] border border-black/[0.03] hover:border-black/[0.1] shadow-sm'
                 }`}
@@ -319,7 +319,7 @@ export default function ShowcaseSection() {
         </div>
 
         {/* Talent Grid - Optimized with Memo */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 mb-12 w-full h-auto min-h-[500px]">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-8 mb-10 md:mb-12 w-full h-auto min-h-0 md:min-h-[500px]">
           {filteredCards.map((card, i) => (
             <TalentCard key={`${activeCat}-${i}`} card={card} index={i} />
           ))}
@@ -328,7 +328,7 @@ export default function ShowcaseSection() {
         <motion.button
           whileHover={{ scale: 1.03, y: -2 }}
           whileTap={{ scale: 0.97 }}
-          className="inline-flex items-center justify-center gap-3 px-10 h-[43px] bg-brand text-white font-bold text-base rounded-full shadow-xl transition-all duration-300 hover:shadow-2xl"
+          className="inline-flex items-center justify-center gap-3 px-8 md:px-10 h-[43px] bg-brand text-white font-bold text-sm md:text-base rounded-full shadow-xl transition-all duration-300 hover:shadow-2xl"
         >
           View All Showcase
           <ArrowRight className="w-5 h-5" />

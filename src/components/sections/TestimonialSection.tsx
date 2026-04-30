@@ -3,17 +3,17 @@ import OrbitTestimonials from '../OrbitTestimonials';
 
 export default function TestimonialSection() {
   return (
-    <section className="pt-24 pb-24 relative overflow-hidden bg-white">
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-16 md:mb-20">
+    <section className="pt-20 md:pt-24 pb-20 md:pb-24 relative overflow-hidden bg-white">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
+        <div className="text-center mb-10 md:mb-20">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 mb-6 bg-brand/[0.03] border border-brand/10 px-6 py-2 rounded-full backdrop-blur-md"
+            className="inline-flex items-center gap-2 mb-5 md:mb-6 bg-brand/[0.03] border border-brand/10 px-5 md:px-6 py-2 rounded-full backdrop-blur-md"
           >
             <div className="w-1.5 h-1.5 rounded-full bg-brand animate-pulse" />
-            <span className="text-[11px] font-black uppercase tracking-[4px] text-brand/80">Social Proof</span>
+            <span className="text-[10px] md:text-[11px] font-black uppercase tracking-[3px] md:tracking-[4px] text-brand/80">Social Proof</span>
           </motion.div>
           
           <motion.h2
@@ -21,7 +21,7 @@ export default function TestimonialSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="text-[40px] md:text-[60px] font-bold text-black leading-[1.1] md:leading-[76px] tracking-tight font-['Outfit']"
+            className="text-[34px] sm:text-[40px] md:text-[60px] font-bold text-black leading-[1.08] md:leading-[76px] tracking-tight font-['Outfit']"
           >
             Orbiting Around <span 
               className="text-transparent bg-clip-text"

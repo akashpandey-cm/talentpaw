@@ -12,7 +12,7 @@ function SectionTitle({ subtitle, title, description, light = false }: {
   const lines = title.split('<br/>');
 
   return (
-    <div className="mb-20">
+    <div className="mb-12 md:mb-20">
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -24,7 +24,7 @@ function SectionTitle({ subtitle, title, description, light = false }: {
           <span className="text-[10px] font-black uppercase tracking-[3px]">{subtitle}</span>
         </div>
 
-        <h2 className={`text-[44px] md:text-[68px] font-bold tracking-tight leading-[1.05] mb-8 font-['Outfit'] ${light ? 'text-white' : 'text-black'}`}>
+        <h2 className={`text-[34px] sm:text-[44px] md:text-[68px] font-bold tracking-tight leading-[1.06] md:leading-[1.05] mb-6 md:mb-8 font-['Outfit'] ${light ? 'text-white' : 'text-black'}`}>
           {lines.map((line, i) => (
             <div key={i} className="overflow-hidden mb-1">
               <motion.div
@@ -48,7 +48,7 @@ function SectionTitle({ subtitle, title, description, light = false }: {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.5, ease: EASE_PREMIUM }}
-            className={`text-lg max-w-2xl leading-relaxed ${light ? 'text-white/60' : 'text-gray-custom'}`}
+            className={`text-base md:text-lg max-w-2xl leading-relaxed ${light ? 'text-white/60' : 'text-gray-custom'}`}
           >
             {description}
           </motion.p>
@@ -67,9 +67,9 @@ export default function ManifestoSection() {
   ];
 
   return (
-    <section className="py-20 md:py-40 px-6 relative bg-black overflow-hidden">
+    <section className="py-20 md:py-40 px-4 md:px-6 relative bg-black overflow-hidden">
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-30 pointer-events-none" />
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 items-center">
         {/* Image */}
         <div className="relative">
           <motion.div
@@ -77,12 +77,12 @@ export default function ManifestoSection() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.8, delay: 0.1, ease: EASE_PREMIUM }}
-            className="aspect-square bg-gradient-to-br from-brand/20 to-transparent rounded-[60px] p-1 border border-white/10"
+            className="aspect-square bg-gradient-to-br from-brand/20 to-transparent rounded-[32px] md:rounded-[60px] p-1 border border-white/10"
             style={GPU_ACCELERATION}
           >
             <img
               src="https://images.unsplash.com/photo-1552664199-fd31f7431a55?w=1000&q=80"
-              className="w-full h-full object-cover rounded-[59px] grayscale contrast-125 hover:grayscale-0 transition-[filter,transform] duration-700 ease-out"
+              className="w-full h-full object-cover rounded-[31px] md:rounded-[59px] grayscale contrast-125 hover:grayscale-0 transition-[filter,transform] duration-700 ease-out"
               alt="studio"
               loading="lazy"
             />

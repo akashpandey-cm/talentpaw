@@ -87,7 +87,7 @@ export default function OrbitTestimonials({
   const angleStep = 360 / count;
 
   useEffect(() => {
-    const handleResize = () => setRadius(window.innerWidth < 768 ? 280 : initialRadius);
+    const handleResize = () => setRadius(window.innerWidth < 768 ? 220 : initialRadius);
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -121,7 +121,7 @@ export default function OrbitTestimonials({
   const activeTestimonial = testimonials[activeIndex];
 
   return (
-    <div className="relative w-full min-h-[700px] md:min-h-[750px] flex items-start justify-center bg-transparent overflow-visible">
+    <div className="relative w-full min-h-[620px] md:min-h-[750px] flex items-start justify-center bg-transparent overflow-visible">
       <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-brand/[0.03] blur-[120px] rounded-full pointer-events-none -z-10" />
       <div className="absolute w-[1300px] h-[1300px] border-[1.5px] border-dashed border-black/[0.03] rounded-full pointer-events-none" style={{ top: '680px', left: '50%', transform: 'translate(-50%, -50%)' }} />
 
@@ -132,7 +132,7 @@ export default function OrbitTestimonials({
           ))}
         </div>
 
-        <div className="relative mt-[140px] md:mt-[180px] w-full max-w-[340px] md:max-w-[800px] text-center px-4 z-20 overflow-visible">
+        <div className="relative mt-[120px] md:mt-[180px] w-full max-w-[340px] md:max-w-[800px] text-center px-2 md:px-4 z-20 overflow-visible">
           <AnimatePresence mode="popLayout">
             <motion.div
               key={activeTestimonial.id}
@@ -144,15 +144,15 @@ export default function OrbitTestimonials({
               style={GPU_ACCELERATION}
             >
               <div className="text-[64px] leading-none text-brand/10 font-serif mb-1 select-none">&ldquo;</div>
-              <blockquote className="text-[18px] md:text-[28px] font-normal text-black/80 leading-[1.5] tracking-tight mb-4 md:mb-6 px-4 font-['Outfit'] italic">
+              <blockquote className="text-[17px] md:text-[28px] font-normal text-black/80 leading-[1.55] md:leading-[1.5] tracking-tight mb-4 md:mb-6 px-1 md:px-4 font-['Outfit'] italic">
                 {activeTestimonial.message}
               </blockquote>
 
               <div className="flex flex-col items-center">
                 <div className="h-[1px] w-6 bg-black/[0.08] mb-4" />
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="flex flex-col items-center">
-                  <span className="text-[14px] font-medium uppercase tracking-[10px] text-black font-['Outfit'] mb-3">{activeTestimonial.name}</span>
-                  <span className="text-[10px] font-bold text-brand/40 uppercase tracking-[5px] font-['Outfit']">{activeTestimonial.role}</span>
+                  <span className="text-[12px] md:text-[14px] font-medium uppercase tracking-[5px] md:tracking-[10px] text-black font-['Outfit'] mb-3">{activeTestimonial.name}</span>
+                  <span className="text-[9px] md:text-[10px] font-bold text-brand/40 uppercase tracking-[3px] md:tracking-[5px] font-['Outfit']">{activeTestimonial.role}</span>
                 </motion.div>
               </div>
             </motion.div>

@@ -16,16 +16,16 @@ export default function SearchPage() {
     <div className="min-h-screen bg-bg-alt">
       <Navbar />
       
-      <main className="pt-32 pb-20 max-w-7xl mx-auto px-6">
+      <main className="pt-28 md:pt-32 pb-16 md:pb-20 max-w-7xl mx-auto px-4 md:px-6">
         {/* Search Header */}
-        <div className="bg-white p-8 rounded-2xl border border-black/5 shadow-sm mb-12">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
+        <div className="bg-white p-5 md:p-8 rounded-2xl border border-black/5 shadow-sm mb-8 md:mb-12">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-8">
               <div className="max-w-xl">
-                <h1 className="text-4xl font-bold text-black mb-2">Find your perfect hire.</h1>
+                <h1 className="text-3xl md:text-4xl font-bold text-black mb-2">Find your perfect hire.</h1>
                 <p className="text-gray-custom">Browse world-class talent vetted for performance and reliability.</p>
               </div>
               
-              <div className="flex items-center gap-4 flex-1 max-w-2xl">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 md:gap-4 flex-1 max-w-2xl w-full">
                 <div className="relative flex-1">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-custom/50" />
                   <input 
@@ -34,7 +34,7 @@ export default function SearchPage() {
                     className="w-full bg-bg-alt border border-black/5 rounded-lg py-3.5 pl-12 pr-6 focus:outline-none focus:border-brand/40 transition-all text-black"
                   />
                 </div>
-                <button className="flex items-center gap-2 px-6 py-3.5 border border-black/5 rounded-lg hover:bg-black/5 transition-all text-gray-custom">
+                <button className="flex items-center justify-center gap-2 px-6 py-3.5 border border-black/5 rounded-lg hover:bg-black/5 transition-all text-gray-custom">
                   <SlidersHorizontal className="w-5 h-5" />
                   Filter
                 </button>

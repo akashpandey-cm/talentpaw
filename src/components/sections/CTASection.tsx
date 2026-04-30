@@ -15,7 +15,7 @@ export default function CTASection({ onBookNow, compact = false }: CTASectionPro
   ];
 
   return (
-    <section className={`relative w-full ${compact ? 'py-12 md:py-20' : 'py-32 md:py-48'} overflow-hidden bg-[#FAFAFB]`}>
+    <section className={`relative w-full ${compact ? 'py-16 md:py-20' : 'py-24 md:py-48'} overflow-hidden bg-[#FAFAFB]`}>
       {/* Background Accents */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-1/2 -left-1/4 w-1/2 h-full bg-purple-500/[0.03] blur-[120px] rounded-full" />
@@ -46,7 +46,7 @@ export default function CTASection({ onBookNow, compact = false }: CTASectionPro
         </div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto relative z-10 text-center px-6" style={GPU_ACCELERATION}>
+      <div className="max-w-[1400px] mx-auto relative z-10 text-center px-4 md:px-6" style={GPU_ACCELERATION}>
         <div className="max-w-4xl mx-auto">
           {/* Trust Badges */}
           {!compact && (
@@ -72,7 +72,7 @@ export default function CTASection({ onBookNow, compact = false }: CTASectionPro
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.8, ease: EASE_PREMIUM, delay: 0.1 }}
-            className="text-[40px] md:text-[60px] font-bold text-[#050505] leading-[1.1] md:leading-[76px] tracking-tight mb-6 font-['Outfit']"
+            className="text-[34px] sm:text-[40px] md:text-[60px] font-bold text-[#050505] leading-[1.08] md:leading-[76px] tracking-tight mb-5 md:mb-6 font-['Outfit']"
           >
             Scale your design <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B400FF] via-[#CB5564] to-[#FF8B00]">Velocity.</span>
@@ -84,7 +84,7 @@ export default function CTASection({ onBookNow, compact = false }: CTASectionPro
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.8, ease: EASE_PREMIUM, delay: 0.2 }}
-            className="text-[#050505]/50 text-[18px] md:text-[22px] font-medium leading-relaxed max-w-2xl mx-auto mb-8"
+            className="text-[#050505]/50 text-[16px] md:text-[22px] font-medium leading-relaxed max-w-2xl mx-auto mb-8"
           >
             Stop settling for average. Get matched with elite creative talent and start shipping at speed.
           </motion.p>
@@ -101,10 +101,10 @@ export default function CTASection({ onBookNow, compact = false }: CTASectionPro
               onClick={onBookNow}
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="group relative px-12 h-[52px] bg-[#050505] rounded-full overflow-hidden shadow-2xl shadow-black/20 w-full sm:w-auto flex items-center justify-center"
+              className="group relative px-8 md:px-12 h-[52px] bg-[#050505] rounded-full overflow-hidden shadow-2xl shadow-black/20 w-full sm:w-auto flex items-center justify-center"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-              <span className="relative text-white font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3">
+              <span className="relative text-white font-black text-xs md:text-sm uppercase tracking-wide md:tracking-widest flex items-center justify-center gap-3">
                 Start Hiring Now
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
@@ -113,9 +113,9 @@ export default function CTASection({ onBookNow, compact = false }: CTASectionPro
             <motion.button
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="px-12 h-[52px] bg-white border border-black/10 rounded-full shadow-xl shadow-black/[0.02] hover:bg-black/[0.02] transition-all w-full sm:w-auto flex items-center justify-center"
+              className="px-8 md:px-12 h-[52px] bg-white border border-black/10 rounded-full shadow-xl shadow-black/[0.02] hover:bg-black/[0.02] transition-all w-full sm:w-auto flex items-center justify-center"
             >
-              <span className="text-[#050505] font-black text-sm uppercase tracking-widest">
+              <span className="text-[#050505] font-black text-xs md:text-sm uppercase tracking-wide md:tracking-widest">
                 Explore Talent
               </span>
             </motion.button>
