@@ -8,26 +8,50 @@ function SectionTitle({ subtitle, title, description, light = false }: {
   description?: string;
   light?: boolean;
 }) {
+  // Split title by <br/> to animate lines independently
+  const lines = title.split('<br/>');
+
   return (
     <div className="mb-20">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.15 }}
-        transition={{ duration: 0.6, ease: EASE_PREMIUM }}
+        transition={{ duration: 0.8, ease: EASE_PREMIUM }}
         style={GPU_ACCELERATION}
       >
-        <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border mb-4 ${light ? 'bg-white/10 border-white/20 text-white/80' : 'bg-brand/5 border-brand/10 text-brand'}`}>
+        <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border mb-6 ${light ? 'bg-white/10 border-white/20 text-white/80' : 'bg-brand/5 border-brand/10 text-brand'}`}>
           <span className="text-[10px] font-black uppercase tracking-[3px]">{subtitle}</span>
         </div>
-        <h2
-          className={`text-[40px] md:text-[60px] font-bold tracking-tight leading-[1.1] md:leading-[76px] mb-6 font-['Outfit'] ${light ? 'text-white' : 'text-black'}`}
-          dangerouslySetInnerHTML={{ __html: title }}
-        />
+
+        <h2 className={`text-[44px] md:text-[68px] font-bold tracking-tight leading-[1.05] mb-8 font-['Outfit'] ${light ? 'text-white' : 'text-black'}`}>
+          {lines.map((line, i) => (
+            <div key={i} className="overflow-hidden mb-1">
+              <motion.div
+                initial={{ y: "100%" }}
+                whileInView={{ y: 0 }}
+                viewport={{ once: true }}
+                transition={{ 
+                  duration: 1, 
+                  delay: i * 0.15, 
+                  ease: [0.16, 1, 0.3, 1] // Premium smooth ease-out
+                }}
+                dangerouslySetInnerHTML={{ __html: line }}
+              />
+            </div>
+          ))}
+        </h2>
+
         {description && (
-          <p className={`text-lg max-w-2xl leading-relaxed ${light ? 'text-white/60' : 'text-gray-custom'}`}>
+          <motion.p 
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.5, ease: EASE_PREMIUM }}
+            className={`text-lg max-w-2xl leading-relaxed ${light ? 'text-white/60' : 'text-gray-custom'}`}
+          >
             {description}
-          </p>
+          </motion.p>
         )}
       </motion.div>
     </div>

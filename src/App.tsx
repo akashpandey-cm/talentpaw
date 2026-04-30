@@ -29,12 +29,12 @@ function App() {
     // Step 2: Welcome text animation finishes. Start slide out.
     setTimeout(() => {
       setAppState('transitioning_out');
-    }, 3200); // 800ms slide-in + 2400ms holding for welcome text
+    }, 3800); // 800ms slide-in + 3000ms (3s) holding for welcome text
 
     // Step 3: Overlay slides off. Reveal homepage.
     setTimeout(() => {
       setAppState('loaded');
-    }, 4400); // 3200ms + 1200ms slide-out
+    }, 5000); // 3800ms + 1200ms slide-out
   };
 
   const handleLoaderComplete = () => {

@@ -110,6 +110,30 @@ function StatItem({ stat }: { stat: Stat }) {
   );
 }
 
+/* ─── ZigZagText ─────────────────────────────────────────────────────── */
+function ZigZagText({ text, delay = 0 }: { text: string; delay?: number }) {
+  return (
+    <span className="inline-block">
+      {text.split('').map((char, i) => (
+        <motion.span
+          key={i}
+          initial={{ opacity: 0, y: i % 2 === 0 ? -20 : 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{
+            duration: 0.8,
+            delay: delay + i * 0.03,
+            ease: [0.215, 0.61, 0.355, 1], // Cubic-bezier for "pop" effect
+          }}
+          className="inline-block whitespace-pre"
+        >
+          {char}
+        </motion.span>
+      ))}
+    </span>
+  );
+}
+
 /* ─── Card ───────────────────────────────────────────────────────────── */
 function Card({ panel, slideFrom }: { panel: Panel; slideFrom: 'left' | 'right' }) {
   const [hov, setHov] = useState(false);
@@ -117,10 +141,24 @@ function Card({ panel, slideFrom }: { panel: Panel; slideFrom: 'left' | 'right' 
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: slideFrom === 'left' ? -30 : 30 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.8, ease: EASE_PREMIUM }}
+      initial={{ 
+        opacity: 0, 
+        x: slideFrom === 'left' ? -120 : 120,
+        rotate: slideFrom === 'left' ? -5 : 5,
+        scale: 0.9
+      }}
+      whileInView={{ 
+        opacity: 1, 
+        x: 0,
+        rotate: 0,
+        scale: 1
+      }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ 
+        duration: 1.2, 
+        ease: EASE_PREMIUM,
+        delay: slideFrom === 'right' ? 0.2 : 0 
+      }}
       className="flex-1 min-w-0"
       style={GPU_ACCELERATION}
     >
@@ -165,7 +203,13 @@ function Card({ panel, slideFrom }: { panel: Panel; slideFrom: 'left' | 'right' 
         <div className="relative z-30 p-8 flex flex-col mt-auto w-full">
           
           {/* Eyebrow Badge */}
-          <div className="flex mb-3">
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="flex mb-3"
+          >
             <span
               className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-white text-[10px] font-bold uppercase tracking-[2px] backdrop-blur-md shadow-xl border`}
               style={{ 
@@ -187,33 +231,57 @@ function Card({ panel, slideFrom }: { panel: Panel; slideFrom: 'left' | 'right' 
               />
               {eyebrow}
             </span>
-          </div>
+          </motion.div>
 
-          {/* Title */}
+          {/* Title with ZigZag */}
           <h3 className="text-[28px] lg:text-[34px] font-bold tracking-tight leading-[1.05] text-white mb-2">
-            {title}
+            <ZigZagText text={title} delay={0.5} />
           </h3>
 
           {/* Subtext */}
-          <p className="text-[14px] lg:text-[15px] leading-[1.4] text-white/70 max-w-sm mb-4">
+          <motion.p 
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.7 }}
+            className="text-[14px] lg:text-[15px] leading-[1.4] text-white/70 max-w-sm mb-4"
+          >
             {sub}
-          </p>
+          </motion.p>
 
           {/* Stats Divider */}
-          <div className="h-px w-full bg-white/10 mb-4" />
+          <motion.div 
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.8, duration: 0.8 }}
+            className="h-px w-full bg-white/10 mb-4 origin-left" 
+          />
 
           {/* Stats Row */}
-          <div className="flex flex-wrap gap-4 md:gap-6 mb-5">
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.9 }}
+            className="flex flex-wrap gap-4 md:gap-6 mb-5"
+          >
             {stats.map(s => (
               <StatItem key={s.label} stat={s} />
             ))}
-          </div>
+          </motion.div>
 
           {/* CTAs */}
-          <div className="flex flex-wrap items-center gap-3">
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 1.0 }}
+            className="flex flex-wrap items-center gap-3"
+          >
             <Btn dark={false}>{cta.primary}</Btn>
             <Btn dark={true} outline>{cta.secondary}</Btn>
-          </div>
+          </motion.div>
           
         </div>
 
@@ -261,18 +329,15 @@ export default function SolutionsSection() {
           </motion.div>
 
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.15 }}
-            transition={{ duration: 0.6, delay: 0.1, ease: EASE_PREMIUM }}
             className="text-[40px] md:text-[60px] font-bold text-[#0D0A1A] tracking-tight leading-[1.1] md:leading-[76px]"
           >
-            Top companies hire faster<br className="hidden md:block" />{' '}
+            <ZigZagText text="Top companies hire faster" delay={0.1} />
+            <br className="hidden md:block" />{' '}
             <span
               className="text-transparent bg-clip-text"
               style={{ backgroundImage: BRAND_GRADIENT }}
             >
-              with TalentPAW.
+              <ZigZagText text="with TalentPAW." delay={0.6} />
             </span>
           </motion.h2>
 

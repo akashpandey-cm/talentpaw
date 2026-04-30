@@ -32,7 +32,6 @@ const DEFAULT_TESTIMONIALS: Testimonial[] = [
   { id: 13, name: "Isabella Martinez", role: "Design Director @ Airbnb", image: "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=400&h=400&fit=crop", message: "The standard of work on TalentPaw is breathtaking. We've built our entire design system using visionaries found here." }
 ];
 
-// Separate component for avatars to use isolated MotionValue transformations
 const AvatarItem = memo(({ item, index, rotation, angleStep, radius, isActive }: { 
   item: Testimonial, 
   index: number, 
@@ -42,22 +41,16 @@ const AvatarItem = memo(({ item, index, rotation, angleStep, radius, isActive }:
   isActive: boolean
 }) => {
   const initialAngle = index * angleStep;
-  
   const itemRotation = useTransform(rotation, (r: number) => initialAngle + r);
   
-  const x = useTransform(itemRotation, (angle: number) => {
-    return Math.cos((angle * Math.PI) / 180) * radius;
-  });
-  
-  const y = useTransform(itemRotation, (angle: number) => {
-    return Math.sin((angle * Math.PI) / 180) * radius;
-  });
+  const x = useTransform(itemRotation, (angle: number) => Math.cos((angle * Math.PI) / 180) * radius);
+  const y = useTransform(itemRotation, (angle: number) => Math.sin((angle * Math.PI) / 180) * radius);
 
   const scale = useTransform(itemRotation, (angle: number) => {
     const normalized = ((angle % 360) + 360) % 360;
     const dist = Math.min(Math.abs(normalized - 270), 360 - Math.abs(normalized - 270));
     const factor = Math.pow(Math.max(0, 1 - dist / 60), 2); 
-    return 0.7 + factor * 0.8; // 0.7 -> 1.5
+    return 0.7 + factor * 0.8;
   });
 
   const borderAlpha = useTransform(scale, [0.7, 1.5], [0.05, 0.3]);
@@ -66,30 +59,18 @@ const AvatarItem = memo(({ item, index, rotation, angleStep, radius, isActive }:
   return (
     <motion.div
       style={{
-        x,
-        y,
-        scale,
-        left: -56, // Centering for w-28
+        x, y, scale,
+        left: -56,
         top: -56,
         ...GPU_ACCELERATION
       }}
       className="absolute"
     >
       <div 
-        className={`
-          relative w-28 h-28 rounded-2xl overflow-hidden p-[0.5px] backdrop-blur-md border transition-[background-color,box-shadow,border-color] duration-1000
-          ${isActive ? 'bg-white shadow-[0_30px_60px_-12px_rgba(104,57,149,0.25)]' : 'bg-white/[0.03]'}
-        `}
-        style={{ 
-          borderColor: borderColor as any,
-          perspective: '1000px'
-        }}
+        className={`relative w-28 h-28 rounded-2xl overflow-hidden p-[0.5px] backdrop-blur-md border transition-[background-color,box-shadow,border-color] duration-1000 ${isActive ? 'bg-white shadow-[0_30px_60px_-12px_rgba(104,57,149,0.25)]' : 'bg-white/[0.03]'}`}
+        style={{ borderColor: borderColor as any, perspective: '1000px' }}
       >
-        <img 
-          src={item.image} 
-          alt={item.name} 
-          className="w-full h-full object-cover rounded-2xl transition-transform duration-1000 translate-z-0"
-        />
+        <img src={item.image} alt={item.name} className="w-full h-full object-cover rounded-2xl transition-transform duration-1000" />
       </div>
     </motion.div>
   );
@@ -106,23 +87,18 @@ export default function OrbitTestimonials({
   const angleStep = 360 / count;
 
   useEffect(() => {
-    const handleResize = () => {
-      setRadius(window.innerWidth < 768 ? 280 : initialRadius);
-    };
+    const handleResize = () => setRadius(window.innerWidth < 768 ? 280 : initialRadius);
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [initialRadius]);
 
-  // Use Motion Values to bypass React's render loop for continuous rotation
   const rotation = useMotionValue(0);
   const activeIndexRef = useRef(0);
 
   useAnimationFrame((time) => {
     const currentRotation = (time / (speed * 1000)) * -360;
     rotation.set(currentRotation);
-
-    // Update active index based on rotation (closest to 270 degrees)
     const normalizedRotation = ((currentRotation % 360) + 360) % 360;
     let bestIndex = 0;
     let minDiff = 360;
@@ -146,33 +122,16 @@ export default function OrbitTestimonials({
 
   return (
     <div className="relative w-full min-h-[700px] md:min-h-[750px] flex items-start justify-center bg-transparent overflow-visible">
-      
-      {/* ── Visual Atmosphere ── */}
       <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-brand/[0.03] blur-[120px] rounded-full pointer-events-none -z-10" />
-      
-      <div 
-        className="absolute w-[1300px] h-[1300px] border-[1.5px] border-dashed border-black/[0.03] rounded-full pointer-events-none" 
-        style={{ top: '680px', left: '50%', transform: 'translate(-50%, -50%)' }}
-      />
+      <div className="absolute w-[1300px] h-[1300px] border-[1.5px] border-dashed border-black/[0.03] rounded-full pointer-events-none" style={{ top: '680px', left: '50%', transform: 'translate(-50%, -50%)' }} />
 
       <div className="relative w-full h-full flex flex-col items-center pt-6 overflow-visible">
-        
-        {/* Avatars Orbit Cluster */}
         <div className="absolute top-[680px] left-1/2 -translate-x-1/2"> 
           {testimonials.map((item, i) => (
-            <AvatarItem 
-              key={item.id}
-              item={item}
-              index={i}
-              rotation={rotation}
-              angleStep={angleStep}
-              radius={radius}
-              isActive={i === activeIndex}
-            />
+            <AvatarItem key={item.id} item={item} index={i} rotation={rotation} angleStep={angleStep} radius={radius} isActive={i === activeIndex} />
           ))}
         </div>
 
-        {/* ── Center Content ── */}
         <div className="relative mt-[140px] md:mt-[180px] w-full max-w-[340px] md:max-w-[800px] text-center px-4 z-20 overflow-visible">
           <AnimatePresence mode="popLayout">
             <motion.div
@@ -184,46 +143,34 @@ export default function OrbitTestimonials({
               className="flex flex-col items-center"
               style={GPU_ACCELERATION}
             >
-              <div className="text-[72px] leading-none text-brand/10 font-serif mb-4 select-none">&ldquo;</div>
-
-              <blockquote className="text-[22px] md:text-[32px] font-normal text-black/80 leading-[1.6] tracking-tight mb-8 md:mb-12 px-4 font-['Outfit'] italic">
+              <div className="text-[64px] leading-none text-brand/10 font-serif mb-1 select-none">&ldquo;</div>
+              <blockquote className="text-[18px] md:text-[28px] font-normal text-black/80 leading-[1.5] tracking-tight mb-4 md:mb-6 px-4 font-['Outfit'] italic">
                 {activeTestimonial.message}
               </blockquote>
 
               <div className="flex flex-col items-center">
-                <div className="h-[1px] w-6 bg-black/[0.08] mb-8" />
-                
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                  className="flex flex-col items-center"
-                >
-                  <span className="text-[14px] font-medium uppercase tracking-[10px] text-black font-['Outfit'] mb-3">
-                    {activeTestimonial.name}
-                  </span>
-                  <span className="text-[10px] font-bold text-brand/40 uppercase tracking-[5px] font-['Outfit']">
-                    {activeTestimonial.role}
-                  </span>
+                <div className="h-[1px] w-6 bg-black/[0.08] mb-4" />
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="flex flex-col items-center">
+                  <span className="text-[14px] font-medium uppercase tracking-[10px] text-black font-['Outfit'] mb-3">{activeTestimonial.name}</span>
+                  <span className="text-[10px] font-bold text-brand/40 uppercase tracking-[5px] font-['Outfit']">{activeTestimonial.role}</span>
                 </motion.div>
-                
-                <div className="flex gap-4 mt-12">
-                  {testimonials.map((_, dotIdx) => (
-                    <motion.div 
-                      key={dotIdx}
-                      initial={false}
-                      animate={{ 
-                        scale: dotIdx === activeIndex ? 1.5 : 1,
-                        opacity: dotIdx === activeIndex ? 1 : 0.1,
-                        backgroundColor: dotIdx === activeIndex ? '#683995' : '#000000'
-                      }}
-                      className="h-1 w-1 rounded-full" 
-                    />
-                  ))}
-                </div>
               </div>
             </motion.div>
           </AnimatePresence>
+
+          {/* Constant Progress Stepper */}
+          <div className="flex gap-4 mt-12 justify-center">
+            {testimonials.map((_, dotIdx) => (
+              <motion.div 
+                key={dotIdx}
+                animate={{ 
+                  opacity: dotIdx === activeIndex ? 1 : 0.1,
+                  backgroundColor: dotIdx === activeIndex ? '#683995' : '#000000'
+                }}
+                className="h-1.5 w-1.5 rounded-full" 
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>

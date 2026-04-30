@@ -287,6 +287,7 @@ export default function WelcomeScreen({ appState }: WelcomeScreenProps) {
                       WebkitTextFillColor: 'transparent',
                       backgroundClip: 'text',
                       display: 'inline-block',
+                      padding: '0 0.02em', // Prevent clipping of wide characters
                     }}
                   >
                     {char === ' ' ? '\u00A0' : char}

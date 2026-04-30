@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
 import { useState, useRef, useEffect, useCallback, lazy, Suspense, memo } from 'react';
 import { ArrowRight } from 'lucide-react';
-import { BRAND_GRADIENT, EASE_PREMIUM, GPU_ACCELERATION } from '../../lib/brand';
+import { BRAND_GRADIENT, GPU_ACCELERATION } from '../../lib/brand';
 
 // Lazy load heavy 3D component
 const AntiGravityMesh = lazy(() => import('../AntiGravityMesh'));
@@ -163,6 +163,30 @@ const LazyImage = ({ src, alt }: { src: string; alt: string }) => {
   );
 };
 
+/* ─── ZigZagText ─────────────────────────────────────────────────────── */
+function ZigZagText({ text, delay = 0, className = "", style = {} }: { text: string; delay?: number; className?: string, style?: React.CSSProperties }) {
+  return (
+    <span className={`inline-block ${className}`} style={style}>
+      {text.split('').map((char, i) => (
+        <motion.span
+          key={i}
+          initial={{ opacity: 0, y: i % 2 === 0 ? -20 : 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{
+            duration: 0.8,
+            delay: delay + i * 0.03,
+            ease: [0.215, 0.61, 0.355, 1],
+          }}
+          className="inline-block whitespace-pre"
+        >
+          {char}
+        </motion.span>
+      ))}
+    </span>
+  );
+}
+
 // Memoized Talent Card (Prevents unnecessary re-renders)
 const TalentCard = memo(({ card, index }: { card: typeof TALENT_CARDS[0]; index: number }) => (
   <motion.div
@@ -264,18 +288,17 @@ export default function ShowcaseSection() {
 
       <div className="max-w-[1440px] w-full mx-auto text-center relative z-10 flex flex-col items-center justify-center h-full pt-12" style={GPU_ACCELERATION}>
 
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: EASE_PREMIUM }}
+        <h2
           className="text-[40px] md:text-[60px] font-bold tracking-tight text-black mb-6 leading-[1.1] md:leading-[76px] font-['Outfit']"
         >
-          The Global <br className="md:hidden" />
-          <span className="text-transparent bg-clip-text" style={{ backgroundImage: BRAND_GRADIENT }}>
-            Talent Showcase.
-          </span>
-        </motion.h2>
+          <ZigZagText text="The Global" delay={0.1} /> <br className="md:hidden" />
+          <ZigZagText 
+            text="Talent Showcase." 
+            delay={0.5} 
+            className="text-transparent bg-clip-text" 
+            style={{ backgroundImage: BRAND_GRADIENT }} 
+          />
+        </h2>
 
         {/* Categories Bar - Exact Figma Specs: Height 43px, Gap 30px, White Background */}
         <div className="flex flex-wrap justify-center gap-[30px] mb-10 w-full">
