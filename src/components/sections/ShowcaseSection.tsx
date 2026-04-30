@@ -78,7 +78,7 @@ const TALENT_CARDS = [
   { img: imgSinger4, alt: 'Singer Performance 4', category: 'Singer' },
   { img: imgSinger5, alt: 'Singer Performance 5', category: 'Singer' },
   { img: imgSinger6, alt: 'Singer Performance 6', category: 'Singer' },
-  
+
   // DJ Cards
   { img: imgDJ1, alt: 'DJ Performance 1', category: 'DJ' },
   { img: imgDJ2, alt: 'DJ Performance 2', category: 'DJ' },

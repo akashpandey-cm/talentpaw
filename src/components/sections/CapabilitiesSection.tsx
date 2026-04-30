@@ -2,32 +2,63 @@ import { useState, useEffect, memo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { BRAND_GRADIENT, EASE_PREMIUM, GPU_ACCELERATION } from '../../lib/brand';
 
+// Import small assets (<30KB where possible)
+import imgComedian from '../../assets/voiceactor/musician/comedian/djz2zhqlgagvpa8ipeoz.webp'; // ~28KB
+import imgGuitarist from '../../assets/voiceactor/musician/dvcjhsklpzzqtnabayft.webp'; // ~12KB
+import imgVocalist from '../../assets/singer/mckuw77seo1r35a8dwis.webp'; // ~37KB
+import imgHost from '../../assets/voiceactor/gv1kwnz3r3oocfo2jqan.webp'; // ~23KB
+import imgMusician from '../../assets/voiceactor/musician/mz4phyiq3fbl2prcegwy.webp'; // ~35KB
+import imgCopywriter from '../../assets/content writer/is5oxc316p34lsr3upyp.webp'; // ~23KB
+import imgModel from '../../assets/model/dpehjsj73hh4ukc8ewdz.webp'; // ~30KB
+import imgPhoto from '../../assets/photographer/pxa4fmob1dnmlh4z2mx6.webp'; // ~43KB
+import imgDJ from '../../assets/lcs0vfehbdrtso2l3fco.webp'; // ~39KB
+
 // === Use Public Folder Images (Sabse Important Change) ===
 const SLIDES = [
   {
-    img: '/images/capabilities/comedian.webp',
+    img: imgComedian,
     role: 'Comedian',
     desc: 'Stand-Up Visionary'
   },
   {
-    img: '/images/capabilities/guitarist.webp',
+    img: imgGuitarist,
     role: 'Guitarist',
     desc: 'Acoustic Mastery'
   },
   {
-    img: '/images/capabilities/singer-red.webp',
+    img: imgVocalist,
     role: 'Vocalist',
     desc: 'Lead Performer'
   },
   {
-    img: '/images/capabilities/host.webp',
+    img: imgHost,
     role: 'Host',
     desc: 'Live Event MC'
   },
   {
-    img: '/images/capabilities/flute.webp',
+    img: imgMusician,
     role: 'Musician',
     desc: 'Classical Wind'
+  },
+  {
+    img: imgCopywriter,
+    role: 'Copywriter',
+    desc: 'Narrative Architect'
+  },
+  {
+    img: imgModel,
+    role: 'Model',
+    desc: 'Editorial Talent'
+  },
+  {
+    img: imgPhoto,
+    role: 'Photographer',
+    desc: 'Visual Storyteller'
+  },
+  {
+    img: imgDJ,
+    role: 'DJ',
+    desc: 'Sonic Sculptor'
   },
 ];
 
