@@ -76,15 +76,31 @@ export default function Navbar() {
 }
 
 function NavLink({ href, children, mobile }: { href: string; children: React.ReactNode; mobile?: boolean }) {
+  const isExternal = href.startsWith('http') || href.startsWith('#');
+  
+  if (isExternal) {
+    return (
+      <a 
+        href={href} 
+        className={cn(
+          "text-[16px] font-medium text-gray-custom hover:text-black transition-colors flex items-center gap-1",
+          mobile ? "text-lg py-2" : "nav-link-premium"
+        )}
+      >
+        {children}
+      </a>
+    );
+  }
+
   return (
-    <a 
-      href={href} 
+    <Link 
+      to={href} 
       className={cn(
         "text-[16px] font-medium text-gray-custom hover:text-black transition-colors flex items-center gap-1",
         mobile ? "text-lg py-2" : "nav-link-premium"
       )}
     >
       {children}
-    </a>
+    </Link>
   );
 }

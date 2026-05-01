@@ -16,6 +16,7 @@ const CategoriesSection   = lazy(() => import('../components/sections/Categories
 const CTASection          = lazy(() => import('../components/sections/CTASection'));
 const ShowcaseSection     = lazy(() => import('../components/sections/ShowcaseSection'));
 const TestimonialSection  = lazy(() => import('../components/sections/TestimonialSection'));
+const LogoBillboardSection = lazy(() => import('../components/sections/LogoBillboardSection'));
 const FooterSection       = lazy(() => import('../components/sections/FooterSection'));
 
 
@@ -75,6 +76,11 @@ export default function LandingPage({ onStartHiring }: { onStartHiring: () => vo
             {/* ── 07: TESTIMONIALS ── */}
             <div className="sticky-section bg-white">
               <TestimonialSection />
+            </div>
+
+            {/* ── 08: LOGO BILLBOARD ── */}
+            <div className="sticky-section bg-[#FAFAFB]">
+              <LogoBillboardSection />
             </div>
 
             {/* ── 08: CATEGORIES ── */}
