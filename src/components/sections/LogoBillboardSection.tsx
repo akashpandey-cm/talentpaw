@@ -30,8 +30,8 @@ const LOGO_SETS = [
   [logo11, logo12, logo13, logo14, logo15, logo16, logo17, logo18, logo19, logo20]
 ];
 
-const ROTATION_INTERVAL = 8000; // 8 seconds
-const SCAN_DURATION = 1.8; // Duration of the line traversal in seconds
+const ROTATION_INTERVAL = 8000;
+const SCAN_DURATION = 1.8;
 
 export default function LogoBillboardSection() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -40,97 +40,113 @@ export default function LogoBillboardSection() {
   const [setIndex, setSetIndex] = useState(0);
   const [isScanning, setIsScanning] = useState(false);
 
-  // Synchronized rotation logic
   useEffect(() => {
     if (!isInView) return;
-
     const interval = setInterval(() => {
-      // 1. Start the scanning line
       setIsScanning(true);
-
-      // 2. Change the logos exactly when the line starts its sweep
-      // The clip-path reveal is synchronized via the same duration and delay
       setSetIndex((prev) => (prev + 1) % LOGO_SETS.length);
-
-      // 3. Stop the scanning state after the animation completes
       setTimeout(() => {
         setIsScanning(false);
-      }, (SCAN_DURATION + 0.5) * 1000); // Scan duration + max stagger delay
-
+      }, (SCAN_DURATION + 0.5) * 1000);
     }, ROTATION_INTERVAL);
-
     return () => clearInterval(interval);
   }, [isInView]);
 
   const currentLogos = LOGO_SETS[setIndex];
 
   return (
-    <section className="py-24 px-6 bg-white font-outfit overflow-hidden" ref={containerRef}>
+    <section className="py-24 px-6 bg-black relative overflow-hidden font-outfit" ref={containerRef}>
+      {/* Noise Texture Overlay */}
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-30 pointer-events-none" />
+      
+      {/* Ambient Decorations (Left/Right) */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Left Side Elements */}
+        <FloatingOrb color="rgba(123, 97, 255, 0.15)" size="w-64 h-64" top="10%" left="-5%" delay={0} />
+        <FloatingOrb color="rgba(255, 77, 141, 0.1)" size="w-48 h-48" top="40%" left="-2%" delay={2} />
+        <FloatingOrb color="rgba(123, 97, 255, 0.08)" size="w-32 h-32" top="70%" left="2%" delay={4} />
+
+        {/* Right Side Elements */}
+        <FloatingOrb color="rgba(123, 97, 255, 0.15)" size="w-64 h-64" top="15%" right="-5%" delay={1} />
+        <FloatingOrb color="rgba(255, 138, 61, 0.1)" size="w-48 h-48" top="50%" right="-2%" delay={3} />
+        <FloatingOrb color="rgba(123, 97, 255, 0.08)" size="w-32 h-32" top="80%" right="2%" delay={5} />
+      </div>
+
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header Block */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 mb-4 bg-brand/[0.03] border border-brand/10 px-6 py-2 rounded-full backdrop-blur-md"
+            className="inline-flex items-center gap-2 mb-4 bg-white/10 border border-white/20 px-6 py-2 rounded-full backdrop-blur-md"
           >
             <div className="w-1.5 h-1.5 rounded-full bg-brand animate-pulse" />
-            <span className="text-[11px] font-black uppercase tracking-[4px] text-brand/80">Partner Ecosystem</span>
+            <span className="text-[11px] font-black uppercase tracking-[4px] text-white/80">Partner Ecosystem</span>
           </motion.div>
 
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="text-[34px] sm:text-[40px] md:text-[60px] font-bold text-black leading-[1.08] md:leading-[76px] tracking-tight font-['Outfit']"
+            transition={{ delay: 0.1, duration: 0.8 }}
+            className="text-[34px] sm:text-[40px] md:text-[60px] font-bold text-white leading-[1.08] tracking-tight mb-6"
           >
             Powering the Future of <br />
-            <span
-              className="text-transparent bg-clip-text"
-              style={{ backgroundImage: 'linear-gradient(135deg, #7B61FF, #FF4D8D, #FF8A3D)' }}
-            >Modern Teams</span>
+            <span className="text-gradient-premium">Modern Teams</span>
           </motion.h2>
 
-          <motion.p
+          <motion.p 
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-gray-400 text-sm md:text-base mt-6 max-w-lg mx-auto font-medium"
+            className="text-[#94A3B8] text-sm md:text-base mt-2 max-w-2xl mx-auto font-medium leading-relaxed"
           >
-            Join 500+ leading companies who trust TalentPaw to build, scale, and manage their creative and professional talent.
+            Join 500+ leading companies who trust TalentPaw to build, scale, and <br className="hidden md:block" /> 
+            manage their creative and professional talent.
           </motion.p>
         </div>
 
-        {/* The Grid Billboard */}
-        <div className="max-w-5xl mx-auto border-[0.5px] border-gray-200 grid grid-cols-2 md:grid-cols-4 bg-white relative">
+        {/* The Grid Billboard - 4 Column Layout Restored */}
+        <div className="max-w-6xl mx-auto border border-white p-3 md:p-4 bg-black relative rounded-[20px]">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            
+            {/* ROW 1 */}
+            {currentLogos.slice(0, 4).map((logo, i) => (
+              <LogoSlot key={`r1-${i}`} logo={logo} index={i} isInView={isInView} isScanning={isScanning} />
+            ))}
 
-          {/* ROW 1 */}
-          {currentLogos.slice(0, 4).map((logo, i) => (
-            <LogoItem key={`r1-${i}`} logo={logo} index={i} isInView={isInView} isScanning={isScanning} position="top" />
-          ))}
+            {/* ROW 2 Left */}
+            <LogoSlot logo={currentLogos[4]} index={4} isInView={isInView} isScanning={isScanning} />
+            
+            {/* Center Box - Title Treatment */}
+            <div className="col-span-2 h-[100px] md:h-[130px] flex flex-col items-center justify-center premium-border-gradient-inner animate-border-reverse rounded-xl z-20">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="text-center"
+              >
+                <h3 className="text-xl md:text-2xl font-black tracking-[0.35em] uppercase leading-tight">
+                  <span className="text-white">Trusted</span>{" "}
+                  <span className="text-brand">Partners</span>
+                </h3>
+              </motion.div>
+            </div>
 
-          {/* ROW 2 */}
-          <LogoItem logo={currentLogos[4]} index={4} isInView={isInView} isScanning={isScanning} position="mid-left" />
+            {/* ROW 2 Right */}
+            <LogoSlot logo={currentLogos[5]} index={5} isInView={isInView} isScanning={isScanning} />
 
-          <div className="col-span-2 h-[100px] md:h-[130px] border-[0.5px] border-gray-200 flex flex-col items-center justify-center bg-white z-20">
-            <h2 className="text-2xl md:text-3xl font-medium text-gray-900 tracking-tighter uppercase">
-              Trusted <span className="font-black text-brand tracking-widest">Partners</span>
-            </h2>
+            {/* ROW 3 */}
+            {currentLogos.slice(6, 10).map((logo, i) => (
+              <LogoSlot key={`r3-${i}`} logo={logo} index={i + 6} isInView={isInView} isScanning={isScanning} />
+            ))}
           </div>
 
-          <LogoItem logo={currentLogos[5]} index={5} isInView={isInView} isScanning={isScanning} position="mid-right" />
-
-          {/* ROW 3 */}
-          {currentLogos.slice(6, 10).map((logo, i) => (
-            <LogoItem key={`r3-${i}`} logo={logo} index={i + 6} isInView={isInView} isScanning={isScanning} position="bottom" />
-          ))}
-
-          {/* Backdrop Glows */}
+          {/* Glow Effect */}
           <div className="absolute inset-0 pointer-events-none -z-10">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand/[0.03] blur-[100px] rounded-full" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-brand/5 blur-[100px] rounded-full" />
           </div>
         </div>
       </div>
@@ -138,78 +154,107 @@ export default function LogoBillboardSection() {
   );
 }
 
-function LogoItem({ logo, index, isInView, isScanning, position }: any) {
-  const isFirstLoad = useRef(true);
+function LogoSlot({ logo, index, isInView, isScanning }: any) {
+  return (
+    <div className="premium-border-gradient-inner animate-border-reverse p-2 rounded-xl group transition-colors duration-500">
+      <LogoItem logo={logo} index={index} isInView={isInView} isScanning={isScanning} />
+    </div>
+  );
+}
 
-  // Entrance offsets for first load
-  const xOffset = position === 'top' || position === 'bottom'
-    ? (index % 4 - 1.5) * 160
-    : position === 'mid-left' ? -180 : 180;
-  const yOffset = position.includes('mid') ? 0 : (position === 'top' ? -70 : 70);
+function LogoItem({ logo, index, isInView, isScanning }: any) {
+  const isFirstLoad = useRef(true);
 
   useEffect(() => {
     isFirstLoad.current = false;
   }, []);
 
   return (
-    <div className="h-[100px] md:h-[130px] border-[0.5px] border-gray-200 flex items-center justify-center bg-white relative overflow-hidden group">
+    <div className="h-[100px] md:h-[120px] bg-white rounded-lg flex items-center justify-center relative overflow-hidden shadow-lg">
       <div className="relative w-full h-full flex items-center justify-center pointer-events-none">
-
         <AnimatePresence mode="popLayout">
           <motion.div
             key={logo}
-            initial={isFirstLoad.current ? {
-              opacity: 0,
-              scale: 0.1,
-              x: xOffset,
-              y: yOffset,
-              filter: 'blur(8px)'
+            initial={isFirstLoad.current ? { 
+              opacity: 0, 
+              scale: 0.8,
+              filter: 'blur(10px)'
             } : {
               clipPath: 'inset(0 100% 0 0)',
               opacity: 1,
             }}
-            animate={isInView ? {
-              opacity: 1,
-              scale: 1,
-              x: 0,
-              y: 0,
+            animate={isInView ? { 
+              opacity: 1, 
+              scale: 1, 
               filter: 'blur(0px)',
               clipPath: 'inset(0 0% 0 0)',
             } : {}}
-            exit={{
+            exit={{ 
               clipPath: 'inset(0 0 0 100%)',
               opacity: 1,
               transition: { duration: SCAN_DURATION, ease: [0.65, 0, 0.35, 1] }
             }}
-            transition={{
-              duration: SCAN_DURATION,
-              delay: isFirstLoad.current ? index * 0.04 : index * 0.08,
-              ease: [0.65, 0, 0.35, 1]
+            transition={{ 
+              duration: SCAN_DURATION, 
+              delay: isFirstLoad.current ? index * 0.1 : index * 0.15, 
+              ease: [0.65, 0, 0.35, 1] 
             }}
-            className="absolute inset-0 flex items-center justify-center p-2 bg-white z-20"
+            className="absolute inset-0 flex items-center justify-center bg-white z-20"
           >
-            {/* The Wiper Line - Synchronized with clipPath */}
+            {/* The Wiper Line */}
             {isScanning && (
-              <motion.div
+              <motion.div 
                 initial={{ left: '0%', opacity: 1 }}
                 animate={{ left: '100%', opacity: [1, 1, 0] }}
-                transition={{
-                  duration: SCAN_DURATION,
-                  delay: index * 0.08,
-                  ease: [0.65, 0, 0.35, 1]
+                transition={{ 
+                  duration: SCAN_DURATION, 
+                  delay: index * 0.15, 
+                  ease: [0.65, 0, 0.35, 1] 
                 }}
-                className="absolute top-0 bottom-0 w-[1.5px] bg-[#7B61FF] shadow-[0_0_10px_rgba(123,97,255,0.6)] z-30"
+                className="absolute top-0 bottom-0 w-[2px] bg-brand shadow-[0_0_15px_rgba(123,97,255,0.8)] z-30"
               />
             )}
-
+            
             <img
               src={logo}
               alt="Partner Logo"
-              className="max-h-[36px] md:max-h-[56px] max-w-[130px] md:max-w-[180px] object-contain transition-transform duration-500 group-hover:scale-110"
+              className="max-h-[34px] md:max-h-[42px] max-w-[120px] md:max-w-[160px] object-contain transition-transform duration-500 group-hover:scale-110"
             />
           </motion.div>
         </AnimatePresence>
       </div>
     </div>
+  );
+}
+
+function FloatingOrb({ color, size, top, left, right, delay }: any) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.5, rotate: 0 }}
+      animate={{ 
+        opacity: [0.3, 0.6, 0.3],
+        scale: [1, 1.1, 1],
+        rotate: [0, 90, 0],
+        x: [0, 15, 0],
+        y: [0, -20, 0]
+      }}
+      transition={{
+        duration: 12,
+        delay: delay,
+        repeat: Infinity,
+        ease: "linear"
+      }}
+      className={`absolute rounded-2xl border-2 border-white/20 backdrop-blur-md pointer-events-none ${size}`}
+      style={{ 
+        boxShadow: `0 0 40px ${color}`,
+        top: top,
+        left: left,
+        right: right,
+        zIndex: 0
+      }}
+    >
+      {/* Inner Stroke Glow - Increased Weight */}
+      <div className="absolute inset-0 rounded-2xl border-2 border-brand/40 opacity-70" />
+    </motion.div>
   );
 }

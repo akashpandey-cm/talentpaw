@@ -1,5 +1,5 @@
-import { motion, useScroll, useTransform, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
 import { useState, useRef, useEffect, useCallback, lazy, Suspense, memo } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { BRAND_GRADIENT, GPU_ACCELERATION } from '../../lib/brand';
 
@@ -188,20 +188,68 @@ function ZigZagText({ text, delay = 0, className = "", style = {} }: { text: str
 }
 
 // Memoized Talent Card (Prevents unnecessary re-renders)
-const TalentCard = memo(({ card, index }: { card: typeof TALENT_CARDS[0]; index: number }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 40 }}
-    animate={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, amount: 0.2 }}
-    transition={{ duration: 0.7, delay: Math.min(index * 0.08, 0.4) }}
-    whileHover={{ scale: 1.02, boxShadow: "0 30px 60px -15px rgba(0,0,0,0.2)" }}
-    className={`relative aspect-[3/4] md:aspect-[227/476] w-full rounded-[18px] md:rounded-[23px] overflow-hidden group shadow-[0_20px_40px_-20px_rgba(0,0,0,0.15)] bg-white transition-all duration-500 ${index % 2 !== 0 ? 'mt-0 md:mt-16' : ''}`}
-    style={GPU_ACCELERATION}
-  >
-    <LazyImage src={card.img} alt={card.alt} />
-    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-  </motion.div>
-));
+const TalentCard = memo(({ card, index, activeCat }: { card: typeof TALENT_CARDS[0]; index: number; activeCat: string }) => {
+  const isLeftSide = index < 3;
+  
+  return (
+    <motion.div
+      key={`${activeCat}-${index}`}
+      initial={{ 
+        opacity: 0, 
+        x: isLeftSide ? -150 : 150, 
+        rotateY: isLeftSide ? -35 : 35,
+        scale: 0.85,
+        z: -100
+      }}
+      animate={{ 
+        opacity: 1, 
+        x: 0, 
+        rotateY: 0,
+        scale: 1,
+        z: 0
+      }}
+      exit={{ 
+        opacity: 0, 
+        x: isLeftSide ? -100 : 100, 
+        scale: 0.9,
+        transition: { duration: 0.3 }
+      }}
+      transition={{ 
+        type: "spring",
+        stiffness: 120,
+        damping: 18,
+        mass: 1,
+        delay: (isLeftSide ? index : (5 - index)) * 0.08 
+      }}
+      whileHover={{ 
+        scale: 1.05, 
+        y: -10,
+        rotateY: isLeftSide ? 5 : -5,
+        boxShadow: "0 40px 80px -20px rgba(0,0,0,0.3)",
+        transition: { duration: 0.4, ease: "easeOut" }
+      }}
+      className={`relative aspect-[3/4] md:aspect-[227/476] w-full rounded-[18px] md:rounded-[23px] overflow-hidden group shadow-[0_20px_40px_-20px_rgba(0,0,0,0.15)] bg-white ${index % 2 !== 0 ? 'mt-0 md:mt-12' : ''}`}
+      style={{ 
+        ...GPU_ACCELERATION,
+        transformStyle: "preserve-3d",
+        perspective: "1000px"
+      }}
+    >
+      <LazyImage src={card.img} alt={card.alt} />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      
+      {/* Premium Content Reveal */}
+      <div className="absolute inset-x-0 bottom-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-500 z-20">
+        <p className="text-white font-black text-xl md:text-2xl tracking-tighter leading-none mb-1">
+          {card.category}
+        </p>
+        <p className="text-white/60 text-[10px] font-bold uppercase tracking-[2px]">
+          Verified Talent
+        </p>
+      </div>
+    </motion.div>
+  );
+});
 
 export default function ShowcaseSection() {
   const [activeCat, setActiveCat] = useState('Singer');
@@ -255,7 +303,7 @@ export default function ShowcaseSection() {
     <section
       ref={sectionRef}
       id="showcase"
-      className="relative min-h-[100svh] w-full flex flex-col justify-center py-20 md:py-12 px-4 md:px-6 overflow-visible md:overflow-hidden bg-[#FAFAFB]"
+      className="relative min-h-[100svh] w-full flex flex-col justify-start pt-12 md:pt-16 pb-20 md:pb-12 px-4 md:px-6 overflow-visible md:overflow-hidden bg-[#FAFAFB]"
     >
       {/* Background Layer */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0" style={GPU_ACCELERATION}>
@@ -286,10 +334,10 @@ export default function ShowcaseSection() {
         />
       </div>
 
-      <div className="max-w-[1440px] w-full mx-auto text-center relative z-10 flex flex-col items-center justify-center h-full pt-8 md:pt-12" style={GPU_ACCELERATION}>
+      <div className="max-w-[1440px] w-full mx-auto text-center relative z-10 flex flex-col items-center justify-center h-full pt-0 md:pt-2" style={GPU_ACCELERATION}>
 
         <h2
-          className="text-[34px] sm:text-[40px] md:text-[60px] font-bold tracking-tight text-black mb-5 md:mb-6 leading-[1.08] md:leading-[76px] font-['Outfit']"
+          className="text-[34px] sm:text-[40px] md:text-[60px] font-bold tracking-tight text-black mb-2 md:mb-4 leading-[1.08] md:leading-[76px] font-['Outfit']"
         >
           <ZigZagText text="The Global" delay={0.1} /> <br className="md:hidden" />
           <ZigZagText 
@@ -301,7 +349,7 @@ export default function ShowcaseSection() {
         </h2>
 
         {/* Categories Bar - Exact Figma Specs: Height 43px, Gap 30px, White Background */}
-        <div className="flex flex-nowrap md:flex-wrap justify-start md:justify-center gap-3 md:gap-[30px] mb-8 md:mb-10 w-full overflow-x-auto pb-2 md:overflow-visible md:pb-0">
+        <div className="flex flex-nowrap md:flex-wrap justify-start md:justify-center gap-3 md:gap-[30px] mb-4 md:mb-6 w-full overflow-x-auto pb-2 md:overflow-visible md:pb-0">
           {CATEGORIES.map((cat) => (
             <motion.button
               key={cat}
@@ -319,10 +367,20 @@ export default function ShowcaseSection() {
         </div>
 
         {/* Talent Grid - Optimized with Memo */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-8 mb-10 md:mb-12 w-full h-auto min-h-0 md:min-h-[500px]">
-          {filteredCards.map((card, i) => (
-            <TalentCard key={`${activeCat}-${i}`} card={card} index={i} />
-          ))}
+        <div 
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-8 mb-4 md:mb-6 w-full h-auto min-h-0 md:min-h-[500px]"
+          style={{ perspective: "2000px" }}
+        >
+          <AnimatePresence mode="wait">
+            {filteredCards.map((card, i) => (
+              <TalentCard 
+                key={`${activeCat}-${i}`} 
+                card={card} 
+                index={i} 
+                activeCat={activeCat}
+              />
+            ))}
+          </AnimatePresence>
         </div>
 
         <motion.button

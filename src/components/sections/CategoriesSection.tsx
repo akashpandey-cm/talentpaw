@@ -11,18 +11,18 @@ const categories = [
 
 export default function CategoriesSection() {
   return (
-    <section className="relative min-h-[100svh] w-full flex flex-col justify-center py-20 px-4 md:px-6 bg-[#08060f] overflow-visible md:overflow-hidden">
+    <section className="relative min-h-[100svh] w-full flex flex-col justify-start pt-12 md:pt-16 pb-20 px-4 md:px-6 bg-[#08060f] overflow-visible md:overflow-hidden">
       <div className="max-w-[1440px] w-full mx-auto relative z-10">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-16 gap-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 md:mb-10 gap-6 md:gap-8">
           <div className="max-w-3xl" style={GPU_ACCELERATION}>
             <motion.span
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.6, ease: EASE_PREMIUM }}
-              className="block text-white/50 text-[12px] md:text-[13px] font-bold uppercase tracking-[3px] md:tracking-[4px] mb-5 md:mb-6"
+              className="block text-white/50 text-[12px] md:text-[13px] font-bold uppercase tracking-[3px] md:tracking-[4px] mb-4 md:mb-5"
             >
               Industry Experts
             </motion.span>
@@ -32,7 +32,7 @@ export default function CategoriesSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.6, delay: 0.1, ease: EASE_PREMIUM }}
-              className="text-[34px] sm:text-[40px] md:text-[60px] font-bold text-white leading-[1.08] md:leading-[76px] tracking-tight mb-6 md:mb-8 font-['Outfit']"
+              className="text-[34px] sm:text-[40px] md:text-[60px] font-bold text-white leading-[1.08] md:leading-[76px] tracking-tight mb-4 md:mb-6 font-['Outfit']"
             >
               Choose Your<br />
               <span 
@@ -48,7 +48,7 @@ export default function CategoriesSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.6, delay: 0.2, ease: EASE_PREMIUM }}
-              className="text-white/50 text-[16px] md:text-[20px] leading-relaxed max-w-xl font-medium"
+              className="text-white/50 text-[14px] md:text-[18px] leading-relaxed max-w-xl font-medium"
             >
               From cinematic directors to blockchain architects—we house the experts who define their respective industries.
             </motion.p>
@@ -60,10 +60,11 @@ export default function CategoriesSection() {
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.6, delay: 0.3, ease: EASE_PREMIUM }}
             style={GPU_ACCELERATION}
+            className="mb-2 md:mb-0"
           >
             <Link
               to="/search"
-              className="group relative h-[50px] md:h-[52px] px-8 md:px-12 bg-white text-black font-bold text-base md:text-lg rounded-full flex items-center justify-center gap-4 transition-[box-shadow,transform] duration-300 active:scale-95 overflow-hidden shadow-sm hover:shadow-lg w-full sm:w-auto"
+              className="group relative h-[48px] md:h-[50px] px-8 md:px-12 bg-white text-black font-bold text-base md:text-lg rounded-full flex items-center justify-center gap-4 transition-[box-shadow,transform] duration-300 active:scale-95 overflow-hidden shadow-sm hover:shadow-lg w-full sm:w-auto"
             >
               <span className="relative z-10">Explore All</span>
               <ArrowRight className="w-5 h-5 relative z-10 transition-transform group-hover:translate-x-1" />
@@ -82,7 +83,7 @@ export default function CategoriesSection() {
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.6, delay: 0.4 + (i * 0.1), ease: EASE_PREMIUM }}
               whileTap={{ scale: 0.98 }}
-              className="group relative aspect-[4/3] md:aspect-square rounded-[24px] md:rounded-[32px] overflow-hidden border border-white/10 cursor-pointer shadow-2xl"
+              className="group relative aspect-[4/2.8] md:aspect-[4/3.8] rounded-[24px] md:rounded-[32px] overflow-hidden border border-white/10 cursor-pointer shadow-2xl"
               style={GPU_ACCELERATION}
             >
               <img

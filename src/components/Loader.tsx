@@ -120,13 +120,18 @@ export default function Loader({ onComplete, onStartTransition }: LoaderProps) {
   const progress = useCountUp(100, 3.2, phase === 'loading');
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase('reveal'), 3200);
-    const t2 = setTimeout(() => { 
+    // When loading finishes at 3.2s, trigger transition immediately
+    const t1 = setTimeout(() => { 
       setExiting(true); 
       if (onStartTransition) onStartTransition(); 
-    }, 4800); // Start fade out at 4800 and trigger overlay
-    const t3 = setTimeout(() => { setPhase('done'); onComplete(); }, 5000); // Unmount at 5000 (after 200ms fade)
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+    }, 3200); 
+
+    const t2 = setTimeout(() => { 
+      setPhase('done'); 
+      onComplete(); 
+    }, 3400); // Complete after 200ms fade out
+
+    return () => { clearTimeout(t1); clearTimeout(t2); };
   }, [onComplete, onStartTransition]);
 
   if (phase === 'done') return null;

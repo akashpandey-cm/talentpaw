@@ -15,7 +15,7 @@ export default function CTASection({ onBookNow, compact = false }: CTASectionPro
   ];
 
   return (
-    <section className={`relative w-full ${compact ? 'py-16 md:py-20' : 'py-24 md:py-48'} overflow-hidden bg-[#FAFAFB]`}>
+    <section className={`relative w-full ${compact ? 'py-10 md:py-12' : 'py-24 md:py-48'} overflow-hidden bg-[#FAFAFB]`}>
       {/* Background Accents */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-1/2 -left-1/4 w-1/2 h-full bg-purple-500/[0.03] blur-[120px] rounded-full" />
@@ -72,7 +72,7 @@ export default function CTASection({ onBookNow, compact = false }: CTASectionPro
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.8, ease: EASE_PREMIUM, delay: 0.1 }}
-            className="text-[34px] sm:text-[40px] md:text-[60px] font-bold text-[#050505] leading-[1.08] md:leading-[76px] tracking-tight mb-5 md:mb-6 font-['Outfit']"
+            className="text-[34px] sm:text-[40px] md:text-[60px] font-bold text-[#050505] leading-[1.08] md:leading-[76px] tracking-tight mb-4 md:mb-6 font-['Outfit']"
           >
             Scale your design <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B400FF] via-[#CB5564] to-[#FF8B00]">Velocity.</span>
@@ -84,7 +84,7 @@ export default function CTASection({ onBookNow, compact = false }: CTASectionPro
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.8, ease: EASE_PREMIUM, delay: 0.2 }}
-            className="text-[#050505]/50 text-[16px] md:text-[22px] font-medium leading-relaxed max-w-2xl mx-auto mb-8"
+            className="text-[#050505]/50 text-[16px] md:text-[22px] font-medium leading-relaxed max-w-2xl mx-auto mb-6"
           >
             Stop settling for average. Get matched with elite creative talent and start shipping at speed.
           </motion.p>

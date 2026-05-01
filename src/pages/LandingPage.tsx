@@ -8,16 +8,15 @@ import '../styles/stacking.css'; // <-- Dedicated stacking styles
 // ── Section Components (Lazy Loaded) ──────────────────────────────────
 // This prevents heavy components from blocking the initial render of the Hero.
 // Sections will load as the user starts their experience.
-const HeroSection         = lazy(() => import('../components/sections/HeroSection'));
-const SolutionsSection    = lazy(() => import('../components/sections/SolutionsSection'));
-const ManifestoSection    = lazy(() => import('../components/sections/ManifestoSection'));
+const HeroSection = lazy(() => import('../components/sections/HeroSection'));
+const SolutionsSection = lazy(() => import('../components/sections/SolutionsSection'));
+const ManifestoSection = lazy(() => import('../components/sections/ManifestoSection'));
 const CapabilitiesSection = lazy(() => import('../components/sections/CapabilitiesSection'));
-const CategoriesSection   = lazy(() => import('../components/sections/CategoriesSection'));
-const CTASection          = lazy(() => import('../components/sections/CTASection'));
-const ShowcaseSection     = lazy(() => import('../components/sections/ShowcaseSection'));
-const TestimonialSection  = lazy(() => import('../components/sections/TestimonialSection'));
-const LogoBillboardSection = lazy(() => import('../components/sections/LogoBillboardSection'));
-const FooterSection       = lazy(() => import('../components/sections/FooterSection'));
+const CategoriesSection = lazy(() => import('../components/sections/CategoriesSection'));
+const CTASection = lazy(() => import('../components/sections/CTASection'));
+const ShowcaseSection = lazy(() => import('../components/sections/ShowcaseSection'));
+const TestimonialSection = lazy(() => import('../components/sections/TestimonialSection'));
+const FooterSection = lazy(() => import('../components/sections/FooterSection'));
 
 
 
@@ -29,14 +28,14 @@ export default function LandingPage({ onStartHiring }: { onStartHiring: () => vo
 
 
   const { scrollYProgress } = useScroll();
-  
+
   // Optimized snappier spring for premium feel
-  const smoothProgress = useSpring(scrollYProgress, { 
-    stiffness: 200, 
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 200,
     damping: 30,
     restDelta: 0.001
   });
-  
+
   const progressBarScaleX = useTransform(smoothProgress, [0, 1], [0, 1]);
 
   return (
@@ -59,12 +58,12 @@ export default function LandingPage({ onStartHiring }: { onStartHiring: () => vo
             </div>
 
             {/* ── 04: MANIFESTO ── */}
-            <div className="sticky-section bg-[#111111]">
+            <div className="bg-[#111111]">
               <ManifestoSection />
             </div>
 
             {/* ── 05: CAPABILITIES ── */}
-            <div className="sticky-section bg-white">
+            <div className="bg-white">
               <CapabilitiesSection />
             </div>
 
@@ -78,21 +77,14 @@ export default function LandingPage({ onStartHiring }: { onStartHiring: () => vo
               <TestimonialSection />
             </div>
 
-            {/* ── 08: LOGO BILLBOARD ── */}
-            <div className="sticky-section bg-[#FAFAFB]">
-              <LogoBillboardSection />
-            </div>
-
             {/* ── 08: CATEGORIES ── */}
             <div className="sticky-section bg-white">
               <CategoriesSection />
             </div>
 
             {/* ── 09: FINAL CTA + FOOTER ── */}
-            <div className="sticky-section bg-[#050505] flex flex-col min-h-[100svh] h-auto overflow-visible md:h-screen md:overflow-hidden">
-              <div className="flex-grow bg-[#FAFAFB] flex flex-col">
-                <CTASection onBookNow={onStartHiring} compact={true} />
-              </div>
+            <div className="sticky-section bg-[#050505] flex flex-col h-auto min-h-[100svh] md:h-screen overflow-visible md:overflow-hidden">
+              <CTASection onBookNow={onStartHiring} compact={true} />
               <FooterSection />
             </div>
           </Suspense>
