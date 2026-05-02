@@ -12,7 +12,7 @@ const categories = [
 export default function CategoriesSection() {
   return (
     <section className="relative min-h-[100svh] w-full flex flex-col justify-start pt-12 md:pt-16 pb-20 px-4 md:px-6 bg-[#08060f] overflow-visible md:overflow-hidden">
-      <div className="max-w-[1440px] w-full mx-auto relative z-10">
+      <div className="max-w-[1440px] w-full mx-auto relative z-10 my-auto">
         
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 md:mb-10 gap-6 md:gap-8">

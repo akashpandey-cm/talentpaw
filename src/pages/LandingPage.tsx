@@ -77,9 +77,13 @@ export default function LandingPage({ onStartHiring }: { onStartHiring: () => vo
             </div>
 
             {/* ── 09: FINAL CTA + FOOTER ── */}
-            <div className="sticky-section bg-[#FAFAFB] flex flex-col min-h-[100svh] overflow-hidden">
-              <div className="w-full my-auto flex flex-col">
+            <div className="sticky-section flex flex-col h-screen overflow-hidden">
+              {/* Top Half - CTA with matching background */}
+              <div className="flex-1 bg-[#FAFAFB] flex flex-col justify-center">
                 <CTASection onBookNow={onStartHiring} compact={true} />
+              </div>
+              {/* Bottom Half - Footer with matching background */}
+              <div className="bg-[#050505] pt-4">
                 <FooterSection />
               </div>
             </div>
