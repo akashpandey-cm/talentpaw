@@ -83,7 +83,7 @@ export default function CategoriesSection() {
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.6, delay: 0.4 + (i * 0.1), ease: EASE_PREMIUM }}
               whileTap={{ scale: 0.98 }}
-              className="group relative aspect-[4/2.8] md:aspect-[4/3.8] rounded-[24px] md:rounded-[32px] overflow-hidden border border-white/10 cursor-pointer shadow-2xl"
+              className="group relative aspect-[4/3.4] md:aspect-[4/4.1] rounded-[24px] md:rounded-[32px] overflow-hidden border border-white/10 cursor-pointer shadow-2xl"
               style={GPU_ACCELERATION}
             >
               <img
