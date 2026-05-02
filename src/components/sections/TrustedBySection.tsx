@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { EASE_PREMIUM } from '../../lib/brand';
 
 // Import logos (using available dummy logos)
 import logo1 from '../../assets/logos/dummy-logo-1b 1.png';

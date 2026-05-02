@@ -160,6 +160,7 @@ const ParticleCanvas = memo(function ParticleCanvas() {
     let rafId = 0;
 
     function resize() {
+      if (!canvas || !ctx) return;
       dpr = Math.min(window.devicePixelRatio ?? 1, 2);
       W = canvas.offsetWidth;
       H = canvas.offsetHeight;
@@ -184,6 +185,7 @@ const ParticleCanvas = memo(function ParticleCanvas() {
     const FADE_ZONE = 80; // px near edges for smoother alpha fade-in/out
 
     function tick() {
+      if (!ctx) return;
       ctx.clearRect(0, 0, W, H);
 
       // ── Rising particles ──────────────────────────────────────────────
@@ -205,7 +207,7 @@ const ParticleCanvas = memo(function ParticleCanvas() {
         ctx.fillStyle = p.color;
 
         if (p.isStar) {
-          drawStar(ctx, p.x, p.y, p.w / 2.5, p.rot);
+          drawStar(ctx!, p.x, p.y, p.w / 2.5, p.rot);
           ctx.fill();
         } else {
           ctx.beginPath();
@@ -229,7 +231,7 @@ const ParticleCanvas = memo(function ParticleCanvas() {
 
         ctx.globalAlpha = s.alpha;
         ctx.fillStyle = s.color;
-        drawStar(ctx, s.x, s.y, s.w / 2.5, s.rot);
+        drawStar(ctx!, s.x, s.y, s.w / 2.5, s.rot);
         ctx.fill();
       }
 
