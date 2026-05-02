@@ -18,14 +18,11 @@ const ShowcaseSection = lazy(() => import('../components/sections/ShowcaseSectio
 const TestimonialSection = lazy(() => import('../components/sections/TestimonialSection'));
 const FooterSection = lazy(() => import('../components/sections/FooterSection'));
 
-
-
 // Fallback component for smooth loading
 const SectionFallback = () => <div className="h-[80vh] w-full bg-[#FAFAFB] animate-pulse rounded-[40px] m-4" />;
 
 export default function LandingPage({ onStartHiring }: { onStartHiring: () => void }) {
   useSmoothScroll();
-
 
   const { scrollYProgress } = useScroll();
 
@@ -40,9 +37,6 @@ export default function LandingPage({ onStartHiring }: { onStartHiring: () => vo
 
   return (
     <div className="relative w-full bg-white">
-
-
-
       {/* ── Cinematic Snap Container ── */}
       <div className="snap-container">
         <main className="relative w-full flex flex-col" style={GPU_ACCELERATION}>
@@ -83,9 +77,11 @@ export default function LandingPage({ onStartHiring }: { onStartHiring: () => vo
             </div>
 
             {/* ── 09: FINAL CTA + FOOTER ── */}
-            <div className="sticky-section bg-[#050505] flex flex-col h-auto min-h-[100svh] md:h-screen overflow-visible md:overflow-hidden">
-              <CTASection onBookNow={onStartHiring} compact={true} />
-              <FooterSection />
+            <div className="sticky-section bg-[#FAFAFB] flex flex-col min-h-[100svh] overflow-hidden">
+              <div className="w-full my-auto flex flex-col">
+                <CTASection onBookNow={onStartHiring} compact={true} />
+                <FooterSection />
+              </div>
             </div>
           </Suspense>
         </main>

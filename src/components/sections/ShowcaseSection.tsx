@@ -303,7 +303,7 @@ export default function ShowcaseSection() {
     <section
       ref={sectionRef}
       id="showcase"
-      className="relative min-h-[100svh] w-full flex flex-col justify-start pt-12 md:pt-16 pb-20 md:pb-12 px-4 md:px-6 overflow-visible md:overflow-hidden bg-[#FAFAFB]"
+      className="relative min-h-[100svh] w-full flex flex-col justify-start pt-8 md:pt-10 pb-16 md:pb-10 px-4 md:px-6 overflow-visible md:overflow-hidden bg-[#FAFAFB]"
     >
       {/* Background Layer */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0" style={GPU_ACCELERATION}>
@@ -368,7 +368,7 @@ export default function ShowcaseSection() {
 
         {/* Talent Grid - Optimized with Memo */}
         <div
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-8 mb-4 md:mb-6 w-full h-auto min-h-0 md:min-h-[500px]"
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-8 mb-8 md:mb-12 w-full h-auto min-h-0 md:min-h-[500px]"
           style={{ perspective: "2000px" }}
         >
           <AnimatePresence mode="wait">
