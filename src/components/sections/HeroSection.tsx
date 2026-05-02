@@ -63,19 +63,8 @@ export default function HeroSection() {
           className="absolute left-0 top-0 w-[800px] h-[800px] bg-indigo-500/[0.04] blur-[120px] rounded-full pointer-events-none translate-z-0"
         />
 
-        {/* Subtle Floating Ambient Particles - Simplified & GPU Hardened */}
-        <div className="absolute inset-0" style={GPU_ACCELERATION}>
-          {[...Array(3)].map((_, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: "100%" }}
-              animate={{ opacity: [0, 0.4, 0], y: "-100%" }}
-              transition={{ duration: 15 + i * 5, repeat: Infinity, delay: i * 3, ease: "linear" }}
-              className="absolute w-1.5 h-1.5 bg-brand/20 rounded-full blur-[1px] translate-z-0"
-              style={{ left: `${20 + i * 30}%` }}
-            />
-          ))}
-        </div>
+        {/* ── High-Fidelity Falling Stars ── */}
+        <FallingStars />
 
         {/* ── Floating Talent Icons ── */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -184,5 +173,103 @@ function FloatingIcon({ icon, delay, left, top, size, color }: {
     >
       {icon}
     </motion.div>
+  );
+}
+
+function FallingStars() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize);
+
+    const COLORS = ['#683995', '#8b5cf6', '#a78bfa', '#ffffff'];
+
+    type Star = {
+      x: number; y: number; vy: number; vx: number;
+      r: number; color: string; alpha: number; alphaSpeed: number;
+      rotation: number; rs: number;
+      w: number;
+    };
+
+    const stars: Star[] = Array.from({ length: 40 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vy: 0.5 + Math.random() * 1.5,
+      vx: (Math.random() - 0.5) * 0.5,
+      r: 1 + Math.random() * 2,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      alpha: Math.random() * 0.5,
+      alphaSpeed: 0.005 + Math.random() * 0.01,
+      rotation: Math.random() * Math.PI * 2,
+      rs: (Math.random() - 0.5) * 0.05,
+      w: 2 + Math.random() * 4,
+    }));
+
+    let raf: number;
+    const tick = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      stars.forEach(s => {
+        s.y += s.vy;
+        s.x += s.vx;
+        s.rotation += s.rs;
+        s.alpha = Math.min(s.alpha + s.alphaSpeed, 0.4);
+
+        if (s.y > canvas.height + 20) {
+          s.y = -20;
+          s.x = Math.random() * canvas.width;
+          s.alpha = 0;
+        }
+
+        ctx.save();
+        ctx.globalAlpha = s.alpha;
+        ctx.fillStyle = s.color;
+
+        // Draw a small star or dot
+        const spikes = 4;
+        const outer = s.w;
+        const inner = outer / 3;
+        let rot = (Math.PI / 2) * 3 + s.rotation;
+        let step = Math.PI / spikes;
+        
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y - outer);
+        for (let i = 0; i < spikes; i++) {
+          ctx.lineTo(s.x + Math.cos(rot) * outer, s.y + Math.sin(rot) * outer);
+          rot += step;
+          ctx.lineTo(s.x + Math.cos(rot) * inner, s.y + Math.sin(rot) * inner);
+          rot += step;
+        }
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      });
+
+      raf = requestAnimationFrame(tick);
+    };
+    tick();
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', resize);
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.4]"
+      style={{ zIndex: 0 }}
+    />
   );
 }

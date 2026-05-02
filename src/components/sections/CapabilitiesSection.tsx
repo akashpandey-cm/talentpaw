@@ -1,4 +1,4 @@
-import { useState, useEffect, memo, useCallback } from 'react';
+import { useState, useEffect, memo, useCallback, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { BRAND_GRADIENT, EASE_PREMIUM, GPU_ACCELERATION } from '../../lib/brand';
 
@@ -141,7 +141,8 @@ const SlideCard = memo(({ slide, i, index, total, isMobile, onSelect }: {
 
       {/* Content */}
       <div className="relative z-30 flex flex-col items-center mt-auto pb-10 md:pb-12 text-center w-full px-4">
-        <div className="px-3 py-1 bg-white/10 backdrop-blur-lg rounded-full text-[9px] md:text-[11px] font-black uppercase tracking-[2px] text-white shadow-xl mb-3 border border-white/20">
+        <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-lg rounded-full text-[9px] md:text-[11px] font-black uppercase tracking-[2px] text-white shadow-xl mb-3 border border-white/20">
+          <div className="w-1.5 h-1.5 rounded-full bg-brand animate-pulse shadow-[0_0_8px_rgba(104,57,149,0.8)]" />
           Tier-1 Professional
         </div>
         <h3 className="text-3xl md:text-5xl font-black text-white tracking-tighter mb-2 drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
@@ -181,13 +182,21 @@ export default function CapabilitiesSection() {
   }, [total]);
 
   return (
-    <section className="relative min-h-[100svh] w-full flex flex-col items-center pt-24 pb-8 md:pt-[120px] md:pb-10 px-4 overflow-hidden bg-gradient-to-br from-[#F4F6F9] via-[#FDF5F1] to-[#FFE8DB]">
+    <section className="relative min-h-[100svh] w-full flex flex-col items-center pt-24 pb-8 md:pt-[120px] md:pb-10 px-4 overflow-hidden bg-[#FAFAFB]">
+      
+      {/* ── High-Fidelity Falling Stars ── */}
+      <FallingStars opacity={0.15} />
 
-      {/* Background Glows */}
+      {/* Background Glows & Orbs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" style={GPU_ACCELERATION}>
         <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-brand/5 blur-[120px] rounded-full" />
         <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-rose-500/5 blur-[120px] rounded-full" />
+        
+        {/* Floating Background Orbs */}
+        <FloatingOrb color="rgba(123, 97, 255, 0.12)" size="w-64 h-64" top="15%" left="5%" delay={0} />
+        <FloatingOrb color="rgba(255, 77, 141, 0.08)" size="w-48 h-48" top="60%" right="5%" delay={2} />
       </div>
+
 
       <div className="w-full flex flex-col items-center my-auto z-10">
         {/* Title Section */}
@@ -242,5 +251,133 @@ export default function CapabilitiesSection() {
         </motion.div>
       </div>
     </section>
+  );
+}
+
+function FloatingOrb({ color, size, top, left, right, delay }: any) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.5, rotate: 0 }}
+      animate={{ 
+        opacity: [0.3, 0.5, 0.3],
+        scale: [1, 1.1, 1],
+        rotate: [0, 90, 0],
+        x: [0, 15, 0],
+        y: [0, -20, 0]
+      }}
+      transition={{
+        duration: 12,
+        delay: delay,
+        repeat: Infinity,
+        ease: "linear"
+      }}
+      className={`absolute rounded-2xl border-2 border-black/5 backdrop-blur-sm pointer-events-none ${size}`}
+      style={{ 
+        boxShadow: `0 0 40px ${color}`,
+        top: top,
+        left: left,
+        right: right,
+        zIndex: 0
+      }}
+    >
+      <div className="absolute inset-0 rounded-2xl border-2 border-brand/20 opacity-40" />
+    </motion.div>
+  );
+}
+
+function FallingStars({ opacity = 0.4 }: { opacity?: number }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize);
+
+    const COLORS = ['#683995', '#8b5cf6', '#a78bfa', '#000000'];
+
+    type Star = {
+      x: number; y: number; vy: number; vx: number;
+      r: number; color: string; alpha: number; alphaSpeed: number;
+      rotation: number; rs: number;
+      w: number;
+    };
+
+    const stars: Star[] = Array.from({ length: 30 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vy: 0.4 + Math.random() * 1.2,
+      vx: (Math.random() - 0.5) * 0.4,
+      r: 1 + Math.random() * 2,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      alpha: Math.random() * 0.3,
+      alphaSpeed: 0.005 + Math.random() * 0.01,
+      rotation: Math.random() * Math.PI * 2,
+      rs: (Math.random() - 0.5) * 0.05,
+      w: 2 + Math.random() * 4,
+    }));
+
+    let raf: number;
+    const tick = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      stars.forEach(s => {
+        s.y += s.vy;
+        s.x += s.vx;
+        s.rotation += s.rs;
+        s.alpha = Math.min(s.alpha + s.alphaSpeed, 0.3);
+
+        if (s.y > canvas.height + 20) {
+          s.y = -20;
+          s.x = Math.random() * canvas.width;
+          s.alpha = 0;
+        }
+
+        ctx.save();
+        ctx.globalAlpha = s.alpha;
+        ctx.fillStyle = s.color;
+
+        const spikes = 4;
+        const outer = s.w;
+        const inner = outer / 3;
+        let rot = (Math.PI / 2) * 3 + s.rotation;
+        let step = Math.PI / spikes;
+        
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y - outer);
+        for (let i = 0; i < spikes; i++) {
+          ctx.lineTo(s.x + Math.cos(rot) * outer, s.y + Math.sin(rot) * outer);
+          rot += step;
+          ctx.lineTo(s.x + Math.cos(rot) * inner, s.y + Math.sin(rot) * inner);
+          rot += step;
+        }
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      });
+
+      raf = requestAnimationFrame(tick);
+    };
+    tick();
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', resize);
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 w-full h-full pointer-events-none"
+      style={{ zIndex: 0, opacity }}
+    />
   );
 }

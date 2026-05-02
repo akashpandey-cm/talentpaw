@@ -190,46 +190,46 @@ function ZigZagText({ text, delay = 0, className = "", style = {} }: { text: str
 // Memoized Talent Card (Prevents unnecessary re-renders)
 const TalentCard = memo(({ card, index, activeCat }: { card: typeof TALENT_CARDS[0]; index: number; activeCat: string }) => {
   const isLeftSide = index < 3;
-  
+
   return (
     <motion.div
       key={`${activeCat}-${index}`}
-      initial={{ 
-        opacity: 0, 
-        x: isLeftSide ? -150 : 150, 
+      initial={{
+        opacity: 0,
+        x: isLeftSide ? -150 : 150,
         rotateY: isLeftSide ? -35 : 35,
         scale: 0.85,
         z: -100
       }}
-      animate={{ 
-        opacity: 1, 
-        x: 0, 
+      animate={{
+        opacity: 1,
+        x: 0,
         rotateY: 0,
         scale: 1,
         z: 0
       }}
-      exit={{ 
-        opacity: 0, 
-        x: isLeftSide ? -100 : 100, 
+      exit={{
+        opacity: 0,
+        x: isLeftSide ? -100 : 100,
         scale: 0.9,
         transition: { duration: 0.3 }
       }}
-      transition={{ 
+      transition={{
         type: "spring",
         stiffness: 120,
         damping: 18,
         mass: 1,
-        delay: (isLeftSide ? index : (5 - index)) * 0.08 
+        delay: (isLeftSide ? index : (5 - index)) * 0.08
       }}
-      whileHover={{ 
-        scale: 1.05, 
+      whileHover={{
+        scale: 1.05,
         y: -10,
         rotateY: isLeftSide ? 5 : -5,
         boxShadow: "0 40px 80px -20px rgba(0,0,0,0.3)",
         transition: { duration: 0.4, ease: "easeOut" }
       }}
       className={`relative aspect-[3/4] md:aspect-[227/476] w-full rounded-[18px] md:rounded-[23px] overflow-hidden group shadow-[0_20px_40px_-20px_rgba(0,0,0,0.15)] bg-white ${index % 2 !== 0 ? 'mt-0 md:mt-12' : ''}`}
-      style={{ 
+      style={{
         ...GPU_ACCELERATION,
         transformStyle: "preserve-3d",
         perspective: "1000px"
@@ -237,7 +237,7 @@ const TalentCard = memo(({ card, index, activeCat }: { card: typeof TALENT_CARDS
     >
       <LazyImage src={card.img} alt={card.alt} />
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      
+
       {/* Premium Content Reveal */}
       <div className="absolute inset-x-0 bottom-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-500 z-20">
         <p className="text-white font-black text-xl md:text-2xl tracking-tighter leading-none mb-1">
@@ -340,11 +340,11 @@ export default function ShowcaseSection() {
           className="text-[34px] sm:text-[40px] md:text-[60px] font-bold tracking-tight text-black mb-2 md:mb-4 leading-[1.08] md:leading-[76px] font-['Outfit']"
         >
           <ZigZagText text="The Global" delay={0.1} /> <br className="md:hidden" />
-          <ZigZagText 
-            text="Talent Showcase." 
-            delay={0.5} 
-            className="text-transparent bg-clip-text" 
-            style={{ backgroundImage: BRAND_GRADIENT }} 
+          <ZigZagText
+            text="Talent Showcase."
+            delay={0.5}
+            className="text-transparent bg-clip-text"
+            style={{ backgroundImage: BRAND_GRADIENT }}
           />
         </h2>
 
@@ -367,16 +367,16 @@ export default function ShowcaseSection() {
         </div>
 
         {/* Talent Grid - Optimized with Memo */}
-        <div 
+        <div
           className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-8 mb-4 md:mb-6 w-full h-auto min-h-0 md:min-h-[500px]"
           style={{ perspective: "2000px" }}
         >
           <AnimatePresence mode="wait">
             {filteredCards.map((card, i) => (
-              <TalentCard 
-                key={`${activeCat}-${i}`} 
-                card={card} 
-                index={i} 
+              <TalentCard
+                key={`${activeCat}-${i}`}
+                card={card}
+                index={i}
                 activeCat={activeCat}
               />
             ))}
