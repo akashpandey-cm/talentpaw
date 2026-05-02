@@ -334,7 +334,7 @@ export default function ShowcaseSection() {
         />
       </div>
 
-      <div className="max-w-[1440px] w-full mx-auto text-center relative z-10 flex flex-col items-center justify-center h-full pt-0 md:pt-2" style={GPU_ACCELERATION}>
+      <div className="max-w-[1440px] w-full mx-auto text-center relative z-10 flex flex-col items-center my-auto pt-0 md:pt-2" style={GPU_ACCELERATION}>
 
         <h2
           className="text-[34px] sm:text-[40px] md:text-[60px] font-bold tracking-tight text-black mb-2 md:mb-4 leading-[1.08] md:leading-[76px] font-['Outfit']"
