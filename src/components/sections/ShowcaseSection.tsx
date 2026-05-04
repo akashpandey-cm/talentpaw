@@ -236,10 +236,10 @@ const TalentCard = memo(({ card, index, activeCat }: { card: typeof TALENT_CARDS
       }}
     >
       <LazyImage src={card.img} alt={card.alt} />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500" />
 
       {/* Premium Content Reveal */}
-      <div className="absolute inset-x-0 bottom-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-500 z-20">
+      <div className="absolute inset-x-0 bottom-0 p-4 md:p-6 translate-y-0 md:translate-y-full md:group-hover:translate-y-0 transition-transform duration-500 z-20">
         <p className="text-white font-black text-xl md:text-2xl tracking-tighter leading-none mb-1">
           {card.category}
         </p>

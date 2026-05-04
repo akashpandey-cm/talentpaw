@@ -1,6 +1,7 @@
-import { useState, useEffect, memo, useCallback, useRef } from 'react';
+import { useState, useEffect, memo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { BRAND_GRADIENT, EASE_PREMIUM, GPU_ACCELERATION } from '../../lib/brand';
+import { Music, Mic2, Camera, Palette, Video, MessageSquare, Users, Star } from 'lucide-react';
 
 // Import small assets (<30KB where possible)
 import imgComedian from '../../assets/voiceactor/musician/comedian/djz2zhqlgagvpa8ipeoz.webp'; // ~28KB
@@ -140,12 +141,12 @@ const SlideCard = memo(({ slide, i, index, total, isMobile, onSelect }: {
       </div>
 
       {/* Content */}
-      <div className="relative z-30 flex flex-col items-center mt-auto pb-10 md:pb-12 text-center w-full px-4">
+      <div className="relative z-30 flex flex-col items-center mt-auto pb-6 sm:pb-8 md:pb-12 text-center w-full px-4">
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-lg rounded-full text-[9px] md:text-[11px] font-black uppercase tracking-[2px] text-white shadow-xl mb-3 border border-white/20">
           <div className="w-1.5 h-1.5 rounded-full bg-brand animate-pulse shadow-[0_0_8px_rgba(104,57,149,0.8)]" />
           Tier-1 Professional
         </div>
-        <h3 className="text-3xl md:text-5xl font-black text-white tracking-tighter mb-2 drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+        <h3 className="text-xl sm:text-2xl md:text-5xl font-black text-white tracking-tighter mb-2 drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
           {slide.role}
         </h3>
         <p className="text-[10px] md:text-sm font-bold text-white/50 uppercase tracking-[4px] drop-shadow-sm">
@@ -184,17 +185,21 @@ export default function CapabilitiesSection() {
   return (
     <section className="relative min-h-[100svh] w-full flex flex-col items-center pt-24 pb-8 md:pt-[120px] md:pb-10 px-4 overflow-hidden bg-[#FAFAFB]">
       
-      {/* ── High-Fidelity Falling Stars ── */}
-      <FallingStars opacity={0.15} />
+      <div className="absolute inset-0 pointer-events-none" style={GPU_ACCELERATION}>
+        {/* Central Core Glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] bg-indigo-500/[0.03] blur-[150px] rounded-full animate-[pulse_8s_ease-in-out_infinite]" />
 
-      {/* Background Glows & Orbs */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden" style={GPU_ACCELERATION}>
-        <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-brand/5 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-rose-500/5 blur-[120px] rounded-full" />
-        
-        {/* Floating Background Orbs */}
-        <FloatingOrb color="rgba(123, 97, 255, 0.12)" size="w-64 h-64" top="15%" left="5%" delay={0} />
-        <FloatingOrb color="rgba(255, 77, 141, 0.08)" size="w-48 h-48" top="60%" right="5%" delay={2} />
+        {/* ── Floating Talent Icons ── */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <FloatingIcon icon={<Music />} delay={0} left="10%" top="20%" size={32} color="#B400FF" />
+          <FloatingIcon icon={<Mic2 />} delay={2} left="85%" top="15%" size={40} color="#FF8B00" />
+          <FloatingIcon icon={<Camera />} delay={4} left="5%" top="70%" size={34} color="#3B82F6" />
+          <FloatingIcon icon={<Palette />} delay={1} left="90%" top="60%" size={38} color="#EC4899" />
+          <FloatingIcon icon={<Video />} delay={3} left="15%" top="45%" size={30} color="#8B5CF6" />
+          <FloatingIcon icon={<MessageSquare />} delay={5} left="80%" top="80%" size={36} color="#6366F1" />
+          <FloatingIcon icon={<Star />} delay={1.5} left="40%" top="10%" size={24} color="#F59E0B" />
+          <FloatingIcon icon={<Users />} delay={3.5} left="60%" top="85%" size={32} color="#10B981" />
+        </div>
       </div>
 
 
@@ -254,130 +259,40 @@ export default function CapabilitiesSection() {
   );
 }
 
-function FloatingOrb({ color, size, top, left, right, delay }: any) {
+function FloatingIcon({
+  icon,
+  delay,
+  left,
+  top,
+  size,
+  color
+}: {
+  icon: React.ReactNode,
+  delay: number,
+  left: string,
+  top: string,
+  size: number,
+  color: string
+}) {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.5, rotate: 0 }}
-      animate={{ 
-        opacity: [0.3, 0.5, 0.3],
-        scale: [1, 1.1, 1],
-        rotate: [0, 90, 0],
-        x: [0, 15, 0],
-        y: [0, -20, 0]
+      initial={{ opacity: 0, y: 20 }}
+      animate={{
+        opacity: [0, 0.2, 0.2, 0],
+        y: [0, -50, -100, -150],
+        rotate: [0, 15, -15, 0],
+        scale: [0.8, 1.2, 1.2, 0.8]
       }}
       transition={{
-        duration: 12,
-        delay: delay,
+        duration: 15,
+        delay,
         repeat: Infinity,
         ease: "linear"
       }}
-      className={`absolute rounded-2xl border-2 border-black/5 backdrop-blur-sm pointer-events-none ${size}`}
-      style={{ 
-        boxShadow: `0 0 40px ${color}`,
-        top: top,
-        left: left,
-        right: right,
-        zIndex: 0
-      }}
+      className="absolute pointer-events-none"
+      style={{ left, top, fontSize: size, color }}
     >
-      <div className="absolute inset-0 rounded-2xl border-2 border-brand/20 opacity-40" />
+      {icon}
     </motion.div>
-  );
-}
-
-function FallingStars({ opacity = 0.4 }: { opacity?: number }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    resize();
-    window.addEventListener('resize', resize);
-
-    const COLORS = ['#683995', '#8b5cf6', '#a78bfa', '#000000'];
-
-    type Star = {
-      x: number; y: number; vy: number; vx: number;
-      r: number; color: string; alpha: number; alphaSpeed: number;
-      rotation: number; rs: number;
-      w: number;
-    };
-
-    const stars: Star[] = Array.from({ length: 30 }, () => ({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      vy: 0.4 + Math.random() * 1.2,
-      vx: (Math.random() - 0.5) * 0.4,
-      r: 1 + Math.random() * 2,
-      color: COLORS[Math.floor(Math.random() * COLORS.length)],
-      alpha: Math.random() * 0.3,
-      alphaSpeed: 0.005 + Math.random() * 0.01,
-      rotation: Math.random() * Math.PI * 2,
-      rs: (Math.random() - 0.5) * 0.05,
-      w: 2 + Math.random() * 4,
-    }));
-
-    let raf: number;
-    const tick = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      stars.forEach(s => {
-        s.y += s.vy;
-        s.x += s.vx;
-        s.rotation += s.rs;
-        s.alpha = Math.min(s.alpha + s.alphaSpeed, 0.3);
-
-        if (s.y > canvas.height + 20) {
-          s.y = -20;
-          s.x = Math.random() * canvas.width;
-          s.alpha = 0;
-        }
-
-        ctx.save();
-        ctx.globalAlpha = s.alpha;
-        ctx.fillStyle = s.color;
-
-        const spikes = 4;
-        const outer = s.w;
-        const inner = outer / 3;
-        let rot = (Math.PI / 2) * 3 + s.rotation;
-        let step = Math.PI / spikes;
-        
-        ctx.beginPath();
-        ctx.moveTo(s.x, s.y - outer);
-        for (let i = 0; i < spikes; i++) {
-          ctx.lineTo(s.x + Math.cos(rot) * outer, s.y + Math.sin(rot) * outer);
-          rot += step;
-          ctx.lineTo(s.x + Math.cos(rot) * inner, s.y + Math.sin(rot) * inner);
-          rot += step;
-        }
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore();
-      });
-
-      raf = requestAnimationFrame(tick);
-    };
-    tick();
-
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener('resize', resize);
-    };
-  }, []);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{ zIndex: 0, opacity }}
-    />
   );
 }

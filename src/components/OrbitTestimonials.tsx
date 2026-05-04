@@ -32,13 +32,14 @@ const DEFAULT_TESTIMONIALS: Testimonial[] = [
   { id: 13, name: "Isabella Martinez", role: "Design Director @ Airbnb", image: "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=400&h=400&fit=crop", message: "The standard of work on TalentPaw is breathtaking. We've built our entire design system using visionaries found here." }
 ];
 
-const AvatarItem = memo(({ item, index, rotation, angleStep, radius, isActive }: { 
-  item: Testimonial, 
-  index: number, 
-  rotation: MotionValue<number>, 
-  angleStep: number, 
+const AvatarItem = memo(({ item, index, rotation, angleStep, radius, isActive, isMobile }: {
+  item: Testimonial,
+  index: number,
+  rotation: MotionValue<number>,
+  angleStep: number,
   radius: number,
-  isActive: boolean
+  isActive: boolean,
+  isMobile: boolean
 }) => {
   const initialAngle = index * angleStep;
   const itemRotation = useTransform(rotation, (r: number) => initialAngle + r);
@@ -56,38 +57,47 @@ const AvatarItem = memo(({ item, index, rotation, angleStep, radius, isActive }:
   const borderAlpha = useTransform(scale, [0.7, 1.5], [0.05, 0.3]);
   const borderColor = useTransform(borderAlpha, (a) => `rgba(123, 97, 255, ${a})`);
 
+  const offset = isMobile ? -28 : -56;
+
   return (
     <motion.div
       style={{
         x, y, scale,
-        left: -56,
-        top: -56,
+        left: offset,
+        top: offset,
         ...GPU_ACCELERATION
       }}
       className="absolute"
     >
-      <div 
-        className={`relative w-28 h-28 rounded-2xl overflow-hidden p-[0.5px] backdrop-blur-md border transition-[background-color,box-shadow,border-color] duration-1000 ${isActive ? 'bg-white shadow-[0_30px_60px_-12px_rgba(104,57,149,0.25)]' : 'bg-white/[0.03]'}`}
+      <div
+        className={`relative w-14 h-14 md:w-28 md:h-28 rounded-xl md:rounded-2xl overflow-hidden p-[0.5px] backdrop-blur-md border transition-[background-color,box-shadow,border-color] duration-1000 ${isActive ? 'bg-white shadow-[0_30px_60px_-12px_rgba(104,57,149,0.25)]' : 'bg-white/[0.03]'}`}
         style={{ borderColor: borderColor as any, perspective: '1000px' }}
       >
-        <img src={item.image} alt={item.name} className="w-full h-full object-cover rounded-2xl transition-transform duration-1000" />
+        <img src={item.image} alt={item.name} className="w-full h-full object-cover rounded-xl md:rounded-2xl transition-transform duration-1000" />
       </div>
     </motion.div>
   );
 });
 
-export default function OrbitTestimonials({ 
-  testimonials = DEFAULT_TESTIMONIALS, 
-  speed = 40, 
-  radius: initialRadius = 640 
+export default function OrbitTestimonials({
+  testimonials = DEFAULT_TESTIMONIALS,
+  speed = 40,
+  radius: initialRadius = 640
 }: OrbitTestimonialsProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [radius, setRadius] = useState(initialRadius);
+  const [isMobile, setIsMobile] = useState(false);
+  const [orbitTop, setOrbitTop] = useState(680);
   const count = testimonials.length;
   const angleStep = 360 / count;
 
   useEffect(() => {
-    const handleResize = () => setRadius(window.innerWidth < 768 ? 220 : initialRadius);
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      setRadius(mobile ? 140 : initialRadius);
+      setOrbitTop(mobile ? 280 : 680);
+    };
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -121,18 +131,18 @@ export default function OrbitTestimonials({
   const activeTestimonial = testimonials[activeIndex];
 
   return (
-    <div className="relative w-full min-h-[620px] md:min-h-[750px] flex items-start justify-center bg-transparent overflow-visible">
+    <div className="relative w-full min-h-[480px] md:min-h-[750px] flex items-start justify-center bg-transparent overflow-visible">
       <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-brand/[0.03] blur-[120px] rounded-full pointer-events-none -z-10" />
-      <div className="absolute w-[1300px] h-[1300px] border-[1.5px] border-dashed border-black/[0.03] rounded-full pointer-events-none" style={{ top: '680px', left: '50%', transform: 'translate(-50%, -50%)' }} />
+      <div className="hidden md:block absolute w-[1300px] h-[1300px] border-[1.5px] border-dashed border-black/[0.03] rounded-full pointer-events-none" style={{ top: '680px', left: '50%', transform: 'translate(-50%, -50%)' }} />
 
       <div className="relative w-full h-full flex flex-col items-center pt-6 overflow-visible">
-        <div className="absolute top-[680px] left-1/2 -translate-x-1/2"> 
+        <div className="absolute left-1/2 -translate-x-1/2" style={{ top: `${orbitTop}px` }}>
           {testimonials.map((item, i) => (
-            <AvatarItem key={item.id} item={item} index={i} rotation={rotation} angleStep={angleStep} radius={radius} isActive={i === activeIndex} />
+            <AvatarItem key={item.id} item={item} index={i} rotation={rotation} angleStep={angleStep} radius={radius} isActive={i === activeIndex} isMobile={isMobile} />
           ))}
         </div>
 
-        <div className="relative mt-[120px] md:mt-[180px] w-full max-w-[340px] md:max-w-[800px] text-center px-2 md:px-4 z-20 overflow-visible">
+        <div className="relative mt-[50px] md:mt-[180px] w-full max-w-[340px] md:max-w-[800px] text-center px-2 md:px-4 z-20 overflow-visible">
           <AnimatePresence mode="popLayout">
             <motion.div
               key={activeTestimonial.id}
@@ -159,7 +169,7 @@ export default function OrbitTestimonials({
           </AnimatePresence>
 
           {/* Constant Progress Stepper */}
-          <div className="flex gap-4 mt-12 justify-center">
+          <div className="flex gap-4 mt-6 md:mt-12 justify-center">
             {testimonials.map((_, dotIdx) => (
               <motion.div 
                 key={dotIdx}

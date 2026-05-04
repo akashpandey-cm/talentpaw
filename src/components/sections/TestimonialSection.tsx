@@ -5,7 +5,7 @@ export default function TestimonialSection() {
   return (
     <section className="pt-20 md:pt-24 pb-20 md:pb-24 relative overflow-hidden bg-white">
       <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
-        <div className="text-center mb-10 md:mb-20">
+        <div className="text-center mb-6 md:mb-20">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
